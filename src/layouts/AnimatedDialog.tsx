@@ -95,7 +95,7 @@ export function AnimatedDialog<T>({
         <Dialog
             open={open}
             onClose={close}
-            maxWidth="xl"
+            maxWidth="lg"
             slots={{ transition: Transition }}
             fullWidth
             fullScreen={fullScreen}

@@ -17,18 +17,16 @@ import {
 } from "@toolpad/core/Account";
 import AddIcon from "@mui/icons-material/Add";
 
-const accounts = [
+const personas = [
     {
         id: 1,
         name: "Developer",
-        //email: "bharatkashyap@outlook.com",
         image: "https://avatars.githubusercontent.com/u/19550456",
     },
     {
         id: 2,
         name: "Human Resources",
-        //email: "bharat@mui.com",
-        color: "#8B4513", // Brown color
+        color: "#3AC513",
     },
 ];
 
@@ -41,9 +39,9 @@ export default function CustomMenu() {
                 Persona's
             </Typography>
             <MenuList>
-                {accounts.map((account) => (
+                {personas.map((persona) => (
                     <MenuItem
-                        key={account.id}
+                        key={persona.id}
                         component="button"
                         sx={{
                             justifyContent: "flex-start",
@@ -57,12 +55,12 @@ export default function CustomMenu() {
                                     width: 32,
                                     height: 32,
                                     fontSize: "0.95rem",
-                                    bgcolor: account.color,
+                                    bgcolor: persona.color,
                                 }}
-                                src={account.image ?? ""}
-                                alt={account.name ?? ""}
+                                src={persona.image ?? ""}
+                                alt={persona.name ?? ""}
                             >
-                                {account.name[0]}
+                                {persona.name[0]}
                             </Avatar>
                         </ListItemIcon>
                         <ListItemText
@@ -72,7 +70,7 @@ export default function CustomMenu() {
                                 alignItems: "flex-start",
                                 width: "100%",
                             }}
-                            primary={account.name}
+                            primary={persona.name}
                         />
                     </MenuItem>
                 ))}

@@ -1,33 +1,14 @@
 import * as React from "react";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Outlet } from "react-router";
 import { ReactRouterAppProvider } from "@toolpad/core/react-router";
-import type { Navigation, Session } from "@toolpad/core/AppProvider";
-import { DashboardLayout } from "@toolpad/core/DashboardLayout";
-import { PageContainer } from "@toolpad/core/PageContainer";
+import { NAVIGATION } from "./routes";
 import {
+    Authentication,
+    AuthProvider,
     AuthResponse,
+    Session,
     SignInPage,
-    type AuthProvider,
-} from "@toolpad/core/SignInPage";
-import { Account } from "@toolpad/core";
-import CustomMenu from "./layouts/custom-menu";
-import {
-    Add,
-    Chat,
-    Contacts,
-    EmojiObjects,
-    Extension,
-    Folder,
-    Hail,
-    Hardware,
-    Person,
-    Repeat,
-    Settings,
-    SwitchAccount,
-} from "@mui/icons-material";
-import { Box, Fade } from "@mui/material";
+} from "@toolpad/core";
+import Layout from "./layouts/DashboardLayout";
 
 const demoSession = {
     user: {
@@ -37,106 +18,42 @@ const demoSession = {
     },
 };
 
-const NAVIGATION: Navigation = [
-    {
-        title: "Dashboard",
-        icon: <DashboardIcon />,
-    },
-    {
-        kind: "header",
-        title: "Main items",
-    },
-    {
-        segment: "chat",
-        title: "Chat",
-        icon: <Chat />,
-    },
-    {
-        //segment: "profile",
-        title: "Profiel",
-        icon: <Person />,
-        children: [
-            {
-                segment: "profile",
-                title: "Persona's",
-                icon: <SwitchAccount />,
-            },
-        ],
-    },
-    {
-        segment: "settings",
-        title: "Instellingen",
-        icon: <Settings />,
-    },
-    {
-        kind: "header",
-        title: "Advanced",
-    },
-    {
-        segment: "buddy",
-        title: "Buddy's",
-        icon: <Hail />,
-    },
-    {
-        segment: "brains",
-        title: "Brains",
-        icon: <EmojiObjects />,
-    },
-    {
-        segment: "action",
-        title: "Actions",
-        icon: <Repeat />,
-    },
-    { kind: "divider" },
-    {
-        segment: "addition",
-        title: "Additional",
-        icon: <Add />,
-        children: [
-            {
-                segment: "tools",
-                title: "Tools",
-                icon: <Hardware />,
-            },
-            {
-                segment: "connector",
-                title: "Connectors",
-                icon: <Extension />,
-            },
-        ],
-    },
+const providers: AuthProvider[] = [
+    { id: "github", name: "GitHub" },
+    { id: "google", name: "Google" },
+    { id: "facebook", name: "Facebook" },
+    { id: "twitter", name: "Twitter" },
+    { id: "linkedin", name: "LinkedIn" },
+    { id: "microsoft-entra-id", name: "Microsoft" },
 ];
 
 const BRANDING = {
     title: "Personal Workspace",
 };
 
-const signIn: (provider: AuthProvider) => void | Promise<AuthResponse> = async (
-    provider
-) => {
-    // preview-start
-    const promise = new Promise<AuthResponse>((resolve) => {
-        setTimeout(() => {
-            console.log(`Sign in with ${provider.id}`);
-            resolve({ error: "This is a fake error" });
-        }, 500);
-    });
-    // preview-end
-    return promise;
-};
-
 export default function App() {
     const [session, setSession] = React.useState<Session | null>(demoSession);
-    const authentication = React.useMemo(() => {
+
+    const signIn = async (provider: AuthProvider): Promise<AuthResponse> => {
+        console.log(`Sign in with ${provider.id}`);
+        return new Promise<AuthResponse>((resolve) => {
+            setTimeout(() => {
+                setSession(demoSession); // Fake login
+                resolve({}); // No error
+            }, 500);
+        });
+    };
+
+    const authentication: Authentication = React.useMemo(() => {
         return {
-            signIn: () => {
-                setSession(demoSession);
-            },
-            signOut: () => {
-                setSession(null);
-            },
+            signIn: () => setSession(demoSession),
+            signOut: () => setSession(null),
         };
     }, []);
+
+    if (!session) {
+        return <SignInPage signIn={signIn} providers={providers} />;
+    }
 
     return (
         <ReactRouterAppProvider
@@ -145,21 +62,7 @@ export default function App() {
             authentication={authentication}
             session={session}
         >
-            <DashboardLayout
-                slots={{
-                    toolbarAccount: () => (
-                        <Account slots={{ popoverContent: CustomMenu }} />
-                    ),
-                }}
-            >
-                <PageContainer title="" breadcrumbs={[]} maxWidth={false}>
-                    <Outlet />
-                </PageContainer>
-            </DashboardLayout>
-            {/* <SignInPage
-                providers={[{ id: "microsoft-entra-id", name: "Microsoft" }]}
-                signIn={signIn}
-            /> */}
+            <Layout />
         </ReactRouterAppProvider>
     );
 }

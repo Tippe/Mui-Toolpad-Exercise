@@ -4,12 +4,14 @@ import { getColorsByToolCategory } from "../utils/colorutils";
 import {
     alpha,
     Avatar,
+    Badge,
     Box,
     Card,
     CardActions,
     CardContent,
     CardHeader,
     Collapse,
+    darken,
     Divider,
     Grow,
     IconButton,
@@ -177,7 +179,7 @@ export default function DashboardCard({
                                 }
                                 sx={{
                                     border: 1,
-                                    borderColor: alpha(grey[300], 0.5),
+                                    borderColor: alpha(grey[400], 0.5),
                                     borderRadius: 2,
                                     p: 0,
                                     m: 1,
