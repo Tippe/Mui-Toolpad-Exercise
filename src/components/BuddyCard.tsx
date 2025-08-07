@@ -10,7 +10,7 @@ export default function BuddyCard() {
             title="Buddy's"
             subtitle="Test"
             category="socialmedia"
-            height="calc(50vh - 236px)"
+            height={400}
             icon={<Hail sx={{ width: 30, height: 30 }} />}
             actions={<Button variant="contained">Bekijk</Button>}
             front={<Typography>Hier komt dynamische content</Typography>}

@@ -10,7 +10,7 @@ export default function NoteCard() {
             title="Notities"
             subtitle="Test"
             category="file"
-            height="calc(50vh - 236px)"
+            height={400}
             icon={<Notes sx={{ width: 30, height: 30 }} />}
             actions={<Button variant="contained">Bekijk</Button>}
             front={

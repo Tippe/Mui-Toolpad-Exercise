@@ -16,7 +16,7 @@ export default function ToDoCard() {
             title="To Do"
             subtitle="Test"
             category="texteditor"
-            height="calc(50vh - 236px)"
+            height={400}
             icon={<Checklist sx={{ width: 30, height: 30 }} />}
             actions={<Button variant="contained">Bekijk</Button>}
             front={

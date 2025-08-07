@@ -10,7 +10,7 @@ export default function SettingsCard() {
             title="Instellingen"
             subtitle="Test"
             category="texteditor"
-            height="calc(50vh - 236px)"
+            height={400}
             icon={<Settings sx={{ width: 30, height: 30 }} />}
             actions={<Button variant="contained">Bekijk</Button>}
             front={<Typography>Hier komt dynamische content</Typography>}

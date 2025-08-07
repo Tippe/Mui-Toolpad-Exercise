@@ -80,7 +80,7 @@ export default function BrainCard() {
             title="Brains"
             subtitle="Test"
             category="file"
-            height="calc(50vh - 236px)"
+            height={400}
             icon={<EmojiObjects sx={{ width: 30, height: 30 }} />}
             actions={
                 <Button href="/brains" variant="contained">
