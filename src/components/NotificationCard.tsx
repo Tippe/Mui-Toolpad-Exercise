@@ -2,14 +2,18 @@ import * as React from "react";
 import { useDialogs } from "@toolpad/core";
 import {
     Alert,
+    Avatar,
+    Badge,
     Box,
     Button,
     Card,
     CardContent,
     CardHeader,
     Grid,
+    IconButton,
     List,
     ListItem,
+    ListItemAvatar,
     ListItemIcon,
     ListItemText,
     ListSubheader,
@@ -19,19 +23,21 @@ import {
     Typography,
 } from "@mui/material";
 import {
+    Delete,
     Error,
+    Folder,
     Info,
     Notifications,
     TaskAlt,
+    Visibility,
     Warning,
 } from "@mui/icons-material";
 import DashboardCard from "../layouts/DashboardCard";
 import { AnimatedDialog } from "../layouts/AnimatedDialog";
 
 const alertsCategories = {
-    Emails: [
+    Microsoft: [
         { severity: "success", text: "Email ontvangen", variant: "standard" },
-        { severity: "error", text: "Email niet verzonden", variant: "filled" },
         {
             severity: "success",
             text: "Bijlage succesvol gedownload",
@@ -52,23 +58,11 @@ const alertsCategories = {
             text: "Spamfilter blokkeerde legitiem bericht",
             variant: "outlined",
         },
-        {
-            severity: "success",
-            text: "Emailarchief gesynchroniseerd",
-            variant: "filled",
-        },
-    ],
-    Teams: [
         { severity: "info", text: "Nieuw Teams bericht", variant: "outlined" },
         {
             severity: "warning",
             text: "Teams notificatie vertraging",
             variant: "standard",
-        },
-        {
-            severity: "success",
-            text: "Teamvergadering gepland",
-            variant: "filled",
         },
         {
             severity: "error",
@@ -89,19 +83,9 @@ const alertsCategories = {
     Systeem: [
         { severity: "error", text: "Brain is offline", variant: "standard" },
         {
-            severity: "success",
-            text: "Systeem update voltooid",
-            variant: "filled",
-        },
-        {
             severity: "warning",
             text: "Opslagcapaciteit bijna vol",
             variant: "standard",
-        },
-        {
-            severity: "error",
-            text: "Database connectie verloren",
-            variant: "filled",
         },
         { severity: "info", text: "Back-up voltooid", variant: "outlined" },
         {
@@ -127,19 +111,9 @@ const alertsCategories = {
             variant: "outlined",
         },
         {
-            severity: "success",
-            text: "Nieuwe gebruiker geregistreerd",
-            variant: "filled",
-        },
-        {
             severity: "info",
             text: "Beveiligingslogboek bijgewerkt",
             variant: "standard",
-        },
-        {
-            severity: "error",
-            text: "Fout bij het laden van dashboard",
-            variant: "filled",
         },
     ],
 };
@@ -161,14 +135,18 @@ export default function NotificationCard() {
                 items={categories}
                 renderItem={([categoryName, items]) => (
                     <Grid
-                        size={{ sm: 12, md: 6, lg: 3 }}
-                        sx={{ mb: 1, height: "100%" }}
+                        size={{ sm: 12, md: 6, lg: 4 }}
+                        sx={{ height: "100%" }}
                     >
-                        <Paper elevation={2} sx={{ p: 2, height: 1 }}>
+                        <Paper sx={{ p: 2, height: 1 }}>
                             <Typography variant="h6" gutterBottom>
                                 {categoryName}
                             </Typography>
-                            <Stack direction="column" flexWrap="wrap" gap={1}>
+                            <Stack
+                                direction="column"
+                                flexWrap="wrap"
+                                spacing={1}
+                            >
                                 {items.map((item, idx) => (
                                     <Alert
                                         key={idx}
@@ -186,48 +164,43 @@ export default function NotificationCard() {
             />
         ));
     };
-
-    const allAlerts = Object.values(alertsCategories).flat();
+    const totalAlerts = Object.values(alertsCategories).flat().length;
 
     return (
         <DashboardCard
             title="Notificaties"
             subtitle="Hier komen alle notificaties"
             category="start"
-            height={400}
-            icon={<Notifications sx={{ width: 30, height: 30 }} />}
+            height={200}
+            icon={
+                <Badge badgeContent={totalAlerts} color="info">
+                    <Notifications sx={{ fontSize: 35 }} />
+                </Badge>
+            }
             actions={
-                <Button variant="contained" onClick={handleOpen}>
-                    Bekijk
-                </Button>
+                <IconButton onClick={handleOpen}>
+                    <Visibility />
+                </IconButton>
             }
             front={
-                <Stack gap={2} sx={{ width: 1 }}>
-                    {allAlerts.map((item, idx) => (
-                        <Alert
-                            key={idx}
-                            severity={item.severity as any}
-                            variant={item.variant as any}
-                            sx={{ minWidth: 200 }}
+                <List>
+                    {categories.map(([categoryName, alerts]) => (
+                        <ListItem
+                            secondaryAction={
+                                <Badge
+                                    badgeContent={alerts.length}
+                                    color="info"
+                                />
+                            }
                         >
-                            {item.text}
-                        </Alert>
+                            <ListItemText primary={categoryName} />
+                        </ListItem>
                     ))}
-                </Stack>
+                </List>
             }
             back={
                 <Grid container>
-                    <List
-                        sx={{ width: 1 }}
-                        subheader={
-                            <ListSubheader
-                                component="div"
-                                id="nested-list-subheader"
-                            >
-                                Show
-                            </ListSubheader>
-                        }
-                    >
+                    <List>
                         <ListItem>
                             <ListItemIcon>
                                 <Error color="error" />

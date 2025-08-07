@@ -9,6 +9,7 @@ import {
     SignInPage,
 } from "@toolpad/core";
 import Layout from "./layouts/DashboardLayout";
+import { theme } from "./theme";
 
 const demoSession = {
     user: {
@@ -61,6 +62,7 @@ export default function App() {
             branding={BRANDING}
             authentication={authentication}
             session={session}
+            theme={theme}
         >
             <Layout />
         </ReactRouterAppProvider>

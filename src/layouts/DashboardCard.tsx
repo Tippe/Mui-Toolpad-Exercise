@@ -7,19 +7,23 @@ import {
     Badge,
     Box,
     Card,
+    CardActionArea,
     CardActions,
     CardContent,
     CardHeader,
     Collapse,
     darken,
     Divider,
+    Fade,
+    Grid,
     Grow,
     IconButton,
+    Popper,
+    Stack,
     Typography,
     Zoom,
 } from "@mui/material";
-import { ExpandMore, ExpandLess, MoreVert } from "@mui/icons-material";
-import { grey } from "@mui/material/colors";
+import { ExpandMore, ExpandLess, Visibility } from "@mui/icons-material";
 
 interface DashboardCardProps {
     title: string;
@@ -43,6 +47,16 @@ export default function DashboardCard({
     height,
 }: DashboardCardProps) {
     const [open, setOpen] = React.useState(true);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+    const onHover = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+        setOpen((previousOpen) => !previousOpen);
+    };
+
+    const canBeOpen = open && Boolean(anchorEl);
+    const id = canBeOpen ? "spring-popper" : undefined;
+    //const [open, setOpen] = React.useState(true);
     const [flipped, setFlip] = React.useState(false);
 
     const frontRef = React.useRef<HTMLDivElement>(null);
@@ -93,100 +107,66 @@ export default function DashboardCard({
                 height: cardHeight || "auto",
             }}
         >
-            <Box
-                sx={{
+            <a.div
+                style={{
                     position: "relative",
-                    height: "100%",
+                    width: "100%",
                     transformStyle: "preserve-3d",
+                    transform,
                 }}
             >
+                {/* FRONT SIDE */}
                 <a.div
+                    ref={frontRef}
                     style={{
-                        position: "relative",
+                        opacity: opacity.to((o) => 1 - o),
+                        transform: "rotateY(0deg)",
+                        backfaceVisibility: "hidden",
+                        position: "absolute",
                         width: "100%",
-                        transformStyle: "preserve-3d",
-                        transform,
+                        height: "100%",
                     }}
                 >
-                    {/* FRONT SIDE */}
-                    <a.div
-                        ref={frontRef}
-                        style={{
-                            opacity: opacity.to((o) => 1 - o),
-                            transform: "rotateY(0deg)",
-                            backfaceVisibility: "hidden",
-                            position: "absolute",
-                            width: "100%",
-                            height: "100%",
-                        }}
-                    >
-                        <Card
-                            elevation={3}
-                            sx={{
-                                borderRadius: 2,
-                                pb: 1,
-                                display: "flex",
-                                flexDirection: "column",
-                                height: "100%",
-                            }}
-                        >
-                            <CardHeader
-                                title={
+                    <Card elevation={0} sx={{ borderRadius: 4 }}>
+                        <CardContent>
+                            <Grid container spacing={3}>
+                                <Grid
+                                    size={2}
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    {icon}
+                                </Grid>
+                                <Grid size={8}>
                                     <Typography variant="h6">
                                         {title}
                                     </Typography>
-                                }
-                                subheader={
-                                    <Typography
-                                        variant="caption"
-                                        sx={{ color: "text.secondary" }}
-                                    >
+                                    <Typography variant="caption">
                                         {subtitle}
                                     </Typography>
-                                }
-                                avatar={
-                                    <Box
-                                        sx={{
-                                            borderTopLeftRadius: 7,
-                                            borderEndStartRadius: 7,
-                                            background:
-                                                getColorsByToolCategory(
-                                                    category
-                                                ).gradientColor,
-                                            py: 0.5,
-                                        }}
-                                    >
-                                        <Avatar
-                                            sx={{
-                                                background: "none",
-                                                width: 50,
-                                                height: 50,
-                                                color: "black",
-                                            }}
-                                        >
-                                            {icon}
-                                        </Avatar>
-                                    </Box>
-                                }
-                                action={
-                                    <IconButton
-                                        onClick={() =>
-                                            setFlip((state) => !state)
-                                        }
-                                    >
-                                        <MoreVert />
-                                    </IconButton>
-                                }
-                                sx={{
-                                    border: 1,
-                                    borderColor: alpha(grey[400], 0.5),
-                                    borderRadius: 2,
-                                    p: 0,
-                                    m: 1,
-                                }}
-                            />
-                            <Divider />
+                                </Grid>
+                                <Grid
+                                    size={2}
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    {actions}
+                                </Grid>
+                            </Grid>
+                        </CardContent>
 
+                        <Divider />
+
+                        <CardActionArea
+                            sx={{ borderRadius: 0 }}
+                            onClick={() => setFlip((state) => !state)}
+                        >
                             <Collapse
                                 in={open}
                                 unmountOnExit
@@ -206,146 +186,154 @@ export default function DashboardCard({
                                     {front}
                                 </CardContent>
                             </Collapse>
-                            {open && actions && (
-                                <CardActions
-                                    sx={{
-                                        px: 2,
-                                        mt: "auto",
-                                        position: "absolute",
-                                        bottom: 8,
-                                    }}
-                                >
-                                    {actions}
-                                </CardActions>
-                            )}
-
-                            <CardActions
-                                sx={{
-                                    justifyContent: "center",
-                                    pt: 0,
-                                }}
-                            >
-                                <IconButton
-                                    size="small"
-                                    onClick={() => setOpen(!open)}
-                                >
-                                    {open ? <ExpandLess /> : <ExpandMore />}
-                                </IconButton>
-                            </CardActions>
-                        </Card>
-                    </a.div>
-
-                    {/* BACK SIDE */}
-                    <a.div
-                        ref={backRef}
-                        style={{
-                            opacity,
-                            transform: "rotateY(180deg)",
-                            backfaceVisibility: "hidden",
-                            position: "relative",
-                            width: "100%",
-                            height: "100%",
-                        }}
-                    >
-                        <Card
-                            elevation={3}
+                        </CardActionArea>
+                        <CardActions
                             sx={{
-                                borderRadius: 2,
-                                pb: 1,
-                                display: "flex",
-                                flexDirection: "column",
+                                justifyContent: "center",
+                                pt: 0,
                             }}
                         >
-                            <CardHeader
-                                title={
+                            <IconButton
+                                size="small"
+                                onClick={() => setOpen(!open)}
+                            >
+                                {open ? <ExpandLess /> : <ExpandMore />}
+                            </IconButton>
+                        </CardActions>
+                    </Card>
+
+                    {/* <Popper
+                            id={id}
+                            open={open}
+                            anchorEl={anchorEl}
+                            placement="bottom"
+                            transition
+                            disablePortal={false}
+                            modifiers={[
+                                {
+                                    name: "flip",
+                                    enabled: true,
+                                    options: {
+                                        altBoundary: true,
+                                        rootBoundary: "document",
+                                        padding: 8,
+                                    },
+                                },
+                                {
+                                    name: "preventOverflow",
+                                    enabled: true,
+                                    options: {
+                                        altAxis: true,
+                                        altBoundary: true,
+                                        tether: true,
+                                        rootBoundary: "document",
+                                        padding: 8,
+                                    },
+                                },
+                                {
+                                    name: "offset",
+                                    options: {
+                                        offset: [0, -32], // X: 0px, Y: -8px => shifts Popper 8px up (overlapping the card)
+                                    },
+                                },
+                            ]}
+                        >
+                            {({ TransitionProps }) => (
+                                <Fade {...TransitionProps}>
+                                    <Card>
+                                        <CardContent>{front}</CardContent>
+                                    </Card>
+                                </Fade>
+                            )}
+                        </Popper> */}
+                </a.div>
+
+                {/* BACK SIDE */}
+                <a.div
+                    ref={backRef}
+                    style={{
+                        opacity,
+                        transform: "rotateY(180deg)",
+                        backfaceVisibility: "hidden",
+                        position: "relative",
+                        width: "100%",
+                        height: "100%",
+                    }}
+                >
+                    <Card elevation={0} sx={{ borderRadius: 4 }}>
+                        <CardContent>
+                            <Grid container spacing={3}>
+                                <Grid
+                                    size={2}
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    {icon}
+                                </Grid>
+                                <Grid size={8}>
                                     <Typography variant="h6">
                                         {title}
                                     </Typography>
-                                }
-                                subheader={
-                                    <Typography
-                                        variant="caption"
-                                        sx={{ color: "text.secondary" }}
-                                    >
+                                    <Typography variant="caption">
                                         {subtitle}
                                     </Typography>
-                                }
-                                avatar={
-                                    <Box
-                                        sx={{
-                                            borderTopLeftRadius: 7,
-                                            borderEndStartRadius: 7,
-                                            background:
-                                                getColorsByToolCategory(
-                                                    category
-                                                ).gradientColor,
-                                            py: 0.5,
-                                        }}
-                                    >
-                                        <Avatar
-                                            sx={{
-                                                background: "none",
-                                                width: 50,
-                                                height: 50,
-                                                color: "black",
-                                            }}
-                                        >
-                                            {icon}
-                                        </Avatar>
-                                    </Box>
-                                }
-                                action={
-                                    <IconButton
-                                        onClick={() =>
-                                            setFlip((state) => !state)
-                                        }
-                                    >
-                                        <MoreVert />
-                                    </IconButton>
-                                }
-                                sx={{
-                                    border: 1,
-                                    borderColor: alpha(grey[300], 0.5),
-                                    borderRadius: 2,
-                                    p: 0,
-                                    m: 1,
-                                }}
-                            />
-                            <Divider />
+                                </Grid>
+                                <Grid
+                                    size={2}
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    {actions}
+                                </Grid>
+                            </Grid>
+                        </CardContent>
 
-                            <Collapse in={open} timeout="auto">
+                        <Divider />
+                        <CardActionArea
+                            onClick={() => setFlip((state) => !state)}
+                        >
+                            <Collapse
+                                in={open}
+                                unmountOnExit
+                                sx={{
+                                    flex: 1,
+                                    minHeight: 0,
+                                }}
+                            >
                                 <CardContent
                                     sx={{
                                         flex: 1,
                                         px: 2,
                                         overflowY: "auto",
-                                        height: open
-                                            ? height ?? cardHeight
-                                            : cardHeight,
+                                        height: height ?? cardHeight,
                                     }}
                                 >
                                     {back}
                                 </CardContent>
                             </Collapse>
-
-                            <CardActions
-                                sx={{
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    py: 0,
-                                }}
+                        </CardActionArea>
+                        <CardActions
+                            sx={{
+                                justifyContent: "center",
+                                pt: 0,
+                            }}
+                        >
+                            <IconButton
+                                size="small"
+                                onClick={() => setOpen(!open)}
                             >
-                                <IconButton
-                                    size="small"
-                                    onClick={() => setOpen(!open)}
-                                >
-                                    {open ? <ExpandLess /> : <ExpandMore />}
-                                </IconButton>
-                            </CardActions>
-                        </Card>
-                    </a.div>
+                                {open ? <ExpandLess /> : <ExpandMore />}
+                            </IconButton>
+                        </CardActions>
+                    </Card>
                 </a.div>
-            </Box>
+            </a.div>
         </Box>
     );
 }

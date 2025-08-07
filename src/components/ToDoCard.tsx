@@ -2,12 +2,13 @@ import * as React from "react";
 import {
     Button,
     Checkbox,
+    IconButton,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
 } from "@mui/material";
-import { Checklist } from "@mui/icons-material";
+import { Checklist, Visibility } from "@mui/icons-material";
 import DashboardCard from "../layouts/DashboardCard";
 
 export default function ToDoCard() {
@@ -17,8 +18,12 @@ export default function ToDoCard() {
             subtitle="Test"
             category="texteditor"
             height={400}
-            icon={<Checklist sx={{ width: 30, height: 30 }} />}
-            actions={<Button variant="contained">Bekijk</Button>}
+            icon={<Checklist sx={{ fontSize: 35 }} />}
+            actions={
+                <IconButton>
+                    <Visibility />
+                </IconButton>
+            }
             front={
                 <List>
                     <ListItem>

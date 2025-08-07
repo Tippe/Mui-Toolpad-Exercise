@@ -1,65 +1,20 @@
 import * as React from "react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
-    Accordion,
-    AccordionActions,
-    AccordionDetails,
-    AccordionSummary,
-    Alert,
-    AppBar,
-    Box,
     Button,
-    Card,
-    CardActions,
-    CardContent,
-    Divider,
-    Fab,
+    IconButton,
+    List,
+    ListItem,
+    ListItemButton,
     ListItemIcon,
     ListItemText,
-    Menu,
-    MenuItem,
-    MenuList,
-    Paper,
-    SpeedDialIcon,
-    Stack,
-    TextField,
-    Toolbar,
-    Typography,
 } from "@mui/material";
 import {
-    ContentCopy,
-    Mic,
-    Send,
-    Image,
-    ExpandMore,
-    Repeat,
-    Delete,
     Fingerprint,
     Hardware,
     EmojiObjects,
+    Visibility,
 } from "@mui/icons-material";
 import DashboardCard from "../layouts/DashboardCard";
-
-const columns: GridColDef<(typeof rows)[number]>[] = [
-    {
-        field: "id",
-        headerName: "ID",
-        //width: 20,
-    },
-    {
-        field: "icon",
-        headerName: "Icoon",
-        //width: 50,
-        renderCell: (params) => params.value,
-        editable: false,
-    },
-    {
-        field: "name",
-        headerName: "Naam",
-        //width: 100,
-        editable: true,
-    },
-];
 
 const rows = [
     {
@@ -81,26 +36,21 @@ export default function BrainCard() {
             subtitle="Test"
             category="file"
             height={400}
-            icon={<EmojiObjects sx={{ width: 30, height: 30 }} />}
+            icon={<EmojiObjects sx={{ fontSize: 35 }} />}
             actions={
-                <Button href="/brains" variant="contained">
-                    Bekijk
-                </Button>
+                <IconButton href="./brains">
+                    <Visibility />
+                </IconButton>
             }
             front={
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    rowHeight={30}
-                    initialState={{
-                        pagination: {
-                            paginationModel: {
-                                pageSize: 5,
-                            },
-                        },
-                    }}
-                    disableRowSelectionOnClick
-                />
+                <List dense>
+                    {rows.map((row) => (
+                        <ListItem key={row.id}>
+                            <ListItemIcon>{row.icon}</ListItemIcon>
+                            <ListItemText primary={row.name} />
+                        </ListItem>
+                    ))}
+                </List>
             }
         />
     );

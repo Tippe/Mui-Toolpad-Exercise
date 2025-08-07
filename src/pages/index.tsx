@@ -7,70 +7,66 @@ import BuddyCard from "../components/BuddyCard";
 import ToDoCard from "../components/ToDoCard";
 import SettingsCard from "../components/SettingsCard";
 import NoteCard from "../components/NoteCard";
+import {
+    animated,
+    config,
+    useChain,
+    useSpring,
+    useSpringRef,
+    useTrail,
+} from "@react-spring/web";
 
 export default function DashboardPage() {
     const [checked, setChecked] = React.useState(false);
 
     React.useEffect(() => {
-        const timer = setTimeout(() => {
-            setChecked(true);
-        }, 200); // korte vertraging voor een smooth effect
-        return () => clearTimeout(timer);
-    }, []);
+        const check = setChecked(true);
+        return check;
+    });
+
+    // Phase 1: Container
+    const containerRef = useSpringRef();
+    const containerSpring = useSpring({
+        ref: containerRef,
+        opacity: checked ? 1 : 0,
+        transform: checked ? "scale(1)" : "scale(0.95)",
+        config: config.default,
+    });
+
+    // Phase 2: Trail of card groups
+    const cards = [
+        [<NotificationCard />, <SettingsCard />],
+        [<BrainCard />, <BuddyCard />],
+        [<ToDoCard />, <NoteCard />],
+        [<ChatCard />],
+    ];
+    const trailRef = useSpringRef();
+    const trail = useTrail(cards.length, {
+        ref: trailRef,
+        opacity: checked ? 1 : 0,
+        transform: checked ? "translateY(0px)" : "translateY(20px)",
+        config: config.default,
+    });
+
+    useChain([containerRef, trailRef], [0, 0.1]);
 
     return (
-        <>
-            <Grid container spacing={2} sx={{ pt: 0, mt: 0 }}>
-                <Grow
-                    in={checked}
-                    style={{
-                        transitionDelay: checked ? "0ms" : "0ms",
-                    }}
-                >
-                    <Grid size={{ sm: 12, md: 6, lg: 3 }}>
-                        <Stack spacing={2}>
-                            <NotificationCard />
-                            <SettingsCard />
-                        </Stack>
+        <animated.div style={containerSpring}>
+            <Grid container columnSpacing={3}>
+                {trail.map((style, index) => (
+                    <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
+                        <animated.div style={style}>
+                            <Stack spacing={3}>
+                                {cards[index].map((Child, idx) => (
+                                    <React.Fragment key={idx}>
+                                        {Child}
+                                    </React.Fragment>
+                                ))}
+                            </Stack>
+                        </animated.div>
                     </Grid>
-                </Grow>
-                <Grow
-                    in={checked}
-                    style={{
-                        transitionDelay: checked ? "100ms" : "0ms",
-                    }}
-                >
-                    <Grid size={{ sm: 12, md: 6, lg: 3 }}>
-                        <Stack spacing={2}>
-                            <BrainCard />
-                            <BuddyCard />
-                        </Stack>
-                    </Grid>
-                </Grow>
-                <Grow
-                    in={checked}
-                    style={{
-                        transitionDelay: checked ? "200ms" : "0ms",
-                    }}
-                >
-                    <Grid size={{ sm: 12, md: 6, lg: 3 }}>
-                        <Stack spacing={2}>
-                            <ToDoCard />
-                            <NoteCard />
-                        </Stack>
-                    </Grid>
-                </Grow>
-                <Grow
-                    in={checked}
-                    style={{
-                        transitionDelay: checked ? "300ms" : "0ms",
-                    }}
-                >
-                    <Grid size={{ sm: 12, md: 6, lg: 3 }}>
-                        <ChatCard />
-                    </Grid>
-                </Grow>
+                ))}
             </Grid>
-        </>
+        </animated.div>
     );
 }

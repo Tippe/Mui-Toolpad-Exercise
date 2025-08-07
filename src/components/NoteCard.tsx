@@ -1,8 +1,8 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import { Button, TextField } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import DashboardCard from "../layouts/DashboardCard";
-import { Notes } from "@mui/icons-material";
+import { Notes, Visibility } from "@mui/icons-material";
 
 export default function NoteCard() {
     return (
@@ -11,8 +11,12 @@ export default function NoteCard() {
             subtitle="Test"
             category="file"
             height={400}
-            icon={<Notes sx={{ width: 30, height: 30 }} />}
-            actions={<Button variant="contained">Bekijk</Button>}
+            icon={<Notes sx={{ fontSize: 35 }} />}
+            actions={
+                <IconButton>
+                    <Visibility />
+                </IconButton>
+            }
             front={
                 <TextField
                     variant="outlined"
