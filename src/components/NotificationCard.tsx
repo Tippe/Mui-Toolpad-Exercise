@@ -24,9 +24,12 @@ import {
 } from "@mui/material";
 import {
     Delete,
+    Domain,
     Error,
     Folder,
     Info,
+    Microsoft,
+    MiscellaneousServices,
     Notifications,
     TaskAlt,
     Visibility,
@@ -131,7 +134,7 @@ export default function NotificationCard() {
                 title="Notificaties"
                 category="start"
                 subtitle="Hier komen alle notificaties en melden te zien"
-                icon={<Notifications sx={{ width: 30, height: 30 }} />}
+                icon={<Notifications sx={{ fontSize: 30 }} />}
                 items={categories}
                 renderItem={([categoryName, items]) => (
                     <Grid
@@ -169,12 +172,12 @@ export default function NotificationCard() {
     return (
         <DashboardCard
             title="Notificaties"
-            subtitle="Hier komen notificaties"
+            subtitle="notificaties"
             category="start"
             height={400}
             icon={
                 <Badge badgeContent={totalAlerts} color="info">
-                    <Notifications sx={{ fontSize: 35 }} />
+                    <Notifications sx={{ fontSize: 30 }} />
                 </Badge>
             }
             actions={
@@ -203,30 +206,23 @@ export default function NotificationCard() {
                     <List>
                         <ListItem>
                             <ListItemIcon>
-                                <Error color="error" />
+                                <Microsoft />
                             </ListItemIcon>
-                            <ListItemText primary="Error Message" />
+                            <ListItemText primary="Microsoft Berichten" />
                             <Switch edge="end" />
                         </ListItem>
                         <ListItem>
                             <ListItemIcon>
-                                <Warning color="warning" />
+                                <Domain />
                             </ListItemIcon>
-                            <ListItemText primary="Warning Message" />
+                            <ListItemText primary="Systeem Berichten" />
                             <Switch edge="end" />
                         </ListItem>
                         <ListItem>
                             <ListItemIcon>
-                                <TaskAlt color="success" />
+                                <MiscellaneousServices />
                             </ListItemIcon>
-                            <ListItemText primary="Success Message" />
-                            <Switch edge="end" />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <Info color="info" />
-                            </ListItemIcon>
-                            <ListItemText primary="Info Message" />
+                            <ListItemText primary="Overige Berichten" />
                             <Switch edge="end" />
                         </ListItem>
                     </List>

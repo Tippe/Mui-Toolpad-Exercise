@@ -18,7 +18,7 @@ export default function ToDoCard() {
             subtitle="Test"
             category="texteditor"
             height={400}
-            icon={<Checklist sx={{ fontSize: 35 }} />}
+            icon={<Checklist sx={{ fontSize: 30 }} />}
             actions={
                 <IconButton>
                     <Visibility />

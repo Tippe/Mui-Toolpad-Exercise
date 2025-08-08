@@ -36,7 +36,7 @@ export default function BrainCard() {
             subtitle="Test"
             category="file"
             height={400}
-            icon={<EmojiObjects sx={{ fontSize: 35 }} />}
+            icon={<EmojiObjects sx={{ fontSize: 30 }} />}
             actions={
                 <IconButton href="./brains">
                     <Visibility />

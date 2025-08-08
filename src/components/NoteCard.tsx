@@ -11,7 +11,7 @@ export default function NoteCard() {
             subtitle="Test"
             category="file"
             height={400}
-            icon={<Notes sx={{ fontSize: 35 }} />}
+            icon={<Notes sx={{ fontSize: 30 }} />}
             actions={
                 <IconButton>
                     <Visibility />

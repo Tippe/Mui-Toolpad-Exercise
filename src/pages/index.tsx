@@ -56,7 +56,7 @@ export default function DashboardPage() {
                 {trail.map((style, index) => (
                     <Grid key={index} size={{ xs: 12, sm: 12, md: 6, lg: 3 }}>
                         <animated.div style={style}>
-                            <Stack spacing={3}>
+                            <Stack spacing={5}>
                                 {cards[index].map((Child, idx) => (
                                     <React.Fragment key={idx}>
                                         {Child}

@@ -11,7 +11,7 @@ export default function SettingsCard() {
             subtitle="Test"
             category="texteditor"
             height={400}
-            icon={<Settings sx={{ fontSize: 35 }} />}
+            icon={<Settings sx={{ fontSize: 30 }} />}
             actions={
                 <IconButton>
                     <Visibility />

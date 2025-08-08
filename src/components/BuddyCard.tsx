@@ -32,7 +32,7 @@ export default function BuddyCard() {
             subtitle="Test"
             category="socialmedia"
             height={400}
-            icon={<Hail sx={{ fontSize: 35 }} />}
+            icon={<Hail sx={{ fontSize: 30 }} />}
             actions={
                 <IconButton href="/buddys">
                     <Visibility />

@@ -73,7 +73,7 @@ export default function DashboardCard({
 
     const { transform, opacity } = useSpring({
         opacity: flipped ? 1 : 0,
-        transform: `perspective(2000px) rotateY(${flipped ? 180 : 0}deg)`,
+        transform: `perspective(1800px) rotateY(${flipped ? 180 : 0}deg)`,
         config: { mass: 5, tension: 555, friction: 80 },
     });
 
@@ -108,7 +108,7 @@ export default function DashboardCard({
                         <CardContent>
                             <Grid container spacing={3}>
                                 <Grid
-                                    size={2}
+                                    size={3}
                                     sx={{
                                         display: "flex",
                                         justifyContent: "center",
@@ -117,7 +117,7 @@ export default function DashboardCard({
                                 >
                                     {icon}
                                 </Grid>
-                                <Grid size={8}>
+                                <Grid size={7}>
                                     <Typography variant="h6">
                                         {title}
                                     </Typography>

@@ -8,7 +8,7 @@ export default function ChatCard() {
             title="Chat"
             category="start"
             height="calc(100vh - 236px)"
-            icon={<Chat sx={{ fontSize: 35 }} />}
+            icon={<Chat sx={{ fontSize: 30 }} />}
             front={
                 <>
                     <Box
