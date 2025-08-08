@@ -7,6 +7,7 @@ import ChatPage from "./pages/chat";
 import ProfilePage from "./pages/profile";
 import SettingsPage from "./pages/settings";
 import BrainsPage from "./pages/brains";
+import BuddyPage from "./pages/buddys";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: "settings",
                 Component: SettingsPage,
+            },
+            {
+                path: "buddys/*",
+                Component: BuddyPage,
             },
             {
                 path: "brains",

@@ -6,7 +6,6 @@ export default function ChatCard() {
     return (
         <DashboardCard
             title="Chat"
-            subtitle="Test"
             category="start"
             height="calc(100vh - 236px)"
             icon={<Chat sx={{ fontSize: 35 }} />}
@@ -15,27 +14,44 @@ export default function ChatCard() {
                     <Box
                         sx={{
                             display: "flex",
+                            flexDirection: "column",
+                            height: "100%", // of een vaste hoogte als dat nodig is
+                            justifyContent: "space-between",
                             alignItems: "center",
-                            justifyContent: "center",
                             textAlign: "center",
-                            color: "secondary",
                         }}
                     >
-                        <Typography variant="body1" sx={{ opacity: 0.7 }}>
-                            🎉 Welkom {/*username*/}!
-                            <br />
-                            Stel je eerste vraag om te beginnen.
-                        </Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", width: 1 }}>
-                        <TextField
-                            fullWidth
-                            variant="outlined"
-                            placeholder="Typ je vraag..."
-                        />
-                        <IconButton>
-                            <Send />
-                        </IconButton>
+                        {/* Welkom bericht */}
+                        <Box
+                            sx={{
+                                flexGrow: 1,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Typography variant="body1" sx={{ opacity: 0.7 }}>
+                                🎉 Welkom Tippe!
+                                <br />
+                                Stel je eerste vraag om te beginnen.
+                            </Typography>
+                        </Box>
+
+                        {/* Chat input */}
+                        <Box
+                            sx={{
+                                display: "flex",
+                            }}
+                        >
+                            <TextField
+                                fullWidth
+                                variant="outlined"
+                                placeholder="Typ je vraag..."
+                            />
+                            <IconButton color="primary">
+                                <Send />
+                            </IconButton>
+                        </Box>
                     </Box>
                 </>
             }

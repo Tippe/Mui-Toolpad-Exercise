@@ -18,7 +18,7 @@ export default function Layout() {
                 ),
             }}
         >
-            <PageContainer title="" breadcrumbs={[]} maxWidth={false}>
+            <PageContainer title="" breadcrumbs={[]} >
                 <Outlet />
             </PageContainer>
         </DashboardLayout>

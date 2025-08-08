@@ -1,33 +1,22 @@
 import * as React from "react";
 import { useSpring, a } from "@react-spring/web";
-import { getColorsByToolCategory } from "../utils/colorutils";
 import {
-    alpha,
-    Avatar,
-    Badge,
     Box,
     Card,
     CardActionArea,
     CardActions,
     CardContent,
-    CardHeader,
     Collapse,
-    darken,
     Divider,
-    Fade,
     Grid,
-    Grow,
     IconButton,
-    Popper,
-    Stack,
     Typography,
-    Zoom,
 } from "@mui/material";
-import { ExpandMore, ExpandLess, Visibility } from "@mui/icons-material";
+import { ExpandMore, ExpandLess } from "@mui/icons-material";
 
 interface DashboardCardProps {
     title: string;
-    subtitle: string;
+    subtitle?: string;
     category: string;
     icon?: React.ReactNode;
     front?: React.ReactNode;
@@ -39,7 +28,6 @@ interface DashboardCardProps {
 export default function DashboardCard({
     title,
     subtitle,
-    category,
     icon,
     front,
     back,
@@ -47,24 +35,13 @@ export default function DashboardCard({
     height,
 }: DashboardCardProps) {
     const [open, setOpen] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-    const onHover = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-        setOpen((previousOpen) => !previousOpen);
-    };
-
-    const canBeOpen = open && Boolean(anchorEl);
-    const id = canBeOpen ? "spring-popper" : undefined;
-    //const [open, setOpen] = React.useState(true);
     const [flipped, setFlip] = React.useState(false);
+    const [cardHeight, setCardHeight] = React.useState(0);
 
     const frontRef = React.useRef<HTMLDivElement>(null);
     const backRef = React.useRef<HTMLDivElement>(null);
-    const [cardHeight, setCardHeight] = React.useState(0);
-
+    
     // ResizeObserver om de hoogte van de front of back kant te volgen
-
     React.useEffect(() => {
         const front = frontRef.current;
         const back = backRef.current;
@@ -127,7 +104,7 @@ export default function DashboardCard({
                         height: "100%",
                     }}
                 >
-                    <Card elevation={0} sx={{ borderRadius: 4 }}>
+                    <Card sx={{ borderRadius: 4, boxShadow: "0px 2px 1px -1px rgba(107, 114, 128, 0.03),0px 1px 1px 0px rgba(107, 114, 128, 0.04),0px 1px 3px 0px rgba(107, 114, 128, 0.08)"}}>
                         <CardContent>
                             <Grid container spacing={3}>
                                 <Grid
@@ -260,7 +237,7 @@ export default function DashboardCard({
                         height: "100%",
                     }}
                 >
-                    <Card elevation={0} sx={{ borderRadius: 4 }}>
+                    <Card sx={{ borderRadius: 4, boxShadow: "0px 2px 1px -1px rgba(107, 114, 128, 0.03),0px 1px 1px 0px rgba(107, 114, 128, 0.04),0px 1px 3px 0px rgba(107, 114, 128, 0.08)" }}>
                         <CardContent>
                             <Grid container spacing={3}>
                                 <Grid
@@ -297,6 +274,7 @@ export default function DashboardCard({
                         <Divider />
                         <CardActionArea
                             onClick={() => setFlip((state) => !state)}
+                            sx={{ borderRadius: 0 }}
                         >
                             <Collapse
                                 in={open}

@@ -24,11 +24,13 @@ import {
     alpha,
     useTheme,
     useMediaQuery,
+    IconButton,
 } from "@mui/material";
 import { getColorsByToolCategory } from "../utils/colorutils";
 import { R } from "react-router/dist/development/routeModules-BR2FO0ix";
 import { TransitionProps } from "@mui/material/transitions";
 import { grey } from "@mui/material/colors";
+import { Close } from "@mui/icons-material";
 
 interface AnimatedDialogProps<T> {
     open: boolean;
@@ -101,53 +103,18 @@ export function AnimatedDialog<T>({
             fullScreen={fullScreen}
         >
             <animated.div style={dialogSpring}>
-                <CardHeader
-                    title={<Typography variant="h6">{title}</Typography>}
-                    subheader={
-                        subtitle && (
-                            <Typography
-                                variant="subtitle2"
-                                sx={{ color: "text.secondary" }}
-                            >
-                                {subtitle}
-                            </Typography>
-                        )
-                    }
-                    avatar={
-                        icon &&
-                        category && (
-                            <Box
-                                sx={{
-                                    borderTopLeftRadius: 7,
-                                    borderEndStartRadius: 7,
-                                    background:
-                                        getColorsByToolCategory(category)
-                                            .gradientColor,
-                                    py: 0.5,
-                                }}
-                            >
-                                <Avatar
-                                    sx={{
-                                        background: "none",
-                                        width: 50,
-                                        height: 50,
-                                        color: "black",
-                                    }}
-                                >
-                                    {icon}
-                                </Avatar>
-                            </Box>
-                        )
-                    }
-                    sx={{
-                        border: 1,
-                        borderColor: alpha(grey[300], 0.5),
-                        borderRadius: 2,
-                        p: 0,
-                        mt: 2,
-                        mx: 2,
-                    }}
-                />
+                <DialogTitle>{title}</DialogTitle>
+                <IconButton
+                    onClose={close}
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: theme.palette.grey[500],
+                    })}
+                >
+                    <Close />
+                </IconButton>
                 <DialogContent>
                     <Stack direction="row" gap={2}>
                         {itemsTransition((style, item) => (

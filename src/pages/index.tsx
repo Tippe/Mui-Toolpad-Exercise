@@ -54,7 +54,7 @@ export default function DashboardPage() {
         <animated.div style={containerSpring}>
             <Grid container columnSpacing={3}>
                 {trail.map((style, index) => (
-                    <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
+                    <Grid key={index} size={{ xs: 12, sm: 12, md: 6, lg: 3 }}>
                         <animated.div style={style}>
                             <Stack spacing={3}>
                                 {cards[index].map((Child, idx) => (

@@ -169,9 +169,9 @@ export default function NotificationCard() {
     return (
         <DashboardCard
             title="Notificaties"
-            subtitle="Hier komen alle notificaties"
+            subtitle="Hier komen notificaties"
             category="start"
-            height={200}
+            height={400}
             icon={
                 <Badge badgeContent={totalAlerts} color="info">
                     <Notifications sx={{ fontSize: 35 }} />

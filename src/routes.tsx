@@ -49,9 +49,10 @@ export const NAVIGATION: Navigation = [
         title: "Advanced",
     },
     {
-        segment: "buddy",
+        segment: "buddys",
         title: "Buddy's",
         icon: <Hail />,
+        pattern: "buddys{/:buddyId}*"
     },
     {
         segment: "brains",
