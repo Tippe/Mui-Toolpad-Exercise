@@ -11,13 +11,13 @@ import {
 import { Checklist, Visibility } from "@mui/icons-material";
 import DashboardCard from "../layouts/DashboardCard";
 
-export default function ToDoCard() {
+export default function ToDoCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
             title="To Do"
             subtitle="Test"
             category="texteditor"
-            height={400}
+            height={height}
             icon={<Checklist sx={{ fontSize: 30 }} />}
             actions={
                 <IconButton>

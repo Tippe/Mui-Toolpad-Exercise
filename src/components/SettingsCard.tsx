@@ -4,13 +4,13 @@ import { Button, IconButton } from "@mui/material";
 import DashboardCard from "../layouts/DashboardCard";
 import { Settings, Visibility } from "@mui/icons-material";
 
-export default function SettingsCard() {
+export default function SettingsCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
             title="Instellingen"
             subtitle="Test"
             category="texteditor"
-            height={400}
+            height={height}
             icon={<Settings sx={{ fontSize: 30 }} />}
             actions={
                 <IconButton>

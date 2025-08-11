@@ -123,7 +123,11 @@ const alertsCategories = {
 
 const categories = Object.entries(alertsCategories);
 
-export default function NotificationCard() {
+export default function NotificationCard({
+    height,
+}: {
+    height?: number | string;
+}) {
     const dialogs = useDialogs();
 
     const handleOpen = async () => {
@@ -174,7 +178,7 @@ export default function NotificationCard() {
             title="Notificaties"
             subtitle="notificaties"
             category="start"
-            height={400}
+            height={height}
             icon={
                 <Badge badgeContent={totalAlerts} color="info">
                     <Notifications sx={{ fontSize: 30 }} />

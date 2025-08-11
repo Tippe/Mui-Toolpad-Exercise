@@ -24,6 +24,9 @@ export default function DashboardPage() {
         return check;
     });
 
+    const CHAT_CARD_HEIGHT = "calc(100vh - 244px)";
+    const HALF_CARD_HEIGHT = `calc((${CHAT_CARD_HEIGHT}) / 2 - 86px)`;
+
     // Phase 1: Container
     const containerRef = useSpringRef();
     const containerSpring = useSpring({
@@ -35,10 +38,19 @@ export default function DashboardPage() {
 
     // Phase 2: Trail of card groups
     const cards = [
-        [<NotificationCard />, <SettingsCard />],
-        [<BrainCard />, <BuddyCard />],
-        [<ToDoCard />, <NoteCard />],
-        [<ChatCard />],
+        [
+            <NotificationCard height={HALF_CARD_HEIGHT} />,
+            <SettingsCard height={HALF_CARD_HEIGHT} />,
+        ],
+        [
+            <BrainCard height={HALF_CARD_HEIGHT} />,
+            <BuddyCard height={HALF_CARD_HEIGHT} />,
+        ],
+        [
+            <ToDoCard height={HALF_CARD_HEIGHT} />,
+            <NoteCard height={HALF_CARD_HEIGHT} />,
+        ],
+        [<ChatCard height={CHAT_CARD_HEIGHT} />],
     ];
     const trailRef = useSpringRef();
     const trail = useTrail(cards.length, {

@@ -2,12 +2,13 @@ import { Box, IconButton, TextField, Typography } from "@mui/material";
 import { Chat, Send } from "@mui/icons-material";
 import DashboardCard from "../layouts/DashboardCard";
 
-export default function ChatCard() {
+export default function ChatCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
             title="Chat"
+            subtitle="Chat with AI"
             category="start"
-            height="calc(100vh - 236px)"
+            height={height}
             icon={<Chat sx={{ fontSize: 30 }} />}
             front={
                 <>

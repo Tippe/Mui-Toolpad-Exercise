@@ -13,6 +13,7 @@ import {
     Hardware,
     EmojiObjects,
     Visibility,
+    Height,
 } from "@mui/icons-material";
 import DashboardCard from "../layouts/DashboardCard";
 
@@ -29,13 +30,13 @@ const rows = [
     },
 ];
 
-export default function BrainCard() {
+export default function BrainCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
             title="Brains"
             subtitle="Test"
             category="file"
-            height={400}
+            height={height}
             icon={<EmojiObjects sx={{ fontSize: 30 }} />}
             actions={
                 <IconButton href="./brains">
