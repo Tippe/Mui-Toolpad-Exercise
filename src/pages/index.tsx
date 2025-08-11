@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Box, Grid, Grow, Stack, Zoom } from "@mui/material";
 import ChatCard from "../components/ChatCard";
-import NotificationCard from "../components/NotificationCard";
 import BrainCard from "../components/BrainCard";
 import BuddyCard from "../components/BuddyCard";
 import ToDoCard from "../components/ToDoCard";
@@ -35,10 +34,9 @@ export default function DashboardPage() {
 
     // Phase 2: Trail of card groups
     const cards = [
-        [<NotificationCard />, <SettingsCard />],
         [<BrainCard />, <BuddyCard />],
         [<ToDoCard />, <NoteCard />],
-        [<ChatCard />],
+        [<SettingsCard />],
     ];
     const trailRef = useSpringRef();
     const trail = useTrail(cards.length, {
@@ -54,7 +52,7 @@ export default function DashboardPage() {
         <animated.div style={containerSpring}>
             <Grid container columnSpacing={3}>
                 {trail.map((style, index) => (
-                    <Grid key={index} size={{ xs: 12, sm: 12, md: 6, lg: 3 }}>
+                    <Grid key={index} size={{ xs: 12, sm: 12, md: 6, lg: 4 }}>
                         <animated.div style={style}>
                             <Stack spacing={5}>
                                 {cards[index].map((Child, idx) => (
