@@ -6,7 +6,7 @@ export default function ChatCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
             title="Chat"
-            subtitle="Chat with AI"
+            subtitle="Talk to AI"
             category="start"
             height={height}
             icon={<Chat sx={{ fontSize: 30 }} />}

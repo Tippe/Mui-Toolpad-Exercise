@@ -34,7 +34,7 @@ export default function BrainCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
             title="Brains"
-            subtitle="Test"
+            subtitle="Thinking machines"
             category="file"
             height={height}
             icon={<EmojiObjects sx={{ fontSize: 30 }} />}

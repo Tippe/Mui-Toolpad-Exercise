@@ -15,7 +15,7 @@ export default function ToDoCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
             title="To Do"
-            subtitle="Test"
+            subtitle="Daily plans"
             category="texteditor"
             height={height}
             icon={<Checklist sx={{ fontSize: 30 }} />}

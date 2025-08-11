@@ -176,7 +176,7 @@ export default function NotificationCard({
     return (
         <DashboardCard
             title="Notificaties"
-            subtitle="notificaties"
+            subtitle="Unread messages"
             category="start"
             height={height}
             icon={

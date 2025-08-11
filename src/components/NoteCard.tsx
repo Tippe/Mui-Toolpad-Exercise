@@ -8,7 +8,7 @@ export default function NoteCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
             title="Notities"
-            subtitle="Test"
+            subtitle="Write notes"
             category="file"
             height={height}
             icon={<Notes sx={{ fontSize: 30 }} />}
