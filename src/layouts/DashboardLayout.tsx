@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import {
     Account,
     DashboardLayout,
@@ -10,6 +10,13 @@ import CustomMenu from "./CustomMenu";
 import ChatDrawer from "../components/ChatDrawer";
 
 export default function Layout() {
+    const location = useLocation();
+
+    // List of paths where chat should NOT be shown
+    const disabledPaths = ["/chat"];
+
+    const isDisabled = disabledPaths.includes(location.pathname);
+
     return (
         <DashboardLayout
             slots={{
@@ -19,9 +26,9 @@ export default function Layout() {
                 ),
             }}
         >
-            <ChatDrawer />
             <PageContainer title="" breadcrumbs={[]}>
                 <Outlet />
+                {!isDisabled && <ChatDrawer />}
             </PageContainer>
         </DashboardLayout>
     );

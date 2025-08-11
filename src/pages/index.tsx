@@ -14,7 +14,6 @@ import {
     useSpringRef,
     useTrail,
 } from "@react-spring/web";
-import ChatDrawer from "../components/ChatDrawer";
 
 export default function DashboardPage() {
     const [checked, setChecked] = React.useState(false);

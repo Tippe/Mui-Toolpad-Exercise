@@ -1,34 +1,24 @@
-import React, { useState } from "react";
+import * as React from "react";
 import {
     Drawer,
     Box,
     IconButton,
     Typography,
     TextField,
-    Button,
     List,
     ListItem,
     ListItemText,
     Stack,
-    Divider,
 } from "@mui/material";
-import ChatIcon from "@mui/icons-material/Chat";
-import CloseIcon from "@mui/icons-material/Close";
-import { Outlet } from "react-router";
-import { Close } from "@mui/icons-material";
+import { Send } from "@mui/icons-material";
 
-const drawerWidth = 360;
+const drawerWidth = 320;
 
 export default function ChatDrawer() {
-    const [open, setOpen] = useState(true);
-    const [messages, setMessages] = useState([
+    const [messages, setMessages] = React.useState([
         { id: 1, text: "Welkom bij de chat!" },
     ]);
-    const [input, setInput] = useState("");
-
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
+    const [input, setInput] = React.useState("");
 
     const sendMessage = () => {
         if (!input.trim()) return;
@@ -38,18 +28,6 @@ export default function ChatDrawer() {
 
     return (
         <Box sx={{ display: "flex" }}>
-            {/* Main content schuift mee naar links wanneer drawer open is */}
-
-            {/* Jouw hoofdcontent hier */}
-            <IconButton
-                onClick={toggleDrawer}
-                color="primary"
-                aria-label="open chat"
-                sx={{ position: "absolute", right: 8, top: 72 }}
-            >
-                <ChatIcon />
-            </IconButton>
-
             <Drawer
                 sx={{
                     width: drawerWidth,
@@ -61,11 +39,11 @@ export default function ChatDrawer() {
                 }}
                 variant="persistent"
                 anchor="right"
-                open={open}
+                open={true}
             >
                 <Box
                     sx={{
-                        height: "calc(100vh - 64px)", // 64px is header height
+                        height: "100vh",
                         display: "flex",
                         flexDirection: "column",
                         p: 2,
@@ -81,12 +59,6 @@ export default function ChatDrawer() {
                         }}
                     >
                         <Typography variant="h6">Chat</Typography>
-                        <IconButton
-                            onClick={toggleDrawer}
-                            aria-label="close chat"
-                        >
-                            <Close />
-                        </IconButton>
                     </Stack>
 
                     <Box sx={{ flexGrow: 1, overflowY: "auto", mb: 2 }}>
@@ -115,9 +87,9 @@ export default function ChatDrawer() {
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Typ je bericht..."
                         />
-                        <Button variant="contained" type="submit">
-                            Verstuur
-                        </Button>
+                        <IconButton color="primary" type="submit">
+                            <Send />
+                        </IconButton>
                     </Box>
                 </Box>
             </Drawer>
