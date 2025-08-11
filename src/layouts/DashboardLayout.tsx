@@ -7,6 +7,7 @@ import {
     ThemeSwitcher,
 } from "@toolpad/core";
 import CustomMenu from "./CustomMenu";
+import ChatDrawer from "../components/ChatDrawer";
 
 export default function Layout() {
     return (
@@ -18,7 +19,8 @@ export default function Layout() {
                 ),
             }}
         >
-            <PageContainer title="" breadcrumbs={[]} >
+            <ChatDrawer />
+            <PageContainer title="" breadcrumbs={[]}>
                 <Outlet />
             </PageContainer>
         </DashboardLayout>

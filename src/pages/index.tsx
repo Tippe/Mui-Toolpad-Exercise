@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Box, Grid, Grow, Stack, Zoom } from "@mui/material";
-import ChatCard from "../components/ChatCard";
 import NotificationCard from "../components/NotificationCard";
 import BrainCard from "../components/BrainCard";
 import BuddyCard from "../components/BuddyCard";
@@ -15,6 +14,7 @@ import {
     useSpringRef,
     useTrail,
 } from "@react-spring/web";
+import ChatDrawer from "../components/ChatDrawer";
 
 export default function DashboardPage() {
     const [checked, setChecked] = React.useState(false);
@@ -50,7 +50,6 @@ export default function DashboardPage() {
             <ToDoCard height={HALF_CARD_HEIGHT} />,
             <NoteCard height={HALF_CARD_HEIGHT} />,
         ],
-        [<ChatCard height={CHAT_CARD_HEIGHT} />],
     ];
     const trailRef = useSpringRef();
     const trail = useTrail(cards.length, {
