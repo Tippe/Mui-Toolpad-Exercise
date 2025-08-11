@@ -26,9 +26,9 @@ export default function Layout() {
                 ),
             }}
         >
-            <PageContainer title="" breadcrumbs={[]}>
+            {!isDisabled && <ChatDrawer />}
+            <PageContainer title="" breadcrumbs={[]} /* maxWidth=*/>
                 <Outlet />
-                {!isDisabled && <ChatDrawer />}
             </PageContainer>
         </DashboardLayout>
     );
