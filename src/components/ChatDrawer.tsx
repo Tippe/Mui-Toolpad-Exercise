@@ -9,8 +9,10 @@ import {
     ListItem,
     ListItemText,
     Stack,
+    Grid,
+    Divider,
 } from "@mui/material";
-import { Send } from "@mui/icons-material";
+import { Chat, Send } from "@mui/icons-material";
 
 const drawerWidth = 320;
 
@@ -28,29 +30,51 @@ export default function ChatDrawer() {
 
     return (
         <Drawer
+            variant="persistent"
+            anchor="right"
+            open={true}
             sx={{
                 flexShrink: 0,
                 "& .MuiDrawer-paper": {
                     width: drawerWidth,
                     boxSizing: "border-box",
-                    borderTopLeftRadius: 18,
-                    borderBottomLeftRadius: 18,
+                    borderRadius: 4,
+                    borderTopRightRadius: 0,
+                    borderBottomRightRadius: 0,
                     overflow: "hidden",
                     my: 2,
                     top: 80,
                     height: "calc(100% - 114px)",
                     border: 0,
-                    boxShadow:
-                        "0px 2px 1px -1px rgba(107, 114, 128, 0.03),0px 1px 1px 0px rgba(107, 114, 128, 0.04),0px 1px 3px 0px rgba(107, 114, 128, 0.08)",
+                    boxShadow:`
+                        0px 2px 1px -1px rgba(107, 114, 128, 0.03),
+                        0px 1px 1px 0px rgba(107, 114, 128, 0.04),
+                        0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
                 },
             }}
-            variant="persistent"
-            anchor="right"
-            open={true}
         >
-            <Typography variant="h6" sx={{ p: 2 }}>
-                Chat
-            </Typography>
+            
+            
+
+            <Grid container spacing={3} sx={{ p: 3 }}>
+                <Grid
+                    size={2}
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <Chat />
+                </Grid>
+                <Grid size={10}>
+                    <Typography variant="h6">
+                        Chat
+                    </Typography>
+                </Grid>
+            </Grid>
+
+            <Divider />
 
             <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
                 <List>
