@@ -38,7 +38,6 @@ export default function BuddyCard({ height }: { height?: number | string }) {
         <DashboardCard
             title="Buddy's"
             subtitle="Helping you daily"
-            category="socialmedia"
             height={height}
             icon={<Hail sx={{ fontSize: 30 }} />}
             actions={

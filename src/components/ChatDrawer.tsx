@@ -32,7 +32,7 @@ export default function ChatDrawer() {
         <Drawer
             variant="persistent"
             anchor="right"
-            open={true}
+            open={false}
             sx={{
                 flexShrink: 0,
                 "& .MuiDrawer-paper": {
@@ -53,9 +53,6 @@ export default function ChatDrawer() {
                 },
             }}
         >
-            
-            
-
             <Grid container spacing={3} sx={{ p: 3 }}>
                 <Grid
                     size={2}

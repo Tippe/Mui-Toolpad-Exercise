@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ReactRouterAppProvider } from "@toolpad/core/react-router";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { NAVIGATION } from "./routes";
 import {
     Authentication,
@@ -10,6 +11,7 @@ import {
 } from "@toolpad/core";
 import Layout from "./layouts/DashboardLayout";
 import { theme } from "./theme";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 const demoSession = {
     user: {
@@ -64,7 +66,9 @@ export default function App() {
             session={session}
             theme={theme}
         >
-            <Layout />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Layout />
+            </LocalizationProvider>
         </ReactRouterAppProvider>
     );
 }

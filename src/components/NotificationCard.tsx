@@ -136,7 +136,6 @@ export default function NotificationCard({
                 open={open}
                 close={onClose}
                 title="Notificaties"
-                category="start"
                 subtitle="Hier komen alle notificaties en melden te zien"
                 icon={<Notifications sx={{ fontSize: 30 }} />}
                 items={categories}
@@ -177,7 +176,6 @@ export default function NotificationCard({
         <DashboardCard
             title="Notificaties"
             subtitle="Unread messages"
-            category="start"
             height={height}
             icon={
                 <Badge badgeContent={totalAlerts} color="info">

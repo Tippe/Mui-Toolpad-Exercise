@@ -9,7 +9,6 @@ export default function SettingsCard({ height }: { height?: number | string }) {
         <DashboardCard
             title="Instellingen"
             subtitle="Quick settings"
-            category="texteditor"
             height={height}
             icon={<Settings sx={{ fontSize: 30 }} />}
             actions={

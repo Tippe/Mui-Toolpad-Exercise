@@ -17,7 +17,6 @@ import { ExpandMore, ExpandLess } from "@mui/icons-material";
 interface DashboardCardProps {
     title: string;
     subtitle?: string;
-    category: string;
     icon?: React.ReactNode;
     front?: React.ReactNode;
     back?: React.ReactNode;
