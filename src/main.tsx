@@ -7,7 +7,7 @@ import ChatPage from "./pages/chat";
 import ProfilePage from "./pages/profile";
 import SettingsPage from "./pages/settings";
 import BrainsPage from "./pages/brains";
-import BuddyPage from "./pages/buddys";
+import ActionPage from "./pages/action";
 
 const router = createBrowserRouter([
     {
@@ -36,8 +36,8 @@ const router = createBrowserRouter([
                 Component: SettingsPage,
             },
             {
-                path: "buddys/*",
-                Component: BuddyPage,
+                path: "action",
+                Component: ActionPage,
             },
             {
                 path: "brains",

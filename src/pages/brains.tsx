@@ -129,8 +129,6 @@ export default function BrainsPage() {
     const canBeOpen = open && Boolean(anchorEl);
     const id = canBeOpen ? "spring-popper" : undefined;
 
-    const allAlerts = Object.values(alertsCategories).flat();
-
     return (
         <Grid container spacing={5}>
             <Grid

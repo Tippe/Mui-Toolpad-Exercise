@@ -11,7 +11,7 @@ import { Chat } from "@mui/icons-material";
 import CustomMenu from "./CustomMenu";
 import ChatDrawer from "../components/ChatDrawer";
 
-const CHAT_DRAWER_WIDTH = 360;
+const CHAT_DRAWER_WIDTH = 344;
 
 export default function Layout() {
     const location = useLocation();
@@ -23,7 +23,7 @@ export default function Layout() {
         <DashboardLayout
             slots={{
                 toolbarActions: () => (
-                    <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                    <Box sx={{ display: "flex", gap: 1 }}>
                         <ThemeSwitcher />
                         {!isDisabled && (
                             <Tooltip
@@ -40,6 +40,10 @@ export default function Layout() {
                                     size="small"
                                     onClick={() => setChatOpen((v) => !v)}
                                     aria-label="Toggle chat panel"
+                                    sx={{
+                                        alignItems: "center",
+                                        width: 40,
+                                    }}
                                 >
                                     <Chat />
                                 </IconButton>

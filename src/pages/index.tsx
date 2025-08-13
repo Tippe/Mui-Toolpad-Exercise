@@ -2,7 +2,6 @@ import * as React from "react";
 import { Box, Grid, Grow, Stack, Zoom } from "@mui/material";
 import NotificationCard from "../components/NotificationCard";
 import BrainCard from "../components/BrainCard";
-import BuddyCard from "../components/BuddyCard";
 import ToDoCard from "../components/ToDoCard";
 import SettingsCard from "../components/SettingsCard";
 import NoteCard from "../components/NoteCard";
@@ -41,7 +40,6 @@ export default function DashboardPage() {
         [<NotificationCard height={HALF_CARD_HEIGHT} />],
         [<SettingsCard height={HALF_CARD_HEIGHT} />],
         [<BrainCard height={HALF_CARD_HEIGHT} />],
-        [<BuddyCard height={HALF_CARD_HEIGHT} />],
         [<ToDoCard height={HALF_CARD_HEIGHT} />],
         [<NoteCard height={HALF_CARD_HEIGHT} />],
         [<AgendaCard height={HALF_CARD_HEIGHT} />],

@@ -41,7 +41,7 @@ export default function ChatDrawer() {
                     overflow: "hidden",
                     my: 2,
                     top: 80,
-                    right: 40,
+                    right: 24,
                     height: "calc(100% - 114px)",
                     border: 0,
                     boxShadow: `

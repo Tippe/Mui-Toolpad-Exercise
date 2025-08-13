@@ -5,7 +5,6 @@ import {
     Dashboard,
     EmojiObjects,
     Extension,
-    Hail,
     Hardware,
     Person,
     Repeat,
@@ -47,12 +46,6 @@ export const NAVIGATION: Navigation = [
     {
         kind: "header",
         title: "Advanced",
-    },
-    {
-        segment: "buddys",
-        title: "Buddy's",
-        icon: <Hail />,
-        pattern: "buddys{/:buddyId}*"
     },
     {
         segment: "brains",
