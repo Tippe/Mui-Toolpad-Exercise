@@ -15,7 +15,7 @@ import {
     Visibility,
     Height,
 } from "@mui/icons-material";
-import DashboardCard from "../layouts/DashboardCard";
+import DashboardCard from "../../layouts/DashboardCard";
 
 const rows = [
     {

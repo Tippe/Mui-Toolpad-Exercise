@@ -10,10 +10,35 @@ import {
     ListItemText,
     Grid,
     Divider,
+    Chip,
+    Avatar,
 } from "@mui/material";
-import { Chat, Send } from "@mui/icons-material";
+import { Chat, Code, Psychology, Send } from "@mui/icons-material";
 
 const drawerWidth = 320;
+
+function ToggleChips() {
+    const [coderFilled, setCoderFilled] = React.useState(true);
+    const [analystFilled, setAnalystFilled] = React.useState(true);
+
+    return (
+        <>
+            <Chip
+                icon={<Code />}
+                label="Coder"
+                variant={coderFilled ? "outlined" : "filled"}
+                onClick={() => setCoderFilled((prev) => !prev)}
+                sx={{ mr: 1 }}
+            />
+            <Chip
+                icon={<Psychology />}
+                label="Analyst"
+                variant={analystFilled ? "outlined" : "filled"}
+                onClick={() => setAnalystFilled((prev) => !prev)}
+            />
+        </>
+    );
+}
 
 export default function ChatDrawer() {
     const [messages, setMessages] = React.useState([
@@ -25,6 +50,10 @@ export default function ChatDrawer() {
         if (!input.trim()) return;
         setMessages((prev) => [...prev, { id: prev.length + 1, text: input }]);
         setInput("");
+    };
+
+    const handleClick = () => {
+        console.info("You clicked the Chip.");
     };
 
     return (
@@ -68,6 +97,10 @@ export default function ChatDrawer() {
             </Grid>
 
             <Divider />
+
+            <Box sx={{ display: "flex", p: 1, gap: 1 }}>
+                <ToggleChips />
+            </Box>
 
             <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
                 <List>

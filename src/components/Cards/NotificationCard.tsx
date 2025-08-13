@@ -35,8 +35,8 @@ import {
     Visibility,
     Warning,
 } from "@mui/icons-material";
-import DashboardCard from "../layouts/DashboardCard";
-import { AnimatedDialog } from "../layouts/AnimatedDialog";
+import DashboardCard from "../../layouts/DashboardCard";
+import { AnimatedDialog } from "../../layouts/AnimatedDialog";
 
 const alertsCategories = {
     Microsoft: [

@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Box, Grid, Grow, Stack, Zoom } from "@mui/material";
-import NotificationCard from "../components/NotificationCard";
-import BrainCard from "../components/BrainCard";
-import ToDoCard from "../components/ToDoCard";
-import SettingsCard from "../components/SettingsCard";
-import NoteCard from "../components/NoteCard";
+import AgendaCard from "../components/Cards/AgendaCard";
+import NotificationCard from "../components/Cards/NotificationCard";
+import BrainCard from "../components/Cards/BrainCard";
+import ToDoCard from "../components/Cards/ToDoCard";
+import SettingsCard from "../components/Cards/SettingsCard";
+import NoteCard from "../components/Cards/NoteCard";
 import {
     animated,
     config,
@@ -13,7 +14,6 @@ import {
     useSpringRef,
     useTrail,
 } from "@react-spring/web";
-import AgendaCard from "../components/AgendaCard";
 
 export default function DashboardPage() {
     const [checked, setChecked] = React.useState(false);

@@ -1,7 +1,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { Button, IconButton, TextField } from "@mui/material";
-import DashboardCard from "../layouts/DashboardCard";
+import DashboardCard from "../../layouts/DashboardCard";
 import { Notes, Visibility } from "@mui/icons-material";
 
 export default function NoteCard({ height }: { height?: number | string }) {

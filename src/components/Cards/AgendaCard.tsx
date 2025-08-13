@@ -2,7 +2,7 @@ import * as React from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Badge, IconButton } from "@mui/material";
-import DashboardCard from "../layouts/DashboardCard";
+import DashboardCard from "../../layouts/DashboardCard";
 import { CalendarViewDay, Visibility } from "@mui/icons-material";
 import {
     DateCalendar,

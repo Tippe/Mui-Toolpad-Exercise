@@ -13,7 +13,7 @@ import {
     Typography,
 } from "@mui/material";
 import { Add, Checklist, Close, Visibility } from "@mui/icons-material";
-import DashboardCard from "../layouts/DashboardCard";
+import DashboardCard from "../../layouts/DashboardCard";
 
 export default function ToDoCard({ height }: { height?: number | string }) {
     const [newTask, setNewTask] = React.useState("");
