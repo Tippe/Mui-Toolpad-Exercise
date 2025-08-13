@@ -8,7 +8,6 @@ import {
     List,
     ListItem,
     ListItemText,
-    Stack,
     Grid,
     Divider,
 } from "@mui/material";
@@ -32,7 +31,7 @@ export default function ChatDrawer() {
         <Drawer
             variant="persistent"
             anchor="right"
-            open={false}
+            open={true}
             sx={{
                 flexShrink: 0,
                 "& .MuiDrawer-paper": {
@@ -46,7 +45,7 @@ export default function ChatDrawer() {
                     top: 80,
                     height: "calc(100% - 114px)",
                     border: 0,
-                    boxShadow:`
+                    boxShadow: `
                         0px 2px 1px -1px rgba(107, 114, 128, 0.03),
                         0px 1px 1px 0px rgba(107, 114, 128, 0.04),
                         0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
@@ -65,9 +64,7 @@ export default function ChatDrawer() {
                     <Chat />
                 </Grid>
                 <Grid size={10}>
-                    <Typography variant="h6">
-                        Chat
-                    </Typography>
+                    <Typography variant="h6">Chat</Typography>
                 </Grid>
             </Grid>
 

@@ -38,27 +38,13 @@ export default function DashboardPage() {
 
     // Phase 2: Trail of card groups
     const cards = [
-        [
-            <NotificationCard height={HALF_CARD_HEIGHT} />
-        ],
-        [
-            <SettingsCard height={HALF_CARD_HEIGHT} />
-        ],
-        [
-            <BrainCard height={HALF_CARD_HEIGHT} />
-        ],
-        [
-            <BuddyCard height={HALF_CARD_HEIGHT} />
-        ],
-        [
-            <ToDoCard height={HALF_CARD_HEIGHT} />
-        ],
-        [
-            <NoteCard height={HALF_CARD_HEIGHT} />
-        ],
-        [
-            <AgendaCard height={HALF_CARD_HEIGHT} />
-        ],
+        [<NotificationCard height={HALF_CARD_HEIGHT} />],
+        [<SettingsCard height={HALF_CARD_HEIGHT} />],
+        [<BrainCard height={HALF_CARD_HEIGHT} />],
+        [<BuddyCard height={HALF_CARD_HEIGHT} />],
+        [<ToDoCard height={HALF_CARD_HEIGHT} />],
+        [<NoteCard height={HALF_CARD_HEIGHT} />],
+        [<AgendaCard height={HALF_CARD_HEIGHT} />],
     ];
     const trailRef = useSpringRef();
     const trail = useTrail(cards.length, {
@@ -74,7 +60,10 @@ export default function DashboardPage() {
         <animated.div style={containerSpring}>
             <Grid container columnSpacing={3} rowSpacing={5}>
                 {trail.map((style, index) => (
-                    <Grid key={index} size={{ xs: 12, sm: 12, md: 6, lg: 3, xl: 2 }}>
+                    <Grid
+                        key={index}
+                        size={{ xs: 12, sm: 12, md: 6, lg: 3, xl: 2 }}
+                    >
                         <animated.div style={style}>
                             <Stack spacing={5}>
                                 {cards[index].map((Child, idx) => (

@@ -39,7 +39,7 @@ export default function DashboardCard({
 
     const frontRef = React.useRef<HTMLDivElement>(null);
     const backRef = React.useRef<HTMLDivElement>(null);
-    
+
     // ResizeObserver om de hoogte van de front of back kant te volgen
     React.useEffect(() => {
         const front = frontRef.current;
@@ -109,8 +109,9 @@ export default function DashboardCard({
                             boxShadow: `
                             0px 2px 1px -1px rgba(107, 114, 128, 0.03),
                             0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                            0px 1px 3px 0px rgba(107, 114, 128, 0.08`
-                    }}>
+                            0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
+                        }}
+                    >
                         <CardContent>
                             <Grid container spacing={3}>
                                 <Grid
@@ -243,7 +244,13 @@ export default function DashboardCard({
                         height: "100%",
                     }}
                 >
-                    <Card sx={{ borderRadius: 4, boxShadow: "0px 2px 1px -1px rgba(107, 114, 128, 0.03),0px 1px 1px 0px rgba(107, 114, 128, 0.04),0px 1px 3px 0px rgba(107, 114, 128, 0.08)" }}>
+                    <Card
+                        sx={{
+                            borderRadius: 4,
+                            boxShadow:
+                                "0px 2px 1px -1px rgba(107, 114, 128, 0.03),0px 1px 1px 0px rgba(107, 114, 128, 0.04),0px 1px 3px 0px rgba(107, 114, 128, 0.08)",
+                        }}
+                    >
                         <CardContent>
                             <Grid container spacing={3}>
                                 <Grid
