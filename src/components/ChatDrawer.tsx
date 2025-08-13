@@ -38,11 +38,10 @@ export default function ChatDrawer() {
                     width: drawerWidth,
                     boxSizing: "border-box",
                     borderRadius: 4,
-                    borderTopRightRadius: 0,
-                    borderBottomRightRadius: 0,
                     overflow: "hidden",
                     my: 2,
                     top: 80,
+                    right: 40,
                     height: "calc(100% - 114px)",
                     border: 0,
                     boxShadow: `
