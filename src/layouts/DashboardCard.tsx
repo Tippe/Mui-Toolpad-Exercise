@@ -107,9 +107,9 @@ export default function DashboardCard({
                         sx={{
                             borderRadius: 4,
                             boxShadow: `
-                            0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                            0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                            0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
+                                0px 2px 1px -1px rgba(107, 114, 128, 0.03),
+                                0px 1px 1px 0px rgba(107, 114, 128, 0.04),
+                                0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
                         }}
                     >
                         <CardContent>

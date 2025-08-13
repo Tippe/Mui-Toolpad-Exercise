@@ -24,7 +24,7 @@ export default function ToDoCard({ height }: { height?: number | string }) {
         "Prepare presentation slides for Monday's team meeting",
         "Respond to customer feedback from the support portal",
     ]);
-    
+
     const handleAddTask = () => {
         if (newTask.trim()) {
             setTasks((prev) => [...prev, newTask]);
@@ -49,8 +49,13 @@ export default function ToDoCard({ height }: { height?: number | string }) {
             }
             front={
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-
-                    <List sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                    <List
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 1,
+                        }}
+                    >
                         {tasks.map((task, index) => (
                             <Paper
                                 key={index}
@@ -65,10 +70,10 @@ export default function ToDoCard({ height }: { height?: number | string }) {
                             >
                                 <Checkbox edge="start" />
                                 <ListItemText primary={task} />
-                                    <IconButton
-                                        size="small"
-                                        onClick={() => handleRemoveTask(index)}
-                                    >
+                                <IconButton
+                                    size="small"
+                                    onClick={() => handleRemoveTask(index)}
+                                >
                                     <Close fontSize="small" />
                                 </IconButton>
                             </Paper>

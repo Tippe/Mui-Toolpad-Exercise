@@ -63,6 +63,7 @@ export default function DashboardPage() {
                     <Grid
                         key={index}
                         size={{ xs: 12, sm: 12, md: 6, lg: 3, xl: 2 }}
+                        minWidth={320}
                     >
                         <animated.div style={style}>
                             <Stack spacing={5}>

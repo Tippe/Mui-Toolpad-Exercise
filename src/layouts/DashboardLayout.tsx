@@ -5,31 +5,83 @@ import {
     DashboardLayout,
     PageContainer,
     ThemeSwitcher,
+    useLocalStorageState,
 } from "@toolpad/core";
 import CustomMenu from "./CustomMenu";
 import ChatDrawer from "../components/ChatDrawer";
+import { Box, IconButton, Tooltip } from "@mui/material";
+import { Chat } from "@mui/icons-material";
+
+const CHAT_DRAWER_WIDTH = 320;
 
 export default function Layout() {
     const location = useLocation();
-
-    // List of paths where chat should NOT be shown
     const disabledPaths = ["/chat"];
-
     const isDisabled = disabledPaths.includes(location.pathname);
+    const [chatOpen, setChatOpen] = React.useState(false);
 
     return (
         <DashboardLayout
             slots={{
-                toolbarActions: () => <ThemeSwitcher />,
+                toolbarActions: () => (
+                    <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                        <ThemeSwitcher />
+                        {!isDisabled && (
+                            <Tooltip
+                                title={chatOpen ? "Verberg chat" : "Toon chat"}
+                                sx={{
+                                    display: {
+                                        xs: "none",
+                                        sm: "none",
+                                        md: "block",
+                                    },
+                                }}
+                            >
+                                <IconButton
+                                    size="small"
+                                    onClick={() => setChatOpen((v) => !v)}
+                                    aria-label="Toggle chat panel"
+                                >
+                                    <Chat />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                    </Box>
+                ),
                 toolbarAccount: () => (
                     <Account slots={{ popoverContent: CustomMenu }} />
                 ),
             }}
         >
-            {!isDisabled && <ChatDrawer />}
-            <PageContainer title="" breadcrumbs={[]} maxWidth={false}>
-                <Outlet />
-            </PageContainer>
+            {/* Two-column layout under the Toolpad header. Grid makes the chat truly push content */}
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: {
+                        xs: "1fr",
+                        sm: "1fr",
+                        md: chatOpen ? `1fr ${CHAT_DRAWER_WIDTH}px` : "1fr",
+                    },
+                    alignItems: "start",
+                    overflowX: "hidden",
+                    position: "relative",
+                }}
+            >
+                <PageContainer title="" breadcrumbs={[]} maxWidth={false}>
+                    <Outlet />
+                </PageContainer>
+
+                {/* Right column: chat sheet (hidden when toggled off or on small screens) */}
+                {!isDisabled && chatOpen && (
+                    <Box
+                        sx={{
+                            display: { xs: "none", sm: "none", md: "block" },
+                        }}
+                    >
+                        <ChatDrawer />
+                    </Box>
+                )}
+            </Box>
         </DashboardLayout>
     );
 }
