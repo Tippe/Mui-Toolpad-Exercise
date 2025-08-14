@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import DevelopmentBrain from "../components/Brains/DevBrain";
 import HRBrain from "../components/Brains/HrBrain";
 import LogisticsBrain from "../components/Brains/LogisticsBrain";
@@ -10,22 +10,43 @@ import { connectToBrainsHub } from "../utils/brainsSignalR";
 import { StreamChunkDto, StreamEndDto } from "../data/brainsDTO";
 
 export default function BrainsPage() {
-    const [streamText, setStreamText] = React.useState("");
+    const [brains, setBrains] = React.useState<string[]>([]);
 
-    const token = "test";
+
+    const token = "PUT ACCESSTOKEN HERE";
+
+    
+    const connection = connectToBrainsHub(
+        "https://bd96wm7n-7045.euw.devtunnels.ms/ChatHub", // SignalR hub URL
+        token,
+    );
 
     React.useEffect(() => {
-        const connection = connectToBrainsHub(
-            "https://b4bpxbq1-5000.euw.devtunnels.ms/ChatHub", // SignalR hub URL
-            token,
-        );
+        if (!connection) return;
 
+        connection.on("assistant", (brainsList: string[]) => {
+            console.log("📥 Received assistants:", brainsList);
+            setBrains(brainsList);
+        });
+
+        // Cleanup when component unmounts
         return () => {
+            connection.off("GetAssistants");
             connection.stop();
         };
-    }, []);
+    }, [connection]);
 
-    const brains = [
+    const askForBrains = async () => {
+        if (!connection) return;
+        try {
+            console.log("📤 Asking server for Brains...");
+            await connection.invoke("GetAssitants");
+        } catch (e) {
+            console.error("❌ Failed to invoke GetAssistants:", e);
+        }
+    };
+
+    const brainCards = [
         DevelopmentBrain,
         HRBrain,
         LogisticsBrain,
@@ -40,7 +61,7 @@ export default function BrainsPage() {
                 Selecteer een Brain en stel een vraag ...
             </Typography>
             <Grid container columnSpacing={3} rowSpacing={5}>
-                {brains.map((BrainComponent, index) => (
+                {brainCards.map((BrainComponent, index) => (
                     <Grid
                         key={index}
                         size={{ xs: 12, sm: 12, md: 6, lg: 3, xl: 2 }}
@@ -53,7 +74,8 @@ export default function BrainsPage() {
             <Grid container>
                 <Grid size={12}>
                     <Typography variant="h4">Live Brain Stream</Typography>
-                    <Typography component="pre">Test<pre>{streamText}</pre></Typography>
+                    <Button onClick={askForBrains}>Get Brains</Button>
+                    <Typography component="pre">{brains}</Typography>
                 </Grid>
             </Grid>
         </>
