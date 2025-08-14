@@ -185,51 +185,6 @@ export default function DashboardCard({
                             </IconButton>
                         </CardActions>
                     </Card>
-
-                    {/* <Popper
-                            id={id}
-                            open={open}
-                            anchorEl={anchorEl}
-                            placement="bottom"
-                            transition
-                            disablePortal={false}
-                            modifiers={[
-                                {
-                                    name: "flip",
-                                    enabled: true,
-                                    options: {
-                                        altBoundary: true,
-                                        rootBoundary: "document",
-                                        padding: 8,
-                                    },
-                                },
-                                {
-                                    name: "preventOverflow",
-                                    enabled: true,
-                                    options: {
-                                        altAxis: true,
-                                        altBoundary: true,
-                                        tether: true,
-                                        rootBoundary: "document",
-                                        padding: 8,
-                                    },
-                                },
-                                {
-                                    name: "offset",
-                                    options: {
-                                        offset: [0, -32], // X: 0px, Y: -8px => shifts Popper 8px up (overlapping the card)
-                                    },
-                                },
-                            ]}
-                        >
-                            {({ TransitionProps }) => (
-                                <Fade {...TransitionProps}>
-                                    <Card>
-                                        <CardContent>{front}</CardContent>
-                                    </Card>
-                                </Fade>
-                            )}
-                        </Popper> */}
                 </a.div>
 
                 {/* BACK SIDE */}
