@@ -6,8 +6,25 @@ import LogisticsBrain from "../components/Brains/LogisticsBrain";
 import SalesBrain from "../components/Brains/SalesBrain";
 import SupportBrain from "../components/Brains/SupportBrain";
 import FinanceBrain from "../components/Brains/FinanceBrain";
+import { connectToBrainsHub } from "../utils/brainsSignalR";
+import { StreamChunkDto, StreamEndDto } from "../data/brainsDTO";
 
 export default function BrainsPage() {
+    const [streamText, setStreamText] = React.useState("");
+
+    const token = "test";
+
+    React.useEffect(() => {
+        const connection = connectToBrainsHub(
+            "https://b4bpxbq1-5000.euw.devtunnels.ms/ChatHub", // SignalR hub URL
+            token,
+        );
+
+        return () => {
+            connection.stop();
+        };
+    }, []);
+
     const brains = [
         DevelopmentBrain,
         HRBrain,
@@ -16,6 +33,7 @@ export default function BrainsPage() {
         SupportBrain,
         FinanceBrain,
     ];
+    
     return (
         <>
             <Typography variant="h4" sx={{ pb: 2 }}>
@@ -32,6 +50,13 @@ export default function BrainsPage() {
                     </Grid>
                 ))}
             </Grid>
+            <Grid container>
+                <Grid size={12}>
+                    <Typography variant="h4">Live Brain Stream</Typography>
+                    <Typography component="pre">Test<pre>{streamText}</pre></Typography>
+                </Grid>
+            </Grid>
         </>
     );
 }
+
