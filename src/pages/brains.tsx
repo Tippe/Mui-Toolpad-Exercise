@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Grid, Typography } from "@mui/material";
 import DevelopmentBrain from "../components/Brains/DevBrain";
-import HRBrain from "../components/Brains/HRBrain";
+import HRBrain from "../components/Brains/HrBrain";
 import LogisticsBrain from "../components/Brains/LogisticsBrain";
 import SalesBrain from "../components/Brains/SalesBrain";
 import SupportBrain from "../components/Brains/SupportBrain";
