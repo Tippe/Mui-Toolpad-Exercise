@@ -11,32 +11,49 @@ import {
     Grid,
     Divider,
     Chip,
-    Avatar,
 } from "@mui/material";
-import { Chat, Code, Psychology, Send } from "@mui/icons-material";
+import {
+    AccountBalance,
+    AttachMoney,
+    Chat,
+    Code,
+    HeadsetMic,
+    Inventory,
+    People,
+    Send,
+} from "@mui/icons-material";
 
 const drawerWidth = 320;
 
 function ToggleChips() {
-    const [coderFilled, setCoderFilled] = React.useState(true);
-    const [analystFilled, setAnalystFilled] = React.useState(true);
+    const chipData = [
+        { label: "Dev", icon: <Code /> },
+        { label: "Finance", icon: <AccountBalance /> },
+        { label: "HR", icon: <People /> },
+        { label: "Logistic", icon: <Inventory /> },
+        { label: "Sales", icon: <AttachMoney /> },
+        { label: "Support", icon: <HeadsetMic /> },
+    ];
+    const [selected, setSelected] = React.useState(() =>
+        Object.fromEntries(chipData.map((chip) => [chip.label, false]))
+    );
+
+    const toggleChip = (label: string) => {
+        setSelected((prev) => ({ ...prev, [label]: !prev[label] }));
+    };
 
     return (
-        <>
-            <Chip
-                icon={<Code />}
-                label="Coder"
-                variant={coderFilled ? "outlined" : "filled"}
-                onClick={() => setCoderFilled((prev) => !prev)}
-                sx={{ mr: 1 }}
-            />
-            <Chip
-                icon={<Psychology />}
-                label="Analyst"
-                variant={analystFilled ? "outlined" : "filled"}
-                onClick={() => setAnalystFilled((prev) => !prev)}
-            />
-        </>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+            {chipData.map(({ label, icon }) => (
+                <Chip
+                    key={label}
+                    icon={icon}
+                    label={label}
+                    variant={selected[label] ? "filled" : "outlined"}
+                    onClick={() => toggleChip(label)}
+                />
+            ))}
+        </Box>
     );
 }
 
@@ -50,10 +67,6 @@ export default function ChatDrawer() {
         if (!input.trim()) return;
         setMessages((prev) => [...prev, { id: prev.length + 1, text: input }]);
         setInput("");
-    };
-
-    const handleClick = () => {
-        console.info("You clicked the Chip.");
     };
 
     return (
@@ -80,7 +93,7 @@ export default function ChatDrawer() {
                 },
             }}
         >
-            <Grid container spacing={3} sx={{ p: 3 }}>
+            <Grid container spacing={3} sx={{ p: 2 }}>
                 <Grid
                     size={2}
                     sx={{
@@ -93,12 +106,15 @@ export default function ChatDrawer() {
                 </Grid>
                 <Grid size={10}>
                     <Typography variant="h6">Chat</Typography>
+                    <Typography variant="caption">
+                        Ask questions to a AI Brain
+                    </Typography>
                 </Grid>
             </Grid>
 
             <Divider />
 
-            <Box sx={{ display: "flex", p: 1, gap: 1 }}>
+            <Box sx={{ pt: 1, px: 1 }}>
                 <ToggleChips />
             </Box>
 

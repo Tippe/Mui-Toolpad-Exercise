@@ -10,6 +10,7 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import { Chat } from "@mui/icons-material";
 import CustomMenu from "./CustomMenu";
 import ChatDrawer from "../components/ChatDrawer";
+import ToolbarActions from "./ToolbarActions";
 
 const CHAT_DRAWER_WIDTH = 344;
 
@@ -24,7 +25,6 @@ export default function Layout() {
             slots={{
                 toolbarActions: () => (
                     <Box sx={{ display: "flex", gap: 1 }}>
-                        <ThemeSwitcher />
                         {!isDisabled && (
                             <Tooltip
                                 title={chatOpen ? "Verberg chat" : "Toon chat"}
@@ -49,6 +49,8 @@ export default function Layout() {
                                 </IconButton>
                             </Tooltip>
                         )}
+                        {/* Notifications & ThemeSwitcher */}
+                        <ToolbarActions />
                     </Box>
                 ),
                 toolbarAccount: () => (

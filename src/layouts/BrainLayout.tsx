@@ -93,7 +93,8 @@ export default function BrainLayout({
     const cardStyle = {
         borderRadius: 4,
         border: selected
-            ? (theme) => `2px solid ${theme.palette.info.main}`
+            ? (theme: { palette: { info: { main: any } } }) =>
+                  `2px solid ${theme.palette.info.main}`
             : "2px solid transparent",
         boxShadow: selected
             ? "inset 0px 2px 4px rgba(0,0,0,0.3)"
@@ -222,7 +223,7 @@ export default function BrainLayout({
                         height: "100%",
                     }}
                 >
-                    <Card sx={cardStyle}>
+                    <Card sx={cardStyle} onClick={handleCardClick}>
                         <CardContent>
                             <Grid container spacing={3}>
                                 <Grid
