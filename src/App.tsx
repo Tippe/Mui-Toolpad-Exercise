@@ -12,14 +12,8 @@ import {
 import Layout from "./layouts/DashboardLayout";
 import { theme } from "./theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-
-const demoSession = {
-    user: {
-        name: "Tippe van Roosmalen",
-        email: "tippe.van.roosmalen@netflex.nl",
-        image: "blob:https://developer.microsoft.com/f7929c2c-f648-41b5-b681-957a9750a3d0",
-    },
-};
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "./config/auth/authConfig";
 
 const providers: AuthProvider[] = [
     { id: "github", name: "GitHub" },
@@ -35,21 +29,43 @@ const BRANDING = {
 };
 
 export default function App() {
-    const [session, setSession] = React.useState<Session | null>(demoSession);
+    const { instance } = useMsal();
+    const [session, setSession] = React.useState<Session | null>();
+
+    //useSilentToken();
 
     const signIn = async (provider: AuthProvider): Promise<AuthResponse> => {
-        console.log(`Sign in with ${provider.id}`);
-        return new Promise<AuthResponse>((resolve) => {
-            setTimeout(() => {
-                setSession(demoSession); // Fake login
-                resolve({}); // No error
-            }, 500);
-        });
+        if (provider.id === "microsoft-entra-id") {
+            try {
+                const loginResp = await instance.loginPopup(loginRequest);
+                const account = loginResp.account;
+
+                setSession({
+                    user: {
+                        name: "Tippe van Roosmalen",
+                        email: "tippe.van.roosmalen@netflex.nl",
+                        //image: "blob:https://developer.microsoft.com/f7929c2c-f648-41b5-b681-957a9750a3d0",
+                    },
+                });
+
+                console.log("Je bent ingelogd!:");
+
+                return{};
+            } catch (e) {
+                console.error("Microsoft login failed", e);
+                return { error: "Provider not supported yet" };
+            }
+        }
+
+        // For other providers, do nothing for now
+        return { error: "Provider not supported yet" };
     };
 
     const authentication: Authentication = React.useMemo(() => {
         return {
-            signIn: () => setSession(demoSession),
+            signIn: () => {
+                signIn({ id: "microsoft-entra-id", name: "Microsoft" });
+            },
             signOut: () => setSession(null),
         };
     }, []);

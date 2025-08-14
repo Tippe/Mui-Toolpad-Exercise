@@ -30,13 +30,6 @@ export const NAVIGATION: Navigation = [
         segment: "profile",
         title: "Profiel",
         icon: <Person />,
-        children: [
-            {
-                segment: "profile",
-                title: "Persona's",
-                icon: <SwitchAccount />,
-            },
-        ],
     },
     {
         segment: "settings",

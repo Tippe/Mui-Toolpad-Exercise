@@ -5,11 +5,15 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "set HTTPS=true && react-scripts start"
   },
   "dependencies": {
+    "@azure/msal-browser": "^4.20.0",
+    "@azure/msal-react": "^3.0.18",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@microsoft/signalr": "^9.0.6",
     "@mui/icons-material": "^7",
     "@mui/material": "^7",
     "@mui/x-data-grid": "^8.9.1",
@@ -18,9 +22,10 @@
     "@toolpad/core": "^0.14.0",
     "dayjs": "^1.11.13",
     "firebase": "^12.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router": "^7"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router": "^7",
+    "vite-plugin-mkcert": "^1.17.8"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
