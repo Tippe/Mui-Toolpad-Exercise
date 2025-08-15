@@ -10,7 +10,9 @@ import {
     Collapse,
     Divider,
     Grid,
+    Icon,
     IconButton,
+    Stack,
     Typography,
 } from "@mui/material";
 import { ExpandMore, ExpandLess, MoreVert } from "@mui/icons-material";
@@ -33,7 +35,6 @@ export default function BrainLayout({
     icon,
     front,
     back,
-    actions,
     height,
 }: BrainLayoutProps) {
     const [open, setOpen] = React.useState(true);
@@ -174,7 +175,7 @@ export default function BrainLayout({
 
                         <Divider />
 
-                        <CardActionArea sx={{ borderRadius: 0 }}>
+                        
                             <Collapse
                                 in={open}
                                 unmountOnExit
@@ -185,16 +186,20 @@ export default function BrainLayout({
                             >
                                 <CardContent
                                     sx={{
+                                        display: "flex",
                                         flex: 1,
                                         px: 2,
                                         overflowY: "auto",
                                         height: height ?? cardHeight,
+                                        justifyContent: "center",
+                                        textAlign: "center",
+                                        alignItems: "center"
                                     }}
                                 >
                                     {front}
                                 </CardContent>
                             </Collapse>
-                        </CardActionArea>
+                        
                         <CardActions
                             sx={{
                                 justifyContent: "center",

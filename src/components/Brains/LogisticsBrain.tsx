@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, TextField, Typography } from "@mui/material";
-import { Inventory } from "@mui/icons-material";
+import { LocalShipping } from "@mui/icons-material";
 import BrainLayout from "../../layouts/BrainLayout";
 
 export default function LogisticsBrain() {
@@ -8,7 +8,7 @@ export default function LogisticsBrain() {
         <BrainLayout
             title="Logistics"
             subtitle="Supply Chain Management"
-            icon={<Inventory sx={{ fontSize: 35 }} />}
+            icon={<LocalShipping sx={{ fontSize: 35 }} />}
             height={300}
             front={
                 <Typography variant="body2">

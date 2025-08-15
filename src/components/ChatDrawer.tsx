@@ -18,7 +18,7 @@ import {
     Chat,
     Code,
     HeadsetMic,
-    Inventory,
+    LocalShipping,
     People,
     Send,
 } from "@mui/icons-material";
@@ -30,7 +30,7 @@ function ToggleChips() {
         { label: "Dev", icon: <Code /> },
         { label: "Finance", icon: <AccountBalance /> },
         { label: "HR", icon: <People /> },
-        { label: "Logistic", icon: <Inventory /> },
+        { label: "Logistic", icon: <LocalShipping /> },
         { label: "Sales", icon: <AttachMoney /> },
         { label: "Support", icon: <HeadsetMic /> },
     ];
