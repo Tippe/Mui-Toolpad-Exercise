@@ -74,9 +74,6 @@ export default function DataBronPage() {
 
     return (
         <>
-            <Typography variant="h4" sx={{ pb: 2 }}>
-                Selecteer een Brain en stel een vraag ...
-            </Typography>
             <Button onClick={askForBrains}>Get Brains</Button>
 
             <Grid container columnSpacing={3} rowSpacing={5}>
@@ -91,7 +88,7 @@ export default function DataBronPage() {
                             front={brain.description}
                             back={brain.description}
                             icon={<School sx={{ fontSize: 35 }} />}
-                            height={300}
+                            height={200}
                         />
                     </Grid>
                 ))}

@@ -36,7 +36,9 @@ export default function ChatDrawer() {
         { id: 1, text: "Welkom bij de chat!", brains: [] as string[] },
     ]);
     const [message, setMessage] = React.useState("");
-    const [selectedBrains, setSelectedBrains] = React.useState<string[]>([]);
+    const [selectedBrains, setSelectedBrains] = React.useState<string[]>([
+        "GPT",
+    ]);
     const [showAutocomplete, setShowAutocomplete] = React.useState(false);
 
     const sendMessage = () => {
@@ -158,12 +160,12 @@ export default function ChatDrawer() {
                                 (b) => b.label === option
                             );
                             return (
-                                <li {...props}>
+                                <ListItem {...props}>
                                     {brain?.icon}
-                                    <span style={{ marginLeft: 8 }}>
+                                    <ListItemText style={{ marginLeft: 8 }}>
                                         {option}
-                                    </span>
-                                </li>
+                                    </ListItemText>
+                                </ListItem>
                             );
                         }}
                         renderInput={(params) => (
