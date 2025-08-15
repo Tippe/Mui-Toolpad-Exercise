@@ -10,7 +10,8 @@ import {
     ListItemText,
     Grid,
     Divider,
-    Chip,
+    Autocomplete,
+    Chip
 } from "@mui/material";
 import {
     AccountBalance,
@@ -25,48 +26,54 @@ import {
 
 const drawerWidth = 320;
 
-function ToggleChips() {
-    const chipData = [
-        { label: "Dev", icon: <Code /> },
-        { label: "Finance", icon: <AccountBalance /> },
-        { label: "HR", icon: <People /> },
-        { label: "Logistic", icon: <LocalShipping /> },
-        { label: "Sales", icon: <AttachMoney /> },
-        { label: "Support", icon: <HeadsetMic /> },
-    ];
-    const [selected, setSelected] = React.useState(() =>
-        Object.fromEntries(chipData.map((chip) => [chip.label, false]))
-    );
-
-    const toggleChip = (label: string) => {
-        setSelected((prev) => ({ ...prev, [label]: !prev[label] }));
-    };
-
-    return (
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-            {chipData.map(({ label, icon }) => (
-                <Chip
-                    key={label}
-                    icon={icon}
-                    label={label}
-                    variant={selected[label] ? "filled" : "outlined"}
-                    onClick={() => toggleChip(label)}
-                />
-            ))}
-        </Box>
-    );
-}
+const brains = [
+    { label: "Dev", icon: <Code fontSize="small" /> },
+    { label: "Finance", icon: <AccountBalance fontSize="small" /> },
+    { label: "HR", icon: <People fontSize="small" /> },
+    { label: "Logistic", icon: <LocalShipping fontSize="small" /> },
+    { label: "Sales", icon: <AttachMoney fontSize="small" /> },
+    { label: "Support", icon: <HeadsetMic fontSize="small" /> },
+];
 
 export default function ChatDrawer() {
     const [messages, setMessages] = React.useState([
-        { id: 1, text: "Welkom bij de chat!" },
+        { id: 1, text: "Welkom bij de chat!", brains: [] as string[] },
     ]);
-    const [input, setInput] = React.useState("");
+    const [message, setMessage] = React.useState("");
+    const [selectedBrains, setSelectedBrains] = React.useState<string[]>([]);
+    const [showAutocomplete, setShowAutocomplete] = React.useState(false);
 
     const sendMessage = () => {
-        if (!input.trim()) return;
-        setMessages((prev) => [...prev, { id: prev.length + 1, text: input }]);
-        setInput("");
+        if (!message.trim() && selectedBrains.length === 0) return;
+        setMessages((prev) => [
+            ...prev,
+            {
+                id: prev.length + 1,
+                text: message,
+                brains: selectedBrains,
+            },
+        ]);
+        setMessage("");
+        setSelectedBrains([]);
+        setShowAutocomplete(false);
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setMessage(value);
+        setShowAutocomplete(value.endsWith("@"));
+    };
+
+    const handleSelectBrain = (brainLabel: string) => {
+        setSelectedBrains((prev) =>
+            prev.includes(brainLabel) ? prev : [...prev, brainLabel]
+        );
+        setMessage(""); // reset text after selecting
+        setShowAutocomplete(false);
+    };
+
+    const handleDeleteBrain = (brainLabel: string) => {
+        setSelectedBrains((prev) => prev.filter((b) => b !== brainLabel));
     };
 
     return (
@@ -107,22 +114,25 @@ export default function ChatDrawer() {
                 <Grid size={10}>
                     <Typography variant="h6">Chat</Typography>
                     <Typography variant="caption">
-                        Ask questions to a AI Brain
+                        Ask questions to an AI Brain
                     </Typography>
                 </Grid>
             </Grid>
 
             <Divider />
 
-            <Box sx={{ pt: 1, px: 1 }}>
-                <ToggleChips />
-            </Box>
-
             <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
                 <List>
                     {messages.map((msg) => (
                         <ListItem key={msg.id}>
-                            <ListItemText primary={msg.text} />
+                            <ListItemText
+                                primary={msg.text || "(geen tekst)"}
+                                secondary={
+                                    msg.brains.length > 0
+                                        ? msg.brains.join(", ")
+                                        : undefined
+                                }
+                            />
                         </ListItem>
                     ))}
                 </List>
@@ -134,19 +144,61 @@ export default function ChatDrawer() {
                     e.preventDefault();
                     sendMessage();
                 }}
-                sx={{ display: "flex", gap: 1, p: 2 }}
+                sx={{ display: "flex", flexDirection: "column", gap: 1, p: 2 }}
             >
-                <TextField
-                    fullWidth
-                    size="small"
-                    variant="outlined"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Typ je bericht..."
-                />
-                <IconButton color="primary" type="submit">
-                    <Send />
-                </IconButton>
+                {showAutocomplete && (
+                    <Autocomplete
+                        options={brains
+                            .map((b) => b.label)
+                            .filter((label) => !selectedBrains.includes(label))}
+                        size="small"
+                        autoHighlight
+                        open
+                        onChange={(e, value) => {
+                            if (value) handleSelectBrain(value);
+                        }}
+                        renderOption={(props, option) => {
+                            const brain = brains.find((b) => b.label === option);
+                            return (
+                                <li {...props}>
+                                    {brain?.icon}
+                                    <span style={{ marginLeft: 8 }}>{option}</span>
+                                </li>
+                            );
+                        }}
+                        renderInput={(params) => (
+                            <TextField {...params} placeholder="Select a Brain" />
+                        )}
+                    />
+                )}
+
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                    {selectedBrains.map((brain) => {
+                        const brainData = brains.find((b) => b.label === brain);
+                        return (
+                            <Chip
+                                key={brain}
+                                label={brain}
+                                icon={brainData?.icon}
+                                onDelete={() => handleDeleteBrain(brain)}
+                            />
+                        );
+                    })}
+                </Box>
+
+                <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        variant="outlined"
+                        value={message}
+                        onChange={handleInputChange}
+                        placeholder="Typ je bericht..."
+                    />
+                    <IconButton color="primary" type="submit">
+                        <Send />
+                    </IconButton>
+                </Box>
             </Box>
         </Drawer>
     );
