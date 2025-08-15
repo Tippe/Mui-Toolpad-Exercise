@@ -19,7 +19,7 @@ export function useSilentToken() {
                         ...loginRequest,
                         account: accounts[0],
                     });
-                    sessionStorage.setItem("accessToken", response.accessToken);
+                    localStorage.setItem("accessToken", response.accessToken);
                     console.log("✅ Silent login gelukt!");
                 } catch (e) {
                     console.error("❌ acquireTokenSilent error:", e);

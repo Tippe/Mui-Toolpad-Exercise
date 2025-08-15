@@ -4,40 +4,39 @@ import { StreamChunkDto, StreamEndDto } from "../data/brainsDTO";
 export type OnStreamChunk = (chunk: StreamChunkDto) => void;
 export type OnStreamEnd = (end: StreamEndDto) => void;
 
-export function connectToBrainsHub(
+let brainsConnection: signalR.HubConnection | null = null;
+
+export function getBrainsConnection(
     url: string,
     accessToken: string,
 ) {
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl(url, {
-            headers: {
-                AccessToken: accessToken,
-            },
-            withCredentials: false,
-            //transport: signalR.HttpTransportType.WebSockets,
-        })
-        .configureLogging(signalR.LogLevel.Debug)
-        .withAutomaticReconnect()
-        .build();
+    if (!brainsConnection) {
+        brainsConnection = new signalR.HubConnectionBuilder()
+            .withUrl(url, {
+                headers: { AccessToken: accessToken },
+                withCredentials: false,
+            })
+            .configureLogging(signalR.LogLevel.Debug)
+            .withAutomaticReconnect()
+            .build();
 
-    connection.on("ReceiveMessage", (message: string) => {
-        console.log(`Van: ${message}`);
-    });
+        brainsConnection.on("ReceiveMessage", (message: string) => {
+            console.log(`Message van: ${message}`);
+        });
 
-    connection.on("ServerPushMessage", (message: string) => {
-        console.log(`Nieuwe connectie: ${message}`);
-    });
+        brainsConnection.on("ServerPushMessage", (message: string) => {
+            console.log(`Nieuwe Connectie: ${message}`);
+        });
 
+        brainsConnection
+            .start()
+            .then(() => console.log("✅ Connected to brains SignalR hub"))
+            .catch(e => console.error("❌ SignalR connection error:", e));
 
+        brainsConnection.onclose(e => {
+            console.error("\n ⚠️ Connection gesloten:", e);
+        });
+    }
 
-    connection
-        .start()
-        .then(() => console.log("Connected to brains SignalR hub"))
-        .catch(err => console.error("SignalR connection error:", err));
-
-    connection.onclose(err => {
-        console.error("⚠️ Connection closed:", err);
-    });
-
-    return connection;
+    return brainsConnection;
 }

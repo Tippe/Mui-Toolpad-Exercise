@@ -8,6 +8,7 @@ import {
     Hardware,
     Person,
     Repeat,
+    School,
     Settings,
     SwitchAccount,
 } from "@mui/icons-material";
@@ -41,9 +42,9 @@ export const NAVIGATION: Navigation = [
         title: "Advanced",
     },
     {
-        segment: "brains",
-        title: "Brains",
-        icon: <EmojiObjects />,
+        segment: "databronnen",
+        title: "Databronnen",
+        icon: <School />,
     },
     {
         segment: "action",

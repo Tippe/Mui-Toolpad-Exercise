@@ -14,6 +14,7 @@ import { theme } from "./theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "./config/auth/authConfig";
+import { useSilentToken } from "./config/auth/authProvider";
 
 const providers: AuthProvider[] = [
     { id: "github", name: "GitHub" },
@@ -32,13 +33,20 @@ export default function App() {
     const { instance } = useMsal();
     const [session, setSession] = React.useState<Session | null>();
 
-    //useSilentToken();
-
     const signIn = async (provider: AuthProvider): Promise<AuthResponse> => {
         if (provider.id === "microsoft-entra-id") {
             try {
                 const loginResp = await instance.loginPopup(loginRequest);
                 const account = loginResp.account;
+
+                const tokenResp = await instance.acquireTokenSilent({
+                    ...loginRequest,
+                    account,
+                });
+
+                if (tokenResp?.accessToken) {
+                    localStorage.setItem("accessToken", tokenResp.accessToken);
+                }
 
                 setSession({
                     user: {
@@ -50,7 +58,7 @@ export default function App() {
 
                 console.log("Je bent ingelogd!:");
 
-                return{};
+                return {};
             } catch (e) {
                 console.error("Microsoft login failed", e);
                 return { error: "Provider not supported yet" };
@@ -63,10 +71,13 @@ export default function App() {
 
     const authentication: Authentication = React.useMemo(() => {
         return {
-            signIn: () => {
-                signIn({ id: "microsoft-entra-id", name: "Microsoft" });
+            signIn: (provider?: AuthProvider) =>
+                signIn(
+                    provider ?? { id: "microsoft-entra-id", name: "Microsoft" }
+                ),
+            signOut: () => {
+                setSession(null), localStorage.removeItem("accessToken");
             },
-            signOut: () => setSession(null),
         };
     }, []);
 

@@ -7,10 +7,10 @@ import DashboardPage from "./pages";
 import ChatPage from "./pages/chat";
 import ProfilePage from "./pages/profile";
 import SettingsPage from "./pages/settings";
-import BrainsPage from "./pages/brains";
 import ActionPage from "./pages/action";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { msalConfig } from "./config/auth/authConfig";
+import DataBronPage from "./pages/databronnen";
 
 const router = createBrowserRouter([
     {
@@ -43,8 +43,8 @@ const router = createBrowserRouter([
                 Component: ActionPage,
             },
             {
-                path: "brains",
-                Component: BrainsPage,
+                path: "databronnen",
+                Component: DataBronPage,
             },
         ],
     },

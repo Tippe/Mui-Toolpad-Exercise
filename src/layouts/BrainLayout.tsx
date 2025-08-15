@@ -11,6 +11,7 @@ import {
     Divider,
     Grid,
     IconButton,
+    TextField,
     Typography,
 } from "@mui/material";
 import { ExpandMore, ExpandLess, MoreVert } from "@mui/icons-material";
@@ -133,19 +134,21 @@ export default function BrainLayout({
                 >
                     <Card sx={cardStyle} onClick={handleCardClick}>
                         <CardContent>
-                            <Grid container spacing={3}>
-                                <Grid
-                                    size={3}
-                                    sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                    {icon}
-                                </Grid>
-                                <Grid size={7}>
-                                    <Typography variant="h6">
+                            <Grid
+                                container
+                                spacing={2}
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Grid size={2}>{icon}</Grid>
+                                <Grid size={8}>
+                                    <Typography
+                                        variant="h6"
+                                        sx={{ textAlign: "center" }}
+                                    >
                                         {title}
                                     </Typography>
                                     <Typography variant="caption">
@@ -174,27 +177,26 @@ export default function BrainLayout({
 
                         <Divider />
 
-                        <CardActionArea sx={{ borderRadius: 0 }}>
-                            <Collapse
-                                in={open}
-                                unmountOnExit
+                        <Collapse
+                            in={open}
+                            unmountOnExit
+                            sx={{
+                                flex: 1,
+                                minHeight: 0,
+                            }}
+                        >
+                            <CardContent
                                 sx={{
                                     flex: 1,
-                                    minHeight: 0,
+                                    px: 2,
+                                    overflowY: "auto",
+                                    height: height ?? cardHeight,
                                 }}
                             >
-                                <CardContent
-                                    sx={{
-                                        flex: 1,
-                                        px: 2,
-                                        overflowY: "auto",
-                                        height: height ?? cardHeight,
-                                    }}
-                                >
-                                    {front}
-                                </CardContent>
-                            </Collapse>
-                        </CardActionArea>
+                                {front}
+                            </CardContent>
+                        </Collapse>
+
                         <CardActions
                             sx={{
                                 justifyContent: "center",
@@ -266,27 +268,33 @@ export default function BrainLayout({
 
                         <Divider />
 
-                        <CardActionArea sx={{ borderRadius: 0 }}>
-                            <Collapse
-                                in={open}
-                                unmountOnExit
+                        <Collapse
+                            in={open}
+                            unmountOnExit
+                            sx={{
+                                flex: 1,
+                                minHeight: 0,
+                            }}
+                        >
+                            <CardContent
                                 sx={{
                                     flex: 1,
-                                    minHeight: 0,
+                                    px: 2,
+                                    overflowY: "auto",
+                                    height: height ?? cardHeight,
                                 }}
                             >
-                                <CardContent
-                                    sx={{
-                                        flex: 1,
-                                        px: 2,
-                                        overflowY: "auto",
-                                        height: height ?? cardHeight,
-                                    }}
-                                >
-                                    {back}
-                                </CardContent>
-                            </Collapse>
-                        </CardActionArea>
+                                <TextField
+                                    label="Beschrijving"
+                                    fullWidth
+                                    multiline
+                                    disabled
+                                    variant="outlined"
+                                    value={back}
+                                />
+                            </CardContent>
+                        </Collapse>
+
                         <CardActions
                             sx={{
                                 justifyContent: "center",
