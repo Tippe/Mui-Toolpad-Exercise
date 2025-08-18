@@ -1,26 +1,76 @@
 import * as React from "react";
-import { JSX, useState, useRef, useEffect } from "react";
 import {
     AppBar,
+    Autocomplete,
     Box,
+    Button,
+    Chip,
     Grid,
+    Grow,
     Stack,
+    TextField,
     Toolbar,
     Typography,
-    TextField,
-    Button,
-    Grow,
 } from "@mui/material";
-import { Send } from "@mui/icons-material";
+import {
+    AccountBalance,
+    AttachMoney,
+    Chat,
+    Code,
+    HeadsetMic,
+    LocalShipping,
+    People,
+    Send,
+} from "@mui/icons-material";
 
 export default function ChatPage() {
-    const [checked] = useState(true);
-    const scrollRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {
+    const [checked] = React.useState(true);
+    const [question, setQuestion] = React.useState("");
+    const [selectedBrains, setSelectedBrains] = React.useState<string[]>([]);
+    const [showAutocomplete, setShowAutocomplete] = React.useState(false);
+    const scrollRef = React.useRef<HTMLDivElement>(null);
+
+    const brains = [
+        { label: "Dev", icon: <Code fontSize="small" /> },
+        { label: "Finance", icon: <AccountBalance fontSize="small" /> },
+        { label: "HR", icon: <People fontSize="small" /> },
+        { label: "Logistic", icon: <LocalShipping fontSize="small" /> },
+        { label: "Sales", icon: <AttachMoney fontSize="small" /> },
+        { label: "Support", icon: <HeadsetMic fontSize="small" /> },
+    ];
+
+    React.useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, []);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setQuestion(value);
+        setShowAutocomplete(value.endsWith("@"));
+    };
+
+    const handleSelectBrain = (brainLabel: string) => {
+        setSelectedBrains((prev) =>
+            prev.includes(brainLabel) ? prev : [...prev, brainLabel]
+        );
+        setQuestion(""); // reset na selectie
+        setShowAutocomplete(false);
+    };
+
+    const handleDeleteBrain = (brainLabel: string) => {
+        setSelectedBrains((prev) => prev.filter((b) => b !== brainLabel));
+    };
+
+    const handleSend = () => {
+        if (!question.trim() && selectedBrains.length === 0) return;
+        console.log("Verstuur:", { question, selectedBrains });
+        setQuestion("");
+        setSelectedBrains([]);
+        setShowAutocomplete(false);
+    };
+
     return (
         <Box>
             <Grid container spacing={1}>
@@ -39,9 +89,6 @@ export default function ChatPage() {
                                 textAlign: "center",
                             }}
                         >
-                            {/**
-                             * Laat "Welkom Box" zien wanneer er nog geen berichten staan
-                             */}
                             <Box
                                 sx={{
                                     display: "flex",
@@ -63,26 +110,90 @@ export default function ChatPage() {
                 </Grow>
                 <Grid size="grow"></Grid>
 
-                {/**
-                 * Textfield en button onderaan de pagina
-                 */}
-                <AppBar
-                    color="inherit"
-                    sx={{
-                        position: "fixed",
-                        width: "calc(100% - 320px)",
-                        ml: "calc(100% - 320px)",
-                        top: "auto",
-                        bottom: 0,
-                    }}
+                <Grow
+                    in={checked}
+                    style={{ transformOrigin: "0 0 1" }}
+                    {...(checked ? { timeout: 750 } : {})}
                 >
-                    <Grow
-                        in={checked}
-                        style={{ transformOrigin: "0 0 1" }}
-                        {...(checked ? { timeout: 750 } : {})}
+                    <Toolbar
+                        sx={{
+                            display: "flex",
+                            position: "fixed",
+                            justifyContent: "center",
+                            width: 0.5,
+                            bottom: 0,
+                            flexDirection: "column",
+                            gap: 1,
+                            alignItems: "stretch",
+                            pb: 2,
+                        }}
                     >
-                        <Toolbar
-                            sx={{ justifyContent: "space-evenly", gap: 2 }}
+                        {showAutocomplete && (
+                            <Autocomplete
+                                options={brains
+                                    .map((b) => b.label)
+                                    .filter(
+                                        (label) =>
+                                            !selectedBrains.includes(label)
+                                    )}
+                                size="small"
+                                autoHighlight
+                                open
+                                onChange={(e, value) => {
+                                    if (value) handleSelectBrain(value);
+                                }}
+                                renderOption={(props, option) => {
+                                    const brain = brains.find(
+                                        (b) => b.label === option
+                                    );
+                                    return (
+                                        <li {...props}>
+                                            {brain?.icon}
+                                            <span style={{ marginLeft: 8 }}>
+                                                {option}
+                                            </span>
+                                        </li>
+                                    );
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        placeholder="Selecteer een Brain"
+                                    />
+                                )}
+                            />
+                        )}
+
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 1,
+                            }}
+                        >
+                            {selectedBrains.map((brain) => {
+                                const brainData = brains.find(
+                                    (b) => b.label === brain
+                                );
+                                return (
+                                    <Chip
+                                        key={brain}
+                                        label={brain}
+                                        icon={brainData?.icon}
+                                        onDelete={() =>
+                                            handleDeleteBrain(brain)
+                                        }
+                                    />
+                                );
+                            })}
+                        </Box>
+
+                        <Box
+                            sx={{
+                                display: "flex",
+                                gap: 1,
+                                alignItems: "center",
+                            }}
                         >
                             <TextField
                                 fullWidth
@@ -91,22 +202,14 @@ export default function ChatPage() {
                                 variant="outlined"
                                 size="small"
                                 placeholder="Wat wil je vragen?"
-                                color="primary"
-                                sx={{ flexGrow: 1 }}
-                                // onChange={(e) => setQuestion(e.target.value)}
-                                // onKeyDown={(e) => {
-                                //     if (e.key === "Enter" && !e.shiftKey) {
-                                //         e.preventDefault();
-                                //         handleSend();
-                                //     }
-                                // }}
-                                // disabled={loading}
+                                value={question}
+                                onChange={handleInputChange}
                             />
-
                             <Button
                                 variant="contained"
                                 size="medium"
                                 aria-label="Send"
+                                onClick={handleSend}
                                 sx={{
                                     px: { xs: 1, sm: 2, md: 3 },
                                     flexShrink: 0,
@@ -115,9 +218,9 @@ export default function ChatPage() {
                             >
                                 <Send />
                             </Button>
-                        </Toolbar>
-                    </Grow>
-                </AppBar>
+                        </Box>
+                    </Toolbar>
+                </Grow>
             </Grid>
         </Box>
     );

@@ -63,7 +63,10 @@ export default function Layout() {
                     gridTemplateColumns: {
                         xs: "1fr",
                         sm: "1fr",
-                        md: chatOpen ? `1fr ${CHAT_DRAWER_WIDTH}px` : "1fr",
+                        md:
+                            chatOpen && !isDisabled
+                                ? `1fr ${CHAT_DRAWER_WIDTH}px`
+                                : "1fr",
                     },
                 }}
             >
