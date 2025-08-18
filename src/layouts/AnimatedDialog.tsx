@@ -14,22 +14,13 @@ import {
     DialogActions,
     Button,
     Stack,
-    Box,
-    Grid,
     Grow,
-    CardHeader,
-    Avatar,
-    Typography,
-    Divider,
-    alpha,
     useTheme,
     useMediaQuery,
     IconButton,
 } from "@mui/material";
-import { getColorsByToolCategory } from "../utils/colorutils";
 import { R } from "react-router/dist/development/routeModules-BR2FO0ix";
 import { TransitionProps } from "@mui/material/transitions";
-import { grey } from "@mui/material/colors";
 import { Close } from "@mui/icons-material";
 
 interface AnimatedDialogProps<T> {
@@ -107,7 +98,7 @@ export function AnimatedDialog<T>({
                 <IconButton
                     onClose={close}
                     sx={(theme) => ({
-                        position: 'absolute',
+                        position: "absolute",
                         right: 8,
                         top: 8,
                         color: theme.palette.grey[500],

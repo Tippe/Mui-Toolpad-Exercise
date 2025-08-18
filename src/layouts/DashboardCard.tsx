@@ -3,7 +3,6 @@ import { useSpring, a } from "@react-spring/web";
 import {
     Box,
     Card,
-    CardActionArea,
     CardActions,
     CardContent,
     Collapse,

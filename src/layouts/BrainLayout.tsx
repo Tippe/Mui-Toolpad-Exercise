@@ -16,8 +16,6 @@ import {
     Typography,
 } from "@mui/material";
 import { ExpandMore, ExpandLess, MoreVert } from "@mui/icons-material";
-import { blue } from "@mui/material/colors";
-import { theme } from "../theme";
 
 interface BrainLayoutProps {
     title: string;
@@ -175,31 +173,30 @@ export default function BrainLayout({
 
                         <Divider />
 
-                        
-                            <Collapse
-                                in={open}
-                                unmountOnExit
+                        <Collapse
+                            in={open}
+                            unmountOnExit
+                            sx={{
+                                flex: 1,
+                                minHeight: 0,
+                            }}
+                        >
+                            <CardContent
                                 sx={{
+                                    display: "flex",
                                     flex: 1,
-                                    minHeight: 0,
+                                    px: 2,
+                                    overflowY: "auto",
+                                    height: height ?? cardHeight,
+                                    justifyContent: "center",
+                                    textAlign: "center",
+                                    alignItems: "center",
                                 }}
                             >
-                                <CardContent
-                                    sx={{
-                                        display: "flex",
-                                        flex: 1,
-                                        px: 2,
-                                        overflowY: "auto",
-                                        height: height ?? cardHeight,
-                                        justifyContent: "center",
-                                        textAlign: "center",
-                                        alignItems: "center"
-                                    }}
-                                >
-                                    {front}
-                                </CardContent>
-                            </Collapse>
-                        
+                                {front}
+                            </CardContent>
+                        </Collapse>
+
                         <CardActions
                             sx={{
                                 justifyContent: "center",

@@ -1,11 +1,6 @@
 import * as React from "react";
 import { Outlet, useLocation } from "react-router";
-import {
-    Account,
-    DashboardLayout,
-    PageContainer,
-    ThemeSwitcher,
-} from "@toolpad/core";
+import { Account, DashboardLayout, PageContainer } from "@toolpad/core";
 import { Box, IconButton, Tooltip } from "@mui/material";
 import { Chat } from "@mui/icons-material";
 import CustomMenu from "./CustomMenu";

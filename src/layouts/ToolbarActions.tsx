@@ -12,14 +12,12 @@ import {
     ListItemIcon,
     ListItemText,
     Menu,
-    MenuItem,
     Stack,
     Typography,
 } from "@mui/material";
 import {
     CheckCircle,
     Email,
-    ExpandMore,
     Notifications,
     Warning,
 } from "@mui/icons-material";
