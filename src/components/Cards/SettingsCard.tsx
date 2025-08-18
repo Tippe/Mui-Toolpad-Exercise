@@ -11,11 +11,6 @@ export default function SettingsCard({ height }: { height?: number | string }) {
             subtitle="Quick settings"
             height={height}
             icon={<Settings sx={{ fontSize: 30 }} />}
-            actions={
-                <IconButton>
-                    <Visibility />
-                </IconButton>
-            }
             front={<Typography>Hier komt dynamische content</Typography>}
         />
     );

@@ -110,11 +110,6 @@ export default function AgendaCard({ height }: { height?: number | string }) {
             subtitle="See your day"
             height={height}
             icon={<CalendarViewDay sx={{ fontSize: 30 }} />}
-            actions={
-                <IconButton>
-                    <Visibility />
-                </IconButton>
-            }
             front={
                 <DateCalendar
                     defaultValue={initialValue}

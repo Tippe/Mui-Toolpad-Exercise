@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Box, Grid, Grow, Stack, Zoom } from "@mui/material";
 import AgendaCard from "../components/Cards/AgendaCard";
-import NotificationCard from "../components/Cards/NotificationCard";
 import BrainCard from "../components/Cards/BrainCard";
 import ToDoCard from "../components/Cards/ToDoCard";
 import SettingsCard from "../components/Cards/SettingsCard";
@@ -37,7 +36,6 @@ export default function DashboardPage() {
 
     // Phase 2: Trail of card groups
     const cards = [
-        [<NotificationCard height={HALF_CARD_HEIGHT} />],
         [<SettingsCard height={HALF_CARD_HEIGHT} />],
         [<BrainCard height={HALF_CARD_HEIGHT} />],
         [<ToDoCard height={HALF_CARD_HEIGHT} />],

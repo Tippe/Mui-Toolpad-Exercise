@@ -18,9 +18,9 @@ import DashboardCard from "../../layouts/DashboardCard";
 export default function ToDoCard({ height }: { height?: number | string }) {
     const [newTask, setNewTask] = React.useState("");
     const [tasks, setTasks] = React.useState([
-        "Review and approve the new marketing campaign draft",
-        "Update product inventory for August sales",
-        "Follow up with supplier regarding delayed shipment",
+        "Reply to mail from HR",
+        "You have an unread mail from Sales",
+        "Follow up with mail regarding delayed shipment",
         "Prepare presentation slides for Monday's team meeting",
         "Respond to customer feedback from the support portal",
     ]);
@@ -42,11 +42,6 @@ export default function ToDoCard({ height }: { height?: number | string }) {
             subtitle="Suggestions"
             height={height}
             icon={<Checklist sx={{ fontSize: 30 }} />}
-            actions={
-                <IconButton>
-                    <Visibility />
-                </IconButton>
-            }
             front={
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                     <List

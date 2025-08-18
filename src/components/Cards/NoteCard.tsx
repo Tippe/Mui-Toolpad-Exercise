@@ -11,11 +11,6 @@ export default function NoteCard({ height }: { height?: number | string }) {
             subtitle="Write notes"
             height={height}
             icon={<Notes sx={{ fontSize: 30 }} />}
-            actions={
-                <IconButton>
-                    <Visibility />
-                </IconButton>
-            }
             front={
                 <TextField
                     variant="outlined"

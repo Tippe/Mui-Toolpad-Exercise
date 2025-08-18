@@ -37,11 +37,6 @@ export default function BrainCard({ height }: { height?: number | string }) {
             subtitle="Thinking machines"
             height={height}
             icon={<EmojiObjects sx={{ fontSize: 30 }} />}
-            actions={
-                <IconButton href="./brains">
-                    <Visibility />
-                </IconButton>
-            }
             front={
                 <List dense>
                     {rows.map((row) => (
