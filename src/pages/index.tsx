@@ -62,7 +62,7 @@ export default function DashboardPage() {
                         minWidth={320}
                     >
                         <animated.div style={style}>
-                            <Stack spacing={5}>
+                            <Stack>
                                 {cards[index].map((Child, idx) => (
                                     <React.Fragment key={idx}>
                                         {Child}
