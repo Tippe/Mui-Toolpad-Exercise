@@ -2,38 +2,24 @@ import * as React from "react";
 import { useDialogs } from "@toolpad/core";
 import {
     Alert,
-    Avatar,
     Badge,
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
     Grid,
     IconButton,
     List,
     ListItem,
-    ListItemAvatar,
     ListItemIcon,
     ListItemText,
-    ListSubheader,
     Paper,
     Stack,
     Switch,
     Typography,
 } from "@mui/material";
 import {
-    Delete,
     Domain,
-    Error,
-    Folder,
-    Info,
     Microsoft,
     MiscellaneousServices,
     Notifications,
-    TaskAlt,
     Visibility,
-    Warning,
 } from "@mui/icons-material";
 import DashboardCard from "../../layouts/DashboardCard";
 import { AnimatedDialog } from "../../layouts/AnimatedDialog";
@@ -181,11 +167,6 @@ export default function NotificationCard({
                 <Badge badgeContent={totalAlerts} color="info">
                     <Notifications sx={{ fontSize: 30 }} />
                 </Badge>
-            }
-            actions={
-                <IconButton onClick={handleOpen}>
-                    <Visibility />
-                </IconButton>
             }
             front={
                 <List>

@@ -14,21 +14,25 @@ import {
     Chip,
 } from "@mui/material";
 import {
+    AccountBalance,
     AttachMoney,
-    Balance,
     Chat,
+    Code,
+    HeadsetMic,
+    LocalShipping,
     People,
     Send,
-    Web,
 } from "@mui/icons-material";
 
 const drawerWidth = 320;
 
 const brains = [
-    { label: "GPT", icon: <Web fontSize="small" /> },
+    { label: "Dev", icon: <Code fontSize="small" /> },
+    { label: "Finance", icon: <AccountBalance fontSize="small" /> },
+    { label: "HR", icon: <People fontSize="small" /> },
+    { label: "Logistic", icon: <LocalShipping fontSize="small" /> },
     { label: "Sales", icon: <AttachMoney fontSize="small" /> },
-    { label: "Legal", icon: <Balance fontSize="small" /> },
-    { label: "Human Resources", icon: <People fontSize="small" /> },
+    { label: "Support", icon: <HeadsetMic fontSize="small" /> },
 ];
 
 export default function ChatDrawer() {

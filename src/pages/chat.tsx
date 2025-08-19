@@ -1,134 +1,193 @@
 import * as React from "react";
-import { JSX, useState, useRef, useEffect } from "react";
 import {
     AppBar,
+    Autocomplete,
     Box,
-    Fab,
+    Button,
+    Chip,
+    Divider,
     Grid,
-    ListItemIcon,
-    ListItemText,
-    Menu,
-    MenuItem,
-    MenuList,
-    SpeedDialIcon,
+    Grow,
+    IconButton,
+    InputBase,
+    Paper,
     Stack,
+    TextField,
     Toolbar,
     Typography,
-    Paper,
-    TextField,
-    styled,
-    Button,
-    CircularProgress,
-    Grow,
 } from "@mui/material";
-import { Send } from "@mui/icons-material";
+import {
+    AccountBalance,
+    AttachMoney,
+    Chat,
+    Code,
+    HeadsetMic,
+    LocalShipping,
+    People,
+    Send,
+} from "@mui/icons-material";
 
 export default function ChatPage() {
-    const [checked] = useState(true);
-    const scrollRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {
+    const [checked] = React.useState(true);
+    const [question, setQuestion] = React.useState("");
+    const [selectedBrains, setSelectedBrains] = React.useState<string[]>([]);
+    const [showAutocomplete, setShowAutocomplete] = React.useState(false);
+    const scrollRef = React.useRef<HTMLDivElement>(null);
+
+    const brains = [
+        { label: "Dev", icon: <Code fontSize="small" /> },
+        { label: "Finance", icon: <AccountBalance fontSize="small" /> },
+        { label: "HR", icon: <People fontSize="small" /> },
+        { label: "Logistic", icon: <LocalShipping fontSize="small" /> },
+        { label: "Sales", icon: <AttachMoney fontSize="small" /> },
+        { label: "Support", icon: <HeadsetMic fontSize="small" /> },
+    ];
+
+    React.useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, []);
-    return (
-        <Box>
-            <Grid container spacing={1}>
-                <Grid size="grow"></Grid>
-                <Grow in={checked}>
-                    <Grid
-                        size={{
-                            xs: 12,
-                            xl: 10,
-                        }}
-                    >
-                        <Stack
-                            spacing={3}
-                            sx={{
-                                alignItems: "center",
-                                textAlign: "center",
-                            }}
-                        >
-                            {/**
-                             * Laat "Welkom Box" zien wanneer er nog geen berichten staan
-                             */}
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    textAlign: "center",
-                                    height: 1,
-                                    color: "secondary",
-                                }}
-                            >
-                                <Typography variant="h6" sx={{ opacity: 0.7 }}>
-                                    🎉 Welkom!
-                                    <br />
-                                    Stel je eerste vraag om te beginnen.
-                                </Typography>
-                            </Box>
-                        </Stack>
-                    </Grid>
-                </Grow>
-                <Grid size="grow"></Grid>
 
-                {/**
-                 * Textfield en button onderaan de pagina
-                 */}
-                <AppBar
-                    color="inherit"
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setQuestion(value);
+        setShowAutocomplete(value.endsWith("@"));
+    };
+
+    const handleSelectBrain = (brainLabel: string) => {
+        setSelectedBrains((prev) =>
+            prev.includes(brainLabel) ? prev : [...prev, brainLabel]
+        );
+        setQuestion(""); // reset na selectie
+        setShowAutocomplete(false);
+    };
+
+    const handleDeleteBrain = (brainLabel: string) => {
+        setSelectedBrains((prev) => prev.filter((b) => b !== brainLabel));
+    };
+
+    const handleSend = () => {
+        if (!question.trim() && selectedBrains.length === 0) return;
+        console.log("Verstuur:", { question, selectedBrains });
+        setQuestion("");
+        setSelectedBrains([]);
+        setShowAutocomplete(false);
+    };
+
+    return (
+        <Box sx={{ display: "flex", flexDirection: "column", height: 1 }}>
+            <Stack
+                spacing={3}
+                sx={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    color: "secondary",
+                    flexGrow: 1,
+                    overflow: "auto",
+                    mt: { xs: 1, sm: 1, md: 0 },
+                }}
+            >
+                <Typography variant="h6" sx={{ opacity: 0.7 }}>
+                    🎉 Welkom!
+                    <br />
+                    Stel je eerste vraag om te beginnen.
+                </Typography>
+            </Stack>
+
+            <Stack
+                sx={{
+                    position: "sticky",
+                    bottom: 0,
+                    py: 2,
+                    gap: 1,
+                }}
+            >
+                {showAutocomplete && (
+                    <Autocomplete
+                        options={brains
+                            .map((b) => b.label)
+                            .filter((label) => !selectedBrains.includes(label))}
+                        size="small"
+                        autoHighlight
+                        open
+                        onChange={(e, value) => {
+                            if (value) handleSelectBrain(value);
+                        }}
+                        renderOption={(props, option) => {
+                            const brain = brains.find(
+                                (b) => b.label === option
+                            );
+                            return (
+                                <li {...props}>
+                                    {brain?.icon}
+                                    <span style={{ marginLeft: 8 }}>
+                                        {option}
+                                    </span>
+                                </li>
+                            );
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder="Selecteer een Brain"
+                            />
+                        )}
+                    />
+                )}
+
+                <Box
                     sx={{
-                        position: "fixed",
-                        width: "calc(100% - 320px)",
-                        ml: "calc(100% - 320px)",
-                        top: "auto",
-                        bottom: 0,
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 1,
                     }}
                 >
-                    <Grow
-                        in={checked}
-                        style={{ transformOrigin: "0 0 1" }}
-                        {...(checked ? { timeout: 750 } : {})}
-                    >
-                        <Toolbar
-                            sx={{ justifyContent: "space-evenly", gap: 2 }}
-                        >
-                            <TextField
-                                fullWidth
-                                multiline
-                                maxRows={5}
-                                variant="outlined"
-                                size="small"
-                                placeholder="Wat wil je vragen?"
-                                color="primary"
-                                sx={{ flexGrow: 1 }}
-                                // onChange={(e) => setQuestion(e.target.value)}
-                                // onKeyDown={(e) => {
-                                //     if (e.key === "Enter" && !e.shiftKey) {
-                                //         e.preventDefault();
-                                //         handleSend();
-                                //     }
-                                // }}
-                                // disabled={loading}
+                    {selectedBrains.map((brain) => {
+                        const brainData = brains.find((b) => b.label === brain);
+                        return (
+                            <Chip
+                                key={brain}
+                                label={brain}
+                                icon={brainData?.icon}
+                                onDelete={() => handleDeleteBrain(brain)}
                             />
+                        );
+                    })}
+                </Box>
 
-                            <Button
-                                variant="contained"
-                                size="medium"
-                                aria-label="Send"
-                                sx={{
-                                    px: { xs: 1, sm: 2, md: 3 },
-                                    flexShrink: 0,
-                                    minWidth: { xs: 36, sm: 44 },
-                                }}
-                            >
-                                <Send />
-                            </Button>
-                        </Toolbar>
-                    </Grow>
-                </AppBar>
-            </Grid>
+                <Paper
+                    component="form"
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        bottom: 0,
+                        p: 1,
+                    }}
+                >
+                    <InputBase
+                        multiline
+                        maxRows={5}
+                        placeholder="Wat wil je vragen?"
+                        value={question}
+                        onChange={handleInputChange}
+                        sx={{ ml: 1, flex: 1 }}
+                    />
+                    <Divider
+                        orientation="vertical"
+                        sx={{ height: 28, mr: 1 }}
+                    />
+                    <IconButton
+                        aria-label="Send"
+                        onClick={handleSend}
+                        color="primary"
+                        sx={{ p: 1 }}
+                    >
+                        <Send />
+                    </IconButton>
+                </Paper>
+            </Stack>
         </Box>
     );
 }

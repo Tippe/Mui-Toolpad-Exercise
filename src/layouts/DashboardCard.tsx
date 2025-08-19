@@ -3,7 +3,6 @@ import { useSpring, a } from "@react-spring/web";
 import {
     Box,
     Card,
-    CardActionArea,
     CardActions,
     CardContent,
     Collapse,
@@ -12,7 +11,7 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import { ExpandMore, ExpandLess } from "@mui/icons-material";
+import { ExpandMore, ExpandLess, MoreVert } from "@mui/icons-material";
 
 interface DashboardCardProps {
     title: string;
@@ -20,7 +19,6 @@ interface DashboardCardProps {
     icon?: React.ReactNode;
     front?: React.ReactNode;
     back?: React.ReactNode;
-    actions?: React.ReactNode;
     height?: number | string;
 }
 
@@ -30,7 +28,6 @@ export default function DashboardCard({
     icon,
     front,
     back,
-    actions,
     height,
 }: DashboardCardProps) {
     const [open, setOpen] = React.useState(true);
@@ -140,37 +137,39 @@ export default function DashboardCard({
                                         alignItems: "center",
                                     }}
                                 >
-                                    {actions}
+                                    <IconButton
+                                        onClick={(e) => {
+                                            setFlip((s) => !s);
+                                        }}
+                                    >
+                                        <MoreVert />
+                                    </IconButton>
                                 </Grid>
                             </Grid>
                         </CardContent>
 
                         <Divider />
 
-                        <CardActionArea
-                            sx={{ borderRadius: 0 }}
-                            onClick={() => setFlip((state) => !state)}
+                        <Collapse
+                            in={open}
+                            unmountOnExit
+                            sx={{
+                                flex: 1,
+                                minHeight: 0,
+                            }}
                         >
-                            <Collapse
-                                in={open}
-                                unmountOnExit
+                            <CardContent
                                 sx={{
                                     flex: 1,
-                                    minHeight: 0,
+                                    px: 2,
+                                    overflowY: "auto",
+                                    height: height ?? cardHeight,
                                 }}
                             >
-                                <CardContent
-                                    sx={{
-                                        flex: 1,
-                                        px: 2,
-                                        overflowY: "auto",
-                                        height: height ?? cardHeight,
-                                    }}
-                                >
-                                    {front}
-                                </CardContent>
-                            </Collapse>
-                        </CardActionArea>
+                                {front}
+                            </CardContent>
+                        </Collapse>
+
                         <CardActions
                             sx={{
                                 justifyContent: "center",
@@ -234,36 +233,38 @@ export default function DashboardCard({
                                         alignItems: "center",
                                     }}
                                 >
-                                    {actions}
+                                    <IconButton
+                                        onClick={(e) => {
+                                            setFlip((s) => !s);
+                                        }}
+                                    >
+                                        <MoreVert />
+                                    </IconButton>
                                 </Grid>
                             </Grid>
                         </CardContent>
 
                         <Divider />
-                        <CardActionArea
-                            onClick={() => setFlip((state) => !state)}
-                            sx={{ borderRadius: 0 }}
+                        <Collapse
+                            in={open}
+                            unmountOnExit
+                            sx={{
+                                flex: 1,
+                                minHeight: 0,
+                            }}
                         >
-                            <Collapse
-                                in={open}
-                                unmountOnExit
+                            <CardContent
                                 sx={{
                                     flex: 1,
-                                    minHeight: 0,
+                                    px: 2,
+                                    overflowY: "auto",
+                                    height: height ?? cardHeight,
                                 }}
                             >
-                                <CardContent
-                                    sx={{
-                                        flex: 1,
-                                        px: 2,
-                                        overflowY: "auto",
-                                        height: height ?? cardHeight,
-                                    }}
-                                >
-                                    {back}
-                                </CardContent>
-                            </Collapse>
-                        </CardActionArea>
+                                {back}
+                            </CardContent>
+                        </Collapse>
+
                         <CardActions
                             sx={{
                                 justifyContent: "center",

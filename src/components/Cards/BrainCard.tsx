@@ -1,53 +1,38 @@
 import * as React from "react";
+import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import {
-    Button,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-} from "@mui/material";
-import {
-    Fingerprint,
-    Hardware,
     EmojiObjects,
-    Visibility,
-    Height,
+    AttachMoney,
+    People,
+    Code,
+    AccountBalance,
+    LocalShipping,
+    HeadsetMic,
 } from "@mui/icons-material";
 import DashboardCard from "../../layouts/DashboardCard";
 
 const rows = [
-    {
-        id: 1,
-        icon: <Fingerprint />,
-        name: "Identity",
-    },
-    {
-        id: 2,
-        icon: <Hardware />,
-        name: "Builder",
-    },
+    { label: "Dev", icon: <Code fontSize="small" /> },
+    { label: "Finance", icon: <AccountBalance fontSize="small" /> },
+    { label: "HR", icon: <People fontSize="small" /> },
+    { label: "Logistic", icon: <LocalShipping fontSize="small" /> },
+    { label: "Sales", icon: <AttachMoney fontSize="small" /> },
+    { label: "Support", icon: <HeadsetMic fontSize="small" /> },
 ];
 
 export default function BrainCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
-            title="Brains"
-            subtitle="Thinking machines"
+            title="Databronnen"
+            subtitle="Informational vaults"
             height={height}
             icon={<EmojiObjects sx={{ fontSize: 30 }} />}
-            actions={
-                <IconButton href="./brains">
-                    <Visibility />
-                </IconButton>
-            }
             front={
                 <List dense>
                     {rows.map((row) => (
-                        <ListItem key={row.id}>
+                        <ListItem>
                             <ListItemIcon>{row.icon}</ListItemIcon>
-                            <ListItemText primary={row.name} />
+                            <ListItemText primary={row.label} />
                         </ListItem>
                     ))}
                 </List>

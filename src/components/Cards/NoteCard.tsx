@@ -1,8 +1,7 @@
 import * as React from "react";
-import Typography from "@mui/material/Typography";
-import { Button, IconButton, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import DashboardCard from "../../layouts/DashboardCard";
-import { Notes, Visibility } from "@mui/icons-material";
+import { Notes } from "@mui/icons-material";
 
 export default function NoteCard({ height }: { height?: number | string }) {
     return (
@@ -11,11 +10,6 @@ export default function NoteCard({ height }: { height?: number | string }) {
             subtitle="Write notes"
             height={height}
             icon={<Notes sx={{ fontSize: 30 }} />}
-            actions={
-                <IconButton>
-                    <Visibility />
-                </IconButton>
-            }
             front={
                 <TextField
                     variant="outlined"
