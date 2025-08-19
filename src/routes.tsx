@@ -5,6 +5,7 @@ import {
     Dashboard,
     EmojiObjects,
     Extension,
+    Hail,
     Hardware,
     Person,
     Repeat,
@@ -58,9 +59,9 @@ export const NAVIGATION: Navigation = [
         icon: <Add />,
         children: [
             {
-                segment: "tools",
-                title: "Tools",
-                icon: <Hardware />,
+                segment: "buddys",
+                title: "Buddy's",
+                icon: <Hail />,
             },
             {
                 segment: "connector",

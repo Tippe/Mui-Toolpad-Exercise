@@ -40,9 +40,7 @@ export default function ChatDrawer() {
         { id: 1, text: "Welkom bij de chat!", brains: [] as string[] },
     ]);
     const [message, setMessage] = React.useState("");
-    const [selectedBrains, setSelectedBrains] = React.useState<string[]>([
-        "GPT",
-    ]);
+    const [selectedBrains, setSelectedBrains] = React.useState<string[]>([]);
     const [showAutocomplete, setShowAutocomplete] = React.useState(false);
 
     const sendMessage = () => {

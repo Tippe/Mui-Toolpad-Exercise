@@ -11,6 +11,7 @@ import ActionPage from "./pages/action";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { msalConfig } from "./config/auth/authConfig";
 import DataBronPage from "./pages/databronnen";
+import BuddyPage from "./pages/buddys";
 
 const router = createBrowserRouter([
     {
@@ -26,13 +27,8 @@ const router = createBrowserRouter([
                 Component: ChatPage,
             },
             {
-                path: "",
-                children: [
-                    {
-                        path: "profile",
-                        Component: ProfilePage,
-                    },
-                ],
+                path: "profile",
+                Component: ProfilePage,
             },
             {
                 path: "settings",
@@ -45,6 +41,15 @@ const router = createBrowserRouter([
             {
                 path: "databronnen",
                 Component: DataBronPage,
+            },
+            {
+                path: "/addition",
+                children: [
+                    {
+                        path: "buddys",
+                        Component: BuddyPage,
+                    },
+                ],
             },
         ],
     },

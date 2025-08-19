@@ -14,7 +14,6 @@ import { theme } from "./theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "./config/auth/authConfig";
-import { useSilentToken } from "./config/auth/authProvider";
 
 const providers: AuthProvider[] = [
     { id: "github", name: "GitHub" },

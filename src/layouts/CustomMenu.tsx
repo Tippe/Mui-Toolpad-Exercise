@@ -1,15 +1,5 @@
 import * as React from "react";
-import {
-    MenuItem,
-    MenuList,
-    Button,
-    Divider,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-    Avatar,
-    Stack,
-} from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import {
     AccountPreview,
     SignOutButton,
