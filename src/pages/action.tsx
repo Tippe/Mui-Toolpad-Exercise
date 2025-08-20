@@ -23,6 +23,7 @@ import {
     InputLabel,
     MenuItem,
     alpha,
+    useTheme,
 } from "@mui/material";
 import {
     Add,
@@ -371,6 +372,8 @@ function ConfirmDelete({
 
 // ----- Main Component -----
 export default function ActionPage(): JSX.Element {
+    const theme = useTheme();
+    const isDarkMode = theme.palette.mode === "dark";
     const [actions, setActions] = useState<Action[]>([]);
     const [formOpen, setFormOpen] = useState(false);
     const [editing, setEditing] = useState<Action | undefined>(undefined);
@@ -500,7 +503,12 @@ export default function ActionPage(): JSX.Element {
                                                     transform:
                                                         "translate(-50%, -50%)",
                                                     fontSize: 100,
-                                                    color: alpha("#fff", 0.1),
+                                                    color: alpha(
+                                                        isDarkMode
+                                                            ? "#fff"
+                                                            : "#000",
+                                                        0.15
+                                                    ),
                                                     pointerEvents: "none",
                                                 }}
                                             />

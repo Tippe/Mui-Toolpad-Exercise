@@ -15,8 +15,8 @@ export default function BuddyPage() {
         >
             <Settings
                 sx={{
-                    fontSize: 450,
-                    animation: "spin 20s linear infinite",
+                    fontSize: 500,
+                    animation: "spin 30s linear infinite",
                     "@keyframes spin": {
                         "0%": { transform: "rotate(0deg)" },
                         "100%": { transform: "rotate(360deg)" },
