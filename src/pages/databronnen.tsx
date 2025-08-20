@@ -74,7 +74,9 @@ export default function DataBronPage() {
 
     return (
         <>
-            <Button onClick={askForBrains}>Get Brains</Button>
+            <Button variant="outlined" onClick={askForBrains}>
+                Databronnen
+            </Button>
 
             <Grid container columnSpacing={3} rowSpacing={5}>
                 {brains.map((brain: any, idx: number) => (
