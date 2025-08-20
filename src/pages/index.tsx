@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Grid, Grow, Stack, Zoom } from "@mui/material";
+import { Box, Button, Grid, Grow, Stack, Zoom } from "@mui/material";
 import AgendaCard from "../components/Cards/AgendaCard";
 import NotificationCard from "../components/Cards/NotificationCard";
 import BrainCard from "../components/Cards/BrainCard";
@@ -14,6 +14,13 @@ import {
     useSpringRef,
     useTrail,
 } from "@react-spring/web";
+import {
+    DndContext,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
+import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 
 export default function DashboardPage() {
     const [checked, setChecked] = React.useState(false);
@@ -37,13 +44,17 @@ export default function DashboardPage() {
 
     // Phase 2: Trail of card groups
     const cards = [
-        [<NotificationCard height={HALF_CARD_HEIGHT} />],
-        [<SettingsCard height={HALF_CARD_HEIGHT} />],
-        [<BrainCard height={HALF_CARD_HEIGHT} />],
-        [<ToDoCard height={HALF_CARD_HEIGHT} />],
-        [<NoteCard height={HALF_CARD_HEIGHT} />],
-        [<AgendaCard height={HALF_CARD_HEIGHT} />],
+        {
+            id: "notifications",
+            element: <NotificationCard height={HALF_CARD_HEIGHT} />,
+        },
+        { id: "settings", element: <SettingsCard height={HALF_CARD_HEIGHT} /> },
+        { id: "brain", element: <BrainCard height={HALF_CARD_HEIGHT} /> },
+        { id: "todo", element: <ToDoCard height={HALF_CARD_HEIGHT} /> },
+        { id: "notes", element: <NoteCard height={HALF_CARD_HEIGHT} /> },
+        { id: "agenda", element: <AgendaCard height={HALF_CARD_HEIGHT} /> },
     ];
+
     const trailRef = useSpringRef();
     const trail = useTrail(cards.length, {
         ref: trailRef,
@@ -54,27 +65,35 @@ export default function DashboardPage() {
 
     useChain([containerRef, trailRef], [0, 0.1]);
 
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                delay: 100,
+                tolerance: 10,
+            },
+        })
+    );
+
     return (
         <animated.div style={containerSpring}>
-            <Grid container columnSpacing={3} rowSpacing={5}>
-                {trail.map((style, index) => (
-                    <Grid
-                        key={index}
-                        size={{ xs: 12, sm: 12, md: 6, lg: 3, xl: 2 }}
-                        minWidth={320}
-                    >
-                        <animated.div style={style}>
-                            <Stack spacing={5}>
-                                {cards[index].map((Child, idx) => (
-                                    <React.Fragment key={idx}>
-                                        {Child}
-                                    </React.Fragment>
-                                ))}
-                            </Stack>
-                        </animated.div>
-                    </Grid>
-                ))}
-            </Grid>
+            <DndContext modifiers={[restrictToWindowEdges]} sensors={sensors}>
+                <Grid container columnSpacing={3} rowSpacing={5}>
+                    {trail.map((style, index) => {
+                        const card = cards[index];
+                        return (
+                            <Grid
+                                key={index}
+                                size={{ xs: 12, sm: 12, md: 6, lg: 3, xl: 2 }}
+                                minWidth={320}
+                            >
+                                <animated.div style={style}>
+                                    <Stack spacing={5}>{card.element}</Stack>
+                                </animated.div>
+                            </Grid>
+                        );
+                    })}
+                </Grid>
+            </DndContext>
         </animated.div>
     );
 }

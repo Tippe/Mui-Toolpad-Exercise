@@ -12,8 +12,24 @@ import {
     Typography,
 } from "@mui/material";
 import { ExpandMore, ExpandLess, MoreVert } from "@mui/icons-material";
+import {
+    DndContext,
+    closestCenter,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    useDraggable,
+} from "@dnd-kit/core";
+import {
+    SortableContext,
+    useSortable,
+    arrayMove,
+    rectSortingStrategy,
+} from "@dnd-kit/sortable";
+import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 
 interface DashboardCardProps {
+    id: string;
     title: string;
     subtitle?: string;
     icon?: React.ReactNode;
@@ -23,6 +39,7 @@ interface DashboardCardProps {
 }
 
 export default function DashboardCard({
+    id,
     title,
     subtitle,
     icon,
@@ -36,6 +53,19 @@ export default function DashboardCard({
 
     const frontRef = React.useRef<HTMLDivElement>(null);
     const backRef = React.useRef<HTMLDivElement>(null);
+
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+        id,
+    });
+
+    const style = transform
+        ? {
+              transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+              touchAction: "none",
+              zIndex: 999,
+              position: "relative",
+          }
+        : undefined;
 
     // ResizeObserver om de hoogte van de front of back kant te volgen
     React.useEffect(() => {
@@ -67,7 +97,7 @@ export default function DashboardCard({
         };
     }, [open]);
 
-    const { transform, opacity } = useSpring({
+    const { transform: springTransform, opacity } = useSpring({
         opacity: flipped ? 1 : 0,
         transform: `perspective(1800px) rotateY(${flipped ? 180 : 0}deg)`,
         config: { mass: 5, tension: 555, friction: 80 },
@@ -75,9 +105,13 @@ export default function DashboardCard({
 
     return (
         <Box
+            ref={setNodeRef}
+            {...listeners}
+            {...attributes}
             sx={{
                 position: "relative",
                 height: cardHeight || "auto",
+                ...style,
             }}
         >
             <a.div
@@ -85,7 +119,7 @@ export default function DashboardCard({
                     position: "relative",
                     width: "100%",
                     transformStyle: "preserve-3d",
-                    transform,
+                    transform: springTransform,
                 }}
             >
                 {/* FRONT SIDE */}

@@ -6,6 +6,7 @@ import { Notes } from "@mui/icons-material";
 export default function NoteCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
+            id="Notitie"
             title="Notities"
             subtitle="Write notes"
             height={height}

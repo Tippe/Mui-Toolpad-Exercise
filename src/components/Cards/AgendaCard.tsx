@@ -105,6 +105,7 @@ export default function AgendaCard({ height }: { height?: number | string }) {
 
     return (
         <DashboardCard
+            id="Agenda"
             title="Agenda"
             subtitle="See your day"
             height={height}

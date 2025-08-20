@@ -7,6 +7,7 @@ import { Settings, Visibility } from "@mui/icons-material";
 export default function SettingsCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
+            id="Instelling"
             title="Instellingen"
             subtitle="Quick settings"
             height={height}

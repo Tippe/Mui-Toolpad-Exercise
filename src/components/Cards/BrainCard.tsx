@@ -23,6 +23,7 @@ const rows = [
 export default function BrainCard({ height }: { height?: number | string }) {
     return (
         <DashboardCard
+            id="Databronnen"
             title="Databronnen"
             subtitle="Informational vaults"
             height={height}

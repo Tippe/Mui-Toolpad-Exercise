@@ -160,6 +160,7 @@ export default function NotificationCard({
 
     return (
         <DashboardCard
+            id="Notificatie"
             title="Notificaties"
             subtitle="Unread messages"
             height={height}
