@@ -15,7 +15,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "./config/auth/authConfig";
 import { Box } from "@mui/material";
-import { useSafeMsal } from "./config/auth/useSafeMsal";
 
 const providers: AuthProvider[] = [
     { id: "github", name: "GitHub" },
