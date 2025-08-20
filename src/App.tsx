@@ -14,6 +14,8 @@ import { theme } from "./theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "./config/auth/authConfig";
+import { Box } from "@mui/material";
+import { useSafeMsal } from "./config/auth/useSafeMsal";
 
 const providers: AuthProvider[] = [
     { id: "github", name: "GitHub" },
@@ -31,6 +33,50 @@ const BRANDING = {
 export default function App() {
     const { instance } = useMsal();
     const [session, setSession] = React.useState<Session | null>();
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const tryRestoreSession = async () => {
+            await instance.initialize();
+
+            const accounts = instance.getAllAccounts();
+            if (accounts.length > 0) {
+                const account = accounts[0];
+                instance.setActiveAccount(account);
+
+                try {
+                    const tokenResp = await instance.acquireTokenSilent({
+                        ...loginRequest,
+                        account,
+                    });
+
+                    if (tokenResp?.accessToken) {
+                        localStorage.setItem(
+                            "accessToken",
+                            tokenResp.accessToken
+                        );
+
+                        setSession({
+                            user: {
+                                name: account.name || "User",
+                                email: account.username,
+                            },
+                        });
+                        console.log("✅ Session state set");
+                    }
+                } catch (e) {
+                    console.error("❌ acquireTokenSilent failed:", e);
+                }
+            } else {
+                console.log("⚠️ No accounts found, user is not logged in");
+            }
+
+            setLoading(false);
+            console.log("🔹 Finished session restore, loading set to false");
+        };
+
+        tryRestoreSession();
+    }, [instance]);
 
     const signIn = async (provider: AuthProvider): Promise<AuthResponse> => {
         if (provider.id === "microsoft-entra-id") {
@@ -49,22 +95,19 @@ export default function App() {
 
                 setSession({
                     user: {
-                        name: "Tippe van Roosmalen",
-                        email: "tippe.van.roosmalen@netflex.nl",
-                        //image: "blob:https://developer.microsoft.com/f7929c2c-f648-41b5-b681-957a9750a3d0",
+                        name: account?.name || "User",
+                        email: account?.username,
                     },
                 });
 
-                console.log("Je bent ingelogd!:");
-
+                console.log("✅ Je bent ingelogd!");
                 return {};
             } catch (e) {
-                console.error("Microsoft login failed", e);
-                return { error: "Provider not supported yet" };
+                console.error("❌ Microsoft login failed", e);
+                return { error: "Login mislukt" };
             }
         }
 
-        // For other providers, do nothing for now
         return { error: "Provider not supported yet" };
     };
 
@@ -75,10 +118,16 @@ export default function App() {
                     provider ?? { id: "microsoft-entra-id", name: "Microsoft" }
                 ),
             signOut: () => {
-                setSession(null), localStorage.removeItem("accessToken");
+                setSession(null);
+                //localStorage.removeItem("accessToken");
+                instance.logoutPopup(); // Optional
             },
         };
-    }, []);
+    }, [instance]);
+
+    if (loading) {
+        return <Box>Bezig met sessie herstellen...</Box>;
+    }
 
     if (!session) {
         return <SignInPage signIn={signIn} providers={providers} />;

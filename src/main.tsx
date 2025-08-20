@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
+import { PublicClientApplication } from "@azure/msal-browser";
+import { msalConfig } from "./config/auth/authConfig";
 import { MsalProvider } from "@azure/msal-react";
 import App from "./App";
 import DashboardPage from "./pages";
@@ -8,10 +10,10 @@ import ChatPage from "./pages/chat";
 import ProfilePage from "./pages/profile";
 import SettingsPage from "./pages/settings";
 import ActionPage from "./pages/action";
-import { PublicClientApplication } from "@azure/msal-browser";
-import { msalConfig } from "./config/auth/authConfig";
 import DataBronPage from "./pages/databronnen";
 import BuddyPage from "./pages/buddys";
+
+const msalInstance = new PublicClientApplication(msalConfig);
 
 const router = createBrowserRouter([
     {
@@ -54,8 +56,6 @@ const router = createBrowserRouter([
         ],
     },
 ]);
-
-const msalInstance = new PublicClientApplication(msalConfig);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
