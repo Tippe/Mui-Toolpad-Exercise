@@ -8,7 +8,7 @@ import SupportBrain from "../components/Brains/SupportBrain";
 import FinanceBrain from "../components/Brains/FinanceBrain";
 import { getBrainsConnection } from "../utils/brainsSignalR";
 import BrainLayout from "../layouts/BrainLayout";
-import { MenuBook, School } from "@mui/icons-material";
+import { Psychology } from "@mui/icons-material";
 
 type Brain = {
     id: string;
@@ -20,7 +20,7 @@ type Brain = {
     file_ids: string[];
 };
 
-export default function DataBronPage() {
+export default function BrainPage() {
     const [brains, setBrains] = React.useState<Brain[]>([]);
 
     React.useEffect(() => {
@@ -75,7 +75,7 @@ export default function DataBronPage() {
     return (
         <>
             <Button variant="outlined" onClick={askForBrains}>
-                Databronnen
+                Brains
             </Button>
 
             <Grid container columnSpacing={3} rowSpacing={5}>
@@ -89,7 +89,7 @@ export default function DataBronPage() {
                             title={brain.name}
                             front={brain.description}
                             back={brain.description}
-                            icon={<School sx={{ fontSize: 35 }} />}
+                            icon={<Psychology sx={{ fontSize: 35 }} />}
                             height={200}
                         />
                     </Grid>

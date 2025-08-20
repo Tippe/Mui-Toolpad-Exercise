@@ -3,15 +3,12 @@ import {
     Add,
     Chat,
     Dashboard,
-    EmojiObjects,
     Extension,
     Hail,
-    Hardware,
     Person,
+    Psychology,
     Repeat,
-    School,
     Settings,
-    SwitchAccount,
 } from "@mui/icons-material";
 
 export const NAVIGATION: Navigation = [
@@ -43,9 +40,9 @@ export const NAVIGATION: Navigation = [
         title: "Advanced",
     },
     {
-        segment: "databronnen",
-        title: "Databronnen",
-        icon: <School />,
+        segment: "brain",
+        title: "Brains",
+        icon: <Psychology />,
     },
     {
         segment: "action",

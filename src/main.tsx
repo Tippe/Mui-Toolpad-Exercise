@@ -10,8 +10,8 @@ import ChatPage from "./pages/chat";
 import ProfilePage from "./pages/profile";
 import SettingsPage from "./pages/settings";
 import ActionPage from "./pages/action";
-import DataBronPage from "./pages/databronnen";
 import BuddyPage from "./pages/buddys";
+import BrainPage from "./pages/brain";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -41,8 +41,8 @@ const router = createBrowserRouter([
                 Component: ActionPage,
             },
             {
-                path: "databronnen",
-                Component: DataBronPage,
+                path: "brain",
+                Component: BrainPage,
             },
             {
                 path: "/addition",
