@@ -54,19 +54,6 @@ export default function DashboardCard({
     const frontRef = React.useRef<HTMLDivElement>(null);
     const backRef = React.useRef<HTMLDivElement>(null);
 
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({
-        id,
-    });
-
-    const style = transform
-        ? {
-              transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-              touchAction: "none",
-              zIndex: 999,
-              position: "relative",
-          }
-        : undefined;
-
     // ResizeObserver om de hoogte van de front of back kant te volgen
     React.useEffect(() => {
         const front = frontRef.current;
@@ -105,13 +92,9 @@ export default function DashboardCard({
 
     return (
         <Box
-            ref={setNodeRef}
-            {...listeners}
-            {...attributes}
             sx={{
                 position: "relative",
                 height: cardHeight || "auto",
-                ...style,
             }}
         >
             <a.div

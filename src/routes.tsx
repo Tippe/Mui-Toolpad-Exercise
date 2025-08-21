@@ -1,6 +1,7 @@
 import type { Navigation } from "@toolpad/core/AppProvider";
 import {
     Add,
+    Biotech,
     Chat,
     Dashboard,
     Extension,
