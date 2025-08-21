@@ -7,7 +7,7 @@ import CustomMenu from "./CustomMenu";
 import ChatDrawer from "../components/ChatDrawer";
 import ToolbarActions from "./ToolbarActions";
 
-const CHAT_DRAWER_WIDTH = 328;
+const CHAT_DRAWER_WIDTH = 664;
 
 export default function Layout() {
     const location = useLocation();
@@ -63,7 +63,12 @@ export default function Layout() {
                     gridTemplateColumns: {
                         xs: "1fr",
                         sm: "1fr",
-                        md:
+                        md: "1fr",
+                        lg:
+                            chatOpen && !isDisabled
+                                ? `1fr ${CHAT_DRAWER_WIDTH}px`
+                                : "1fr",
+                        xl:
                             chatOpen && !isDisabled
                                 ? `1fr ${CHAT_DRAWER_WIDTH}px`
                                 : "1fr",
@@ -87,7 +92,9 @@ export default function Layout() {
                                 display: {
                                     xs: "none",
                                     sm: "none",
-                                    md: "block",
+                                    md: "none",
+                                    lg: "block",
+                                    xl: "block",
                                 },
                             }}
                         >

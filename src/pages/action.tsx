@@ -55,7 +55,7 @@ export interface ActionCategory {
 // ----- Simple localStorage-backed store (can later be replaced by API) -----
 const STORAGE_KEY = "actions";
 
-class ActionStore {
+export class ActionStore {
     static loadAll(): Action[] {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) {
@@ -106,7 +106,7 @@ class ActionStore {
 }
 
 // ----- Action Form (used for create + edit) -----
-function ActionForm({
+export function ActionForm({
     open,
     initial,
     onClose,
@@ -333,7 +333,7 @@ function ActionForm({
 }
 
 // ----- Confirm Delete Dialog -----
-function ConfirmDelete({
+export function ConfirmDelete({
     open,
     name,
     onCancel,

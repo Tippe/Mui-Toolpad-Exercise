@@ -24,7 +24,7 @@ import {
     Send,
 } from "@mui/icons-material";
 
-const drawerWidth = 320;
+const drawerWidth = 640;
 
 const brains = [
     { label: "Dev", icon: <Code fontSize="small" /> },
