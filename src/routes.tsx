@@ -2,6 +2,7 @@ import type { Navigation } from "@toolpad/core/AppProvider";
 import {
     Add,
     Biotech,
+    Bolt,
     Chat,
     Dashboard,
     Extension,
@@ -9,6 +10,7 @@ import {
     Person,
     Psychology,
     Repeat,
+    RocketLaunch,
     Settings,
 } from "@mui/icons-material";
 
@@ -47,8 +49,8 @@ export const NAVIGATION: Navigation = [
     },
     {
         segment: "action",
-        title: "Actions",
-        icon: <Repeat />,
+        title: "Action Catalog",
+        icon: <Bolt />,
     },
     { kind: "divider" },
     {

@@ -32,30 +32,14 @@ import {
     useTrail,
 } from "@react-spring/web";
 import {
-    closestCenter,
-    DndContext,
-    PointerSensor,
-    useSensor,
-    useSensors,
-} from "@dnd-kit/core";
-import { restrictToWindowEdges } from "@dnd-kit/modifiers";
-import {
-    arraySwap,
-    rectSortingStrategy,
-    SortableContext,
-    useSortable,
-} from "@dnd-kit/sortable";
-import {
-    Delete,
-    Edit,
-    ExpandLess,
-    ExpandMore,
+    Bolt,
     MoreVert,
     Repeat,
     Search,
 } from "@mui/icons-material";
 import { Action, ActionStore } from "./action";
 import { CATEGORIES } from "../data/actions";
+import Draggable from "../components/Interactive/Draggable";
 
 const STORAGE_KEY = "actions";
 
@@ -95,26 +79,6 @@ export default function DashboardPage() {
     });
 
     useChain([containerRef, trailRef], [0, 0.1]);
-
-    const sensors = useSensors(
-        useSensor(PointerSensor, {
-            activationConstraint: {
-                delay: 100,
-                tolerance: 10,
-            },
-        })
-    );
-
-    const handleDragEnd = ({ active, over }: any) => {
-        if (!over || active.id === over.id) return;
-
-        const oldIndex = cardOrder.indexOf(active.id);
-        const newIndex = cardOrder.indexOf(over.id);
-
-        if (oldIndex === -1 || newIndex === -1) return;
-
-        setCardOrder((prev) => arraySwap(prev, oldIndex, newIndex));
-    };
 
     const theme = useTheme();
     const isDarkMode = theme.palette.mode === "dark";
@@ -157,110 +121,193 @@ export default function DashboardPage() {
     }) {
         return value === index ? <Box sx={{ pt: 2 }}>{children}</Box> : null;
     }
+    // Zoekterm voor filter
+    const [search, setSearch] = React.useState<string>("");
 
     return (
         <animated.div style={containerSpring}>
-            <DndContext
-                modifiers={[restrictToWindowEdges]}
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
-            >
-                <SortableContext
-                    items={cardOrder}
-                    strategy={rectSortingStrategy}
-                >
-                    <Grid container>
-                        <Grid size={12}>
-                            <Card
-                                sx={{
-                                    px: 2,
-                                    pb: 2,
-                                    borderRadius: 4,
-                                    boxShadow: `
-                                        0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                                        0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                                        0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
-                                }}
-                            >
-                                <Tabs
-                                    value={selectedCategoryId}
-                                    onChange={handleTabChange}
-                                    variant="scrollable"
-                                    scrollButtons="auto"
-                                    sx={{
-                                        borderBottom: 1,
-                                        borderColor: "divider",
-                                    }}
-                                >
-                                    <Tab
-                                        value={"all"}
-                                        label={
-                                            <Box
-                                                sx={{
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    gap: 1,
-                                                }}
-                                            >
-                                                Alles
-                                            </Box>
-                                        }
-                                    />
-                                    {groupedActions.map((g) => (
-                                        <Tab
-                                            key={g.category.id}
-                                            value={g.category.id}
-                                            label={g.category.name}
-                                        />
-                                    ))}
-                                </Tabs>
-                                <Stack direction="row" sx={{ mt: 2, gap: 1 }}>
-                                    <TextField
-                                        placeholder="Zoek een Action"
-                                        size="small"
-                                        fullWidth
-                                    />
-                                    {/* <Button variant="contained">
-                                    <Search />
-                                </Button> */}
-                                    <IconButton color="primary">
-                                        <Search />
-                                    </IconButton>
-                                </Stack>
-                            </Card>
-                        </Grid>
+            <Grid container>
+                <Grid size={12}>
+                    <Card
+                        sx={{
+                            px: 2,
+                            pb: 2,
+                            borderRadius: 4,
+                            boxShadow: `
+                                0px 2px 1px -1px rgba(107, 114, 128, 0.03),
+                                0px 1px 1px 0px rgba(107, 114, 128, 0.04),
+                                0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
+                        }}
+                    >
+                        <Tabs
+                            value={selectedCategoryId}
+                            onChange={handleTabChange}
+                            variant="scrollable"
+                            scrollButtons="auto"
+                            sx={{
+                                borderBottom: 1,
+                                borderColor: "divider",
+                            }}
+                        >
+                            <Tab
+                                value={"all"}
+                                label={
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 1,
+                                        }}
+                                    >
+                                        Alles
+                                    </Box>
+                                }
+                            />
+                            {groupedActions.map((g) => (
+                                <Tab
+                                    key={g.category.id}
+                                    value={g.category.id}
+                                    label={g.category.name}
+                                />
+                            ))}
+                        </Tabs>
+                        <Stack direction="row" sx={{ mt: 2, gap: 1 }}>
+                            <TextField
+                                placeholder="Zoek een Action"
+                                size="small"
+                                fullWidth
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <IconButton color="primary">
+                                <Search />
+                            </IconButton>
+                        </Stack>
+                    </Card>
+                </Grid>
 
-                        {/* Tab panels */}
-                        <Grid container>
-                            <TabPanel value={selectedCategoryId} index={"all"}>
-                                <Grid container spacing={2}>
-                                    {actions.map((a) => (
-                                        <Grid
-                                            key={a.id}
-                                            size={{
-                                                xs: 12,
-                                                sm: 12,
-                                                md: 6,
-                                                lg: 3,
-                                                xl: 2,
+                {/* Tab panels */}
+                <Grid container>
+                    <TabPanel value={selectedCategoryId} index={"all"}>
+                        <Grid container spacing={2}>
+                            {actions.map((a) => (
+                                <Grid
+                                    key={a.id}
+                                    size={{
+                                        xs: 12,
+                                        sm: 12,
+                                        md: 6,
+                                        lg: 3,
+                                        xl: 2,
+                                    }}
+                                    sx={{ minWidth: 200 }}
+                                >
+                                    <Draggable id={a.id.toString()}>
+                                        <Card
+                                            sx={{
+                                                position: "relative",
+                                                height: "125px",
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                borderRadius: 4,
+                                                boxShadow: `
+                                                    0px 2px 1px -1px rgba(107, 114, 128, 0.03),
+                                                    0px 1px 1px 0px rgba(107, 114, 128, 0.04),
+                                                    0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
                                             }}
-                                            sx={{ minWidth: 200 }}
                                         >
+                                            <Bolt
+                                                style={{
+                                                    position: "absolute",
+                                                    top: "50%",
+                                                    left: "50%",
+                                                    transform:
+                                                        "translate(-50%, -50%)",
+                                                    fontSize: 75,
+                                                    color: alpha(
+                                                        isDarkMode
+                                                            ? "#fff"
+                                                            : "#000",
+                                                        0.1
+                                                    ),
+                                                    pointerEvents: "none",
+                                                }}
+                                            />
+
+                                            <CardContent sx={{ flexGrow: 1 }}>
+                                                <Stack
+                                                    direction="row"
+                                                    sx={{
+                                                        justifyContent:
+                                                            "space-between",
+                                                        alignItems:
+                                                            "center",
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        variant="body1"
+                                                        sx={{
+                                                            fontWeight: 500,
+                                                        }}
+                                                    >
+                                                        {a.name}
+                                                    </Typography>
+                                                    <IconButton size="small">
+                                                        <MoreVert />
+                                                    </IconButton>
+                                                </Stack>
+                                                <Box>
+                                                    {a.description && (
+                                                        <Typography
+                                                            variant="body2"
+                                                            color="text.secondary"
+                                                        >
+                                                            {a.description}
+                                                        </Typography>
+                                                    )}
+                                                </Box>
+                                            </CardContent>
+                                        </Card>
+                                    </Draggable>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </TabPanel>
+
+                    {groupedActions.map((group) => (
+                        <TabPanel
+                            key={group.category.id}
+                            value={selectedCategoryId}
+                            index={group.category.id}
+                        >
+                            <Grid container spacing={2}>
+                                {group.actions.map((a) => (
+                                    <Grid
+                                        key={a.id}
+                                        size={{
+                                            xs: 12,
+                                            sm: 12,
+                                            md: 6,
+                                            lg: 3,
+                                            xl: 2,
+                                        }}
+                                        sx={{ minWidth: 200 }}
+                                    >
+                                        <Draggable id={a.id.toString()}>
                                             <Card
                                                 sx={{
                                                     position: "relative",
-                                                    height: "100%",
+                                                    height: "125px",
                                                     display: "flex",
                                                     flexDirection: "column",
                                                     borderRadius: 4,
                                                     boxShadow: `
-                                                            0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                                                            0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                                                            0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
+                                                    0px 2px 1px -1px rgba(107, 114, 128, 0.03),
+                                                    0px 1px 1px 0px rgba(107, 114, 128, 0.04),
+                                                    0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
                                                 }}
                                             >
-                                                <Repeat
+                                                <Bolt
                                                     style={{
                                                         position: "absolute",
                                                         top: "50%",
@@ -278,7 +325,7 @@ export default function DashboardPage() {
                                                     }}
                                                 />
 
-                                                <CardContent>
+                                                <CardContent sx={{ flexGrow: 1 }}>
                                                     <Stack
                                                         direction="row"
                                                         sx={{
@@ -300,101 +347,7 @@ export default function DashboardPage() {
                                                             <MoreVert />
                                                         </IconButton>
                                                     </Stack>
-                                                </CardContent>
-
-                                                <CardContent>
-                                                    {a.description && (
-                                                        <Typography
-                                                            variant="body2"
-                                                            color="text.secondary"
-                                                        >
-                                                            {a.description}
-                                                        </Typography>
-                                                    )}
-                                                </CardContent>
-                                            </Card>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                            </TabPanel>
-
-                            {groupedActions.map((group) => (
-                                <TabPanel
-                                    key={group.category.id}
-                                    value={selectedCategoryId}
-                                    index={group.category.id}
-                                >
-                                    <Grid container spacing={2}>
-                                        {group.actions.map((a) => (
-                                            <Grid
-                                                key={a.id}
-                                                size={{
-                                                    xs: 12,
-                                                    sm: 12,
-                                                    md: 6,
-                                                    lg: 3,
-                                                    xl: 2,
-                                                }}
-                                                sx={{ minWidth: 200 }}
-                                            >
-                                                <Card
-                                                    sx={{
-                                                        position: "relative",
-                                                        height: "100%",
-                                                        display: "flex",
-                                                        flexDirection: "column",
-                                                        borderRadius: 4,
-                                                        boxShadow: `
-                                                            0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                                                            0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                                                            0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
-                                                    }}
-                                                >
-                                                    <Repeat
-                                                        style={{
-                                                            position:
-                                                                "absolute",
-                                                            top: "50%",
-                                                            left: "50%",
-                                                            transform:
-                                                                "translate(-50%, -50%)",
-                                                            fontSize: 75,
-                                                            color: alpha(
-                                                                isDarkMode
-                                                                    ? "#fff"
-                                                                    : "#000",
-                                                                0.1
-                                                            ),
-                                                            pointerEvents:
-                                                                "none",
-                                                        }}
-                                                    />
-
-                                                    <CardContent>
-                                                        <Stack
-                                                            direction="row"
-                                                            sx={{
-                                                                justifyContent:
-                                                                    "space-between",
-                                                                alignItems:
-                                                                    "center",
-                                                            }}
-                                                        >
-                                                            <Typography
-                                                                variant="body1"
-                                                                sx={{
-                                                                    fontWeight: 500,
-                                                                }}
-                                                            >
-                                                                {a.name}
-                                                            </Typography>
-                                                            <IconButton size="small">
-                                                                <MoreVert />
-                                                            </IconButton>
-                                                        </Stack>
-                                                    </CardContent>
-
-                                                    <CardContent>
+                                                    <Box>
                                                         {a.description && (
                                                             <Typography
                                                                 variant="body2"
@@ -403,27 +356,27 @@ export default function DashboardPage() {
                                                                 {a.description}
                                                             </Typography>
                                                         )}
-                                                    </CardContent>
-                                                </Card>
-                                            </Grid>
-                                        ))}
+                                                    </Box>
+                                                </CardContent>
+                                            </Card>
+                                        </Draggable>
                                     </Grid>
-                                </TabPanel>
-                            ))}
+                                ))}
+                            </Grid>
+                        </TabPanel>
+                    ))}
 
-                            {/* fallback: geen actions */}
-                            {actions.length === 0 && (
-                                <Grid size={12}>
-                                    <Paper sx={{ p: 3, textAlign: "center" }}>
-                                        Geen actions gevonden. Klik op "Nieuwe
-                                        Action" om er één aan te maken.
-                                    </Paper>
-                                </Grid>
-                            )}
+                    {/* fallback: geen actions */}
+                    {actions.length === 0 && (
+                        <Grid size={12}>
+                            <Paper sx={{ p: 3, textAlign: "center" }}>
+                                Geen actions gevonden. Klik op "Nieuwe
+                                Action" om er één aan te maken.
+                            </Paper>
                         </Grid>
-                    </Grid>
-                </SortableContext>
-            </DndContext>
-        </animated.div>
+                    )}
+                </Grid>
+            </Grid>
+        </animated.div >
     );
 }
