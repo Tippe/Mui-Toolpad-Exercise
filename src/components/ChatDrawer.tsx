@@ -24,7 +24,8 @@ import {
     Send,
 } from "@mui/icons-material";
 import Droppable from "./Interactive/Droppable";
-import { ChatBubble, ChatMessage } from "./ChatBubble";
+import { ChatBubble } from "./ChatBubble";
+import { ChatMessage, mockMessages } from "../data/messages";
 
 const drawerWidth = 640;
 
@@ -38,12 +39,7 @@ const brains = [
 ];
 
 export default function ChatDrawer() {
-    const [messages, setMessages] = React.useState<ChatMessage[]>([
-        { id: 1, text: "Welkom bij de chat!", from: "ai" },
-        { id: 2, text: "Hi! Hoe werkt dit?", from: "user" },
-        { id: 3, text: "Je kunt acties draggen naar hier en vragen stellen.", from: "ai" },
-        { id: 4, text: "Ah, duidelijk!", from: "user" },
-    ]);
+    const [messages, setMessages] = React.useState<ChatMessage[]>(mockMessages);
     const [message, setMessage] = React.useState("");
     const [selectedBrains, setSelectedBrains] = React.useState<string[]>([]);
     const [showAutocomplete, setShowAutocomplete] = React.useState(false);
@@ -53,7 +49,7 @@ export default function ChatDrawer() {
         setMessages((prev) => [
             ...prev,
             {
-                id: prev.length + 1,
+                id: prev + ".1",
                 text: message,
                 from: "user",
                 brains: selectedBrains,
@@ -83,7 +79,6 @@ export default function ChatDrawer() {
     };
 
     return (
-
         <Drawer
             variant="persistent"
             anchor="right"
@@ -130,16 +125,16 @@ export default function ChatDrawer() {
 
             <Divider />
 
-
-
             <Droppable id="chat-drawer" highlightOnHover>
-                <Box sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    flexGrow: 1,
-                    height: "100%",
-                    p: 2,
-                }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        flexGrow: 1,
+                        height: "100%",
+                        p: 2,
+                    }}
+                >
                     <Box sx={{ flexGrow: 1, overflowY: "auto", mb: 2 }}>
                         {messages.map((msg) => (
                             <ChatBubble key={msg.id} message={msg} />
@@ -155,14 +150,17 @@ export default function ChatDrawer() {
                         sx={{
                             display: "flex",
                             flexDirection: "column",
-                            gap: 1
+                            gap: 1,
                         }}
                     >
                         {showAutocomplete && (
                             <Autocomplete
                                 options={brains
                                     .map((b) => b.label)
-                                    .filter((label) => !selectedBrains.includes(label))}
+                                    .filter(
+                                        (label) =>
+                                            !selectedBrains.includes(label)
+                                    )}
                                 size="small"
                                 autoHighlight
                                 open
@@ -176,7 +174,9 @@ export default function ChatDrawer() {
                                     return (
                                         <ListItem {...props}>
                                             {brain?.icon}
-                                            <ListItemText style={{ marginLeft: 8 }}>
+                                            <ListItemText
+                                                style={{ marginLeft: 8 }}
+                                            >
                                                 {option}
                                             </ListItemText>
                                         </ListItem>
@@ -193,19 +193,29 @@ export default function ChatDrawer() {
 
                         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                             {selectedBrains.map((brain) => {
-                                const brainData = brains.find((b) => b.label === brain);
+                                const brainData = brains.find(
+                                    (b) => b.label === brain
+                                );
                                 return (
                                     <Chip
                                         key={brain}
                                         label={brain}
                                         icon={brainData?.icon}
-                                        onDelete={() => handleDeleteBrain(brain)}
+                                        onDelete={() =>
+                                            handleDeleteBrain(brain)
+                                        }
                                     />
                                 );
                             })}
                         </Box>
 
-                        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                gap: 1,
+                                alignItems: "center",
+                            }}
+                        >
                             <TextField
                                 fullWidth
                                 size="small"
@@ -221,6 +231,6 @@ export default function ChatDrawer() {
                     </Box>
                 </Box>
             </Droppable>
-        </Drawer >
+        </Drawer>
     );
 }

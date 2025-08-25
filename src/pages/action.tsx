@@ -34,23 +34,10 @@ import {
     Repeat,
 } from "@mui/icons-material";
 import { CATEGORIES, MOCK_ACTIONS } from "../data/actions";
+import { useToolpadColorScheme } from "../theme";
+import { Action, ActionCategory } from "../layouts/ActionCard";
 
 // ----- Types -----
-export interface Action {
-    id: string;
-    name: string;
-    description: string;
-    miniPrompt: string;
-    temperature: number;
-    maxTokens: number;
-    category: ActionCategory;
-}
-
-// ----- Categorie interface -----
-export interface ActionCategory {
-    id: number;
-    name: string;
-}
 
 // ----- Simple localStorage-backed store (can later be replaced by API) -----
 const STORAGE_KEY = "actions";
@@ -372,8 +359,7 @@ export function ConfirmDelete({
 
 // ----- Main Component -----
 export default function ActionPage(): JSX.Element {
-    const theme = useTheme();
-    const isDarkMode = theme.palette.mode === "dark";
+    const isDarkMode = useToolpadColorScheme();
     const [actions, setActions] = useState<Action[]>([]);
     const [formOpen, setFormOpen] = useState(false);
     const [editing, setEditing] = useState<Action | undefined>(undefined);

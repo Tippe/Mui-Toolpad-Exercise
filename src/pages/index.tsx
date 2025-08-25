@@ -1,88 +1,48 @@
 import * as React from "react";
 import {
     alpha,
-    Avatar,
-    Badge,
     Box,
-    Button,
     Card,
-    CardActions,
     CardContent,
-    Collapse,
-    Divider,
+    Fab,
+    FormControlLabel,
     Grid,
     IconButton,
     Paper,
     Stack,
+    Switch,
     Tab,
     Tabs,
     TextField,
-    Tooltip,
     Typography,
-    useTheme,
 } from "@mui/material";
-import AgendaCard from "../components/Cards/AgendaCard";
-import ToDoCard from "../components/Cards/ToDoCard";
 import {
     animated,
     config,
     useChain,
     useSpring,
     useSpringRef,
-    useTrail,
+    useTransition,
 } from "@react-spring/web";
-import {
-    Bolt,
-    MoreVert,
-    Repeat,
-    Search,
-} from "@mui/icons-material";
-import { Action, ActionStore } from "./action";
+import { Add, Bolt, MoreVert, Search } from "@mui/icons-material";
+import { ActionStore } from "./action";
 import { CATEGORIES } from "../data/actions";
 import Draggable from "../components/Interactive/Draggable";
+import { useToolpadColorScheme } from "../theme";
+import ActionCard, { Action } from "../layouts/ActionCard";
 
 const STORAGE_KEY = "actions";
 
 export default function DashboardPage() {
     const [checked, setChecked] = React.useState(false);
+    const [quickAction, setQuickAction] = React.useState(false);
+    const [search, setSearch] = React.useState<string>("");
+    const [actions, setActions] = React.useState<Action[]>([]);
+    const isDarkMode = useToolpadColorScheme();
 
     React.useEffect(() => {
         setChecked(true);
     }, []);
-
-    const CHAT_CARD_HEIGHT = "calc(100vh - 244px)";
-    const HALF_CARD_HEIGHT = `calc((${CHAT_CARD_HEIGHT}) / 2 - 86px)`;
-
-    // Phase 1: Container
-    const containerRef = useSpringRef();
-    const containerSpring = useSpring({
-        ref: containerRef,
-        opacity: checked ? 1 : 0,
-        transform: checked ? "scale(1)" : "scale(0.95)",
-        config: config.default,
-    });
-
-    // Phase 2: Trail of card groups
-    const cardMap: Record<string, React.ReactNode> = {
-        todo: <ToDoCard height={HALF_CARD_HEIGHT} />,
-        agenda: <AgendaCard height={HALF_CARD_HEIGHT} />,
-    };
-
-    const [cardOrder, setCardOrder] = React.useState(Object.keys(cardMap));
-
-    const trailRef = useSpringRef();
-    const trail = useTrail(cardOrder.length, {
-        ref: trailRef,
-        opacity: checked ? 1 : 0,
-        transform: checked ? "translateY(0px)" : "translateY(20px)",
-        config: config.default,
-    });
-
-    useChain([containerRef, trailRef], [0, 0.1]);
-
-    const theme = useTheme();
-    const isDarkMode = theme.palette.mode === "dark";
-    const [actions, setActions] = React.useState<Action[]>([]);
 
     React.useEffect(() => {
         localStorage.removeItem(STORAGE_KEY); // Alleen tijdens dev
@@ -97,11 +57,10 @@ export default function DashboardPage() {
             .sort((a, b) => a.name.localeCompare(b.name)),
     })).filter((group) => group.actions.length > 0);
 
-    // ---- Tabs + content ----
+    // Tabs
     const [selectedCategoryId, setSelectedCategoryId] = React.useState<
         number | "all"
     >("all");
-
     function handleTabChange(
         _: React.SyntheticEvent,
         newValue: number | "all"
@@ -121,8 +80,54 @@ export default function DashboardPage() {
     }) {
         return value === index ? <Box sx={{ pt: 2 }}>{children}</Box> : null;
     }
-    // Zoekterm voor filter
-    const [search, setSearch] = React.useState<string>("");
+
+    // visibleActions: afhankelijk van geselecteerde tab en zoekfilter
+    const visibleActions = React.useMemo(() => {
+        const list =
+            selectedCategoryId === "all"
+                ? actions
+                : actions.filter((a) => a.category.id === selectedCategoryId);
+
+        if (!search.trim()) return list;
+        const q = search.toLowerCase();
+        return list.filter(
+            (a) =>
+                a.name.toLowerCase().includes(q) ||
+                (a.description || "").toLowerCase().includes(q)
+        );
+    }, [actions, selectedCategoryId, search]);
+
+    // container spring (fase 1)
+    const containerRef = useSpringRef();
+    const containerSpring = useSpring({
+        ref: containerRef,
+        from: { opacity: 0, transform: "scale(0.98)" },
+        to: {
+            opacity: checked ? 1 : 0,
+            transform: checked ? "scale(1)" : "scale(0.98)",
+        },
+        config: config.stiff,
+    });
+
+    // transition for cards (fase 2)
+    const transitionRef = useSpringRef();
+    // trail controls the per-item delay in ms;
+    // smaller = faster, larger = slower
+    const trailMs = 45;
+
+    const transitions = useTransition(visibleActions, {
+        ref: transitionRef,
+        keys: (item: Action) => item.id,
+        // trail can be set as ms between items; react-spring accepts number for 'trail'
+        trail:
+            visibleActions.length > 10 ? 450 / visibleActions.length : trailMs,
+        from: { opacity: 0, transform: "translateY(18px) scale(0.995)" },
+        enter: { opacity: 1, transform: "translateY(0px) scale(1)" },
+        leave: { opacity: 0, transform: "translateY(18px) scale(0.995)" },
+        config: { ...config.stiff },
+    });
+
+    useChain([containerRef, transitionRef], [0, 0.12]);
 
     return (
         <animated.div style={containerSpring}>
@@ -171,7 +176,7 @@ export default function DashboardPage() {
                                 />
                             ))}
                         </Tabs>
-                        <Stack direction="row" sx={{ mt: 2, gap: 1 }}>
+                        <Stack direction="row" sx={{ my: 2, gap: 1 }}>
                             <TextField
                                 placeholder="Zoek een Action"
                                 size="small"
@@ -183,6 +188,10 @@ export default function DashboardPage() {
                                 <Search />
                             </IconButton>
                         </Stack>
+                        <FormControlLabel
+                            control={<Switch color="success" />}
+                            label="Quick Action"
+                        />
                     </Card>
                 </Grid>
 
@@ -190,9 +199,9 @@ export default function DashboardPage() {
                 <Grid container>
                     <TabPanel value={selectedCategoryId} index={"all"}>
                         <Grid container spacing={2}>
-                            {actions.map((a) => (
+                            {transitions((style, item) => (
                                 <Grid
-                                    key={a.id}
+                                    key={item.id}
                                     size={{
                                         xs: 12,
                                         sm: 12,
@@ -202,73 +211,11 @@ export default function DashboardPage() {
                                     }}
                                     sx={{ minWidth: 200 }}
                                 >
-                                    <Draggable id={a.id.toString()}>
-                                        <Card
-                                            sx={{
-                                                position: "relative",
-                                                height: "125px",
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                borderRadius: 4,
-                                                boxShadow: `
-                                                    0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                                                    0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                                                    0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
-                                            }}
-                                        >
-                                            <Bolt
-                                                style={{
-                                                    position: "absolute",
-                                                    top: "50%",
-                                                    left: "50%",
-                                                    transform:
-                                                        "translate(-50%, -50%)",
-                                                    fontSize: 75,
-                                                    color: alpha(
-                                                        isDarkMode
-                                                            ? "#fff"
-                                                            : "#000",
-                                                        0.1
-                                                    ),
-                                                    pointerEvents: "none",
-                                                }}
-                                            />
-
-                                            <CardContent sx={{ flexGrow: 1 }}>
-                                                <Stack
-                                                    direction="row"
-                                                    sx={{
-                                                        justifyContent:
-                                                            "space-between",
-                                                        alignItems:
-                                                            "center",
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        variant="body1"
-                                                        sx={{
-                                                            fontWeight: 500,
-                                                        }}
-                                                    >
-                                                        {a.name}
-                                                    </Typography>
-                                                    <IconButton size="small">
-                                                        <MoreVert />
-                                                    </IconButton>
-                                                </Stack>
-                                                <Box>
-                                                    {a.description && (
-                                                        <Typography
-                                                            variant="body2"
-                                                            color="text.secondary"
-                                                        >
-                                                            {a.description}
-                                                        </Typography>
-                                                    )}
-                                                </Box>
-                                            </CardContent>
-                                        </Card>
-                                    </Draggable>
+                                    <animated.div key={item.id} style={style}>
+                                        <Draggable id={item.id.toString()}>
+                                            <ActionCard action={item} />
+                                        </Draggable>
+                                    </animated.div>
                                 </Grid>
                             ))}
                         </Grid>
@@ -294,71 +241,7 @@ export default function DashboardPage() {
                                         sx={{ minWidth: 200 }}
                                     >
                                         <Draggable id={a.id.toString()}>
-                                            <Card
-                                                sx={{
-                                                    position: "relative",
-                                                    height: "125px",
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    borderRadius: 4,
-                                                    boxShadow: `
-                                                    0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                                                    0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                                                    0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
-                                                }}
-                                            >
-                                                <Bolt
-                                                    style={{
-                                                        position: "absolute",
-                                                        top: "50%",
-                                                        left: "50%",
-                                                        transform:
-                                                            "translate(-50%, -50%)",
-                                                        fontSize: 75,
-                                                        color: alpha(
-                                                            isDarkMode
-                                                                ? "#fff"
-                                                                : "#000",
-                                                            0.1
-                                                        ),
-                                                        pointerEvents: "none",
-                                                    }}
-                                                />
-
-                                                <CardContent sx={{ flexGrow: 1 }}>
-                                                    <Stack
-                                                        direction="row"
-                                                        sx={{
-                                                            justifyContent:
-                                                                "space-between",
-                                                            alignItems:
-                                                                "center",
-                                                        }}
-                                                    >
-                                                        <Typography
-                                                            variant="body1"
-                                                            sx={{
-                                                                fontWeight: 500,
-                                                            }}
-                                                        >
-                                                            {a.name}
-                                                        </Typography>
-                                                        <IconButton size="small">
-                                                            <MoreVert />
-                                                        </IconButton>
-                                                    </Stack>
-                                                    <Box>
-                                                        {a.description && (
-                                                            <Typography
-                                                                variant="body2"
-                                                                color="text.secondary"
-                                                            >
-                                                                {a.description}
-                                                            </Typography>
-                                                        )}
-                                                    </Box>
-                                                </CardContent>
-                                            </Card>
+                                            <ActionCard action={a} />
                                         </Draggable>
                                     </Grid>
                                 ))}
@@ -370,13 +253,13 @@ export default function DashboardPage() {
                     {actions.length === 0 && (
                         <Grid size={12}>
                             <Paper sx={{ p: 3, textAlign: "center" }}>
-                                Geen actions gevonden. Klik op "Nieuwe
-                                Action" om er één aan te maken.
+                                Geen actions gevonden. Klik op "Nieuwe Action"
+                                om er één aan te maken.
                             </Paper>
                         </Grid>
                     )}
                 </Grid>
             </Grid>
-        </animated.div >
+        </animated.div>
     );
 }

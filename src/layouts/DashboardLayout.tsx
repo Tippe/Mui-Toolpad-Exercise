@@ -1,18 +1,44 @@
 import * as React from "react";
 import { Outlet, useLocation } from "react-router";
 import { Account, DashboardLayout, PageContainer } from "@toolpad/core";
-import { alpha, Box, Card, CardContent, IconButton, Slide, Stack, Tooltip, Typography, useTheme } from "@mui/material";
-import { Bolt, Chat, MoreVert } from "@mui/icons-material";
+import {
+    alpha,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    InputLabel,
+    Slide,
+    Slider,
+    Stack,
+    TextField,
+    Tooltip,
+    Typography,
+} from "@mui/material";
+import { Bolt, Chat, MoreVert, PlayArrow } from "@mui/icons-material";
 import CustomMenu from "./CustomMenu";
 import ChatDrawer from "../components/ChatDrawer";
 import ToolbarActions from "./ToolbarActions";
-import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { createPortal } from "react-dom";
-import { Action, ActionStore } from "../pages/action";
+import {
+    DndContext,
+    DragOverlay,
+    PointerSensor,
+    pointerWithin,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
+import { ActionStore } from "../pages/action";
+import { useToolpadColorScheme } from "../theme";
+import { mockMessages } from "../data/messages";
+import ActionCard, { Action } from "./ActionCard";
 
 const CHAT_DRAWER_WIDTH = 664;
 const STORAGE_KEY = "actions";
-
 
 export default function Layout() {
     const location = useLocation();
@@ -20,39 +46,72 @@ export default function Layout() {
     const isDisabled = disabledPaths.includes(location.pathname);
     const [chatOpen, setChatOpen] = React.useState(true);
 
-    const theme = useTheme();
-    const isDarkMode = theme.palette.mode === "dark";
+    const isDarkMode = useToolpadColorScheme();
+    const [actions, setActions] = React.useState<Action[]>([]);
     const [activeId, setActiveId] = React.useState<string | null>(null);
 
-
-    const [actions, setActions] = React.useState<Action[]>([]);
+    const [dialogOpen, setDialogOpen] = React.useState(false);
+    const [dialogAction, setDialogAction] = React.useState<Action | null>(null);
+    const [dialogInput, setDialogInput] = React.useState<string | null>(null);
 
     React.useEffect(() => {
         localStorage.removeItem(STORAGE_KEY); // Alleen tijdens dev
         setActions(ActionStore.loadAll());
     }, []);
 
-
     const sensors = useSensors(
-        useSensor(PointerSensor, { activationConstraint: { delay: 100, tolerance: 10 } })
+        useSensor(PointerSensor, {
+            activationConstraint: { delay: 100, tolerance: 10 },
+        })
     );
 
     const handleDragEnd = ({ active, over }: any) => {
         if (!over) return;
 
+        console.log("Over ID: ", over.id);
+
         if (over.id === "chat-drawer") {
-            // dropped into ChatDrawer
-            console.log("Dropped action into chat:", active.id);
-            // call some handler, e.g., addActionToChat(active.id)
+            const action =
+                actions.find((a) => String(a.id) === String(active.id)) ?? null;
+
+            setDialogAction(action);
+            setDialogOpen(true);
+        } else if (mockMessages.some((message) => message.id === over.id)) {
+            const action =
+                actions.find((a) => String(a.id) === String(active.id)) ?? null;
+            const message = mockMessages.find((m) => m.id === over.id) ?? null;
+
+            const input = message?.text ?? null;
+
+            setDialogAction(action);
+            setDialogInput(input);
+            setDialogOpen(true);
         }
 
         setActiveId(null);
     };
 
+    const handleDialogConform = () => {
+        if (!dialogAction) return;
+
+        console.log("Confirmed dropped action:", dialogAction.id);
+
+        setDialogOpen(false);
+        setDialogAction(null);
+    };
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+        setDialogAction(null);
+        setDialogInput(null);
+    };
+
+    const activeAction = actions.find((a) => String(a.id) === String(activeId));
+
     return (
         <DndContext
             sensors={sensors}
-            collisionDetection={closestCenter}
+            collisionDetection={pointerWithin}
             onDragStart={({ active }) => setActiveId(String(active.id))}
             onDragEnd={handleDragEnd}
             onDragCancel={() => setActiveId(null)}
@@ -63,7 +122,9 @@ export default function Layout() {
                         <Box sx={{ display: "flex", gap: 1 }}>
                             {!isDisabled && (
                                 <Tooltip
-                                    title={chatOpen ? "Verberg chat" : "Toon chat"}
+                                    title={
+                                        chatOpen ? "Verberg chat" : "Toon chat"
+                                    }
                                     sx={{
                                         display: {
                                             xs: "none",
@@ -143,77 +204,90 @@ export default function Layout() {
                             </Box>
                         </Slide>
                     )}
-                    <DragOverlay>
-                        {activeId ? (
-                            <Card
-                                sx={{
-                                    position: "relative",
-                                    height: "125px",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    borderRadius: 4,
-                                    boxShadow: `
-                                        0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                                        0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                                        0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
-                                }}
-                            >
-                                <Bolt
-                                    style={{
-                                        position: "absolute",
-                                        top: "50%",
-                                        left: "50%",
-                                        transform:
-                                            "translate(-50%, -50%)",
-                                        fontSize: 75,
-                                        color: alpha(
-                                            isDarkMode
-                                                ? "#fff"
-                                                : "#000",
-                                            0.1
-                                        ),
-                                        pointerEvents: "none",
-                                    }}
-                                />
-
-                                <CardContent sx={{ flexGrow: 1 }}>
-                                    <Stack
-                                        direction="row"
-                                        sx={{
-                                            justifyContent:
-                                                "space-between",
-                                            alignItems:
-                                                "center",
-                                        }}
-                                    >
-                                        <Typography
-                                            variant="body1"
-                                            sx={{
-                                                fontWeight: 500,
-                                            }}
-                                        >
-                                            {actions.find(a => String(a.id) === activeId)?.name ?? activeId}
-                                        </Typography>
-                                        <IconButton size="small">
-                                            <MoreVert />
-                                        </IconButton>
-                                    </Stack>
-                                    <Box>
-                                        <Typography
-                                            variant="body2"
-                                            color="text.secondary"
-                                        >
-                                            {actions.find(a => String(a.id) === activeId)?.description}
-                                        </Typography>
-
-                                    </Box>
-                                </CardContent>
-                            </Card>
-
+                    <DragOverlay
+                        style={{
+                            zIndex: 1300,
+                            cursor: "grabbing",
+                        }}
+                        dropAnimation={{
+                            duration: 250,
+                            easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22",
+                        }}
+                    >
+                        {activeAction ? (
+                            <ActionCard action={activeAction} />
                         ) : null}
                     </DragOverlay>
                 </Box>
             </DashboardLayout>
-        </DndContext >
+
+            <Dialog open={dialogOpen} onClose={handleDialogClose} fullWidth>
+                <DialogTitle>{dialogAction?.name}</DialogTitle>
+                <DialogContent dividers>
+                    <Stack direction="column" spacing={3} sx={{ mb: 2 }}>
+                        <Typography variant="body2">
+                            {dialogAction?.description}
+                        </Typography>
+                        <TextField
+                            label="input"
+                            value={dialogInput}
+                            placeholder="Input"
+                            fullWidth
+                            multiline
+                            minRows={4}
+                            required
+                        />
+                        <TextField
+                            label="Mini Prompt"
+                            value={dialogAction?.miniPrompt}
+                            fullWidth
+                            multiline
+                            minRows={4}
+                            required
+                        />
+
+                        <InputLabel>
+                            Temperature: {dialogAction?.temperature.toFixed(2)}
+                        </InputLabel>
+                        <Slider
+                            value={dialogAction?.temperature}
+                            min={0}
+                            max={1.5}
+                            step={0.01}
+                            /*onChange={(_, value) =>
+                                setTemperature(
+                                    typeof value === "number" ? value : value[0]
+                                )
+                            }*/
+                            valueLabelDisplay="auto"
+                            marks={[
+                                {
+                                    value: 0.25,
+                                    label: "Nauwkeurig",
+                                },
+                                {
+                                    value: 0.75,
+                                    label: "Gebalanceerd",
+                                },
+                                {
+                                    value: 1.25,
+                                    label: "Creatief",
+                                },
+                            ]}
+                        />
+                    </Stack>
+                </DialogContent>
+                <DialogActions sx={{ justifyContent: "space-between" }}>
+                    <Button onClick={handleDialogClose}>Annuleren</Button>
+                    <Button
+                        onClick={handleDialogConform}
+                        variant="contained"
+                        endIcon={<PlayArrow />}
+                    >
+                        Run
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </DndContext>
     );
 }
