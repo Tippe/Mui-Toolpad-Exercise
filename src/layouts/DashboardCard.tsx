@@ -12,21 +12,6 @@ import {
     Typography,
 } from "@mui/material";
 import { ExpandMore, ExpandLess, MoreVert } from "@mui/icons-material";
-import {
-    DndContext,
-    closestCenter,
-    PointerSensor,
-    useSensor,
-    useSensors,
-    useDraggable,
-} from "@dnd-kit/core";
-import {
-    SortableContext,
-    useSortable,
-    arrayMove,
-    rectSortingStrategy,
-} from "@dnd-kit/sortable";
-import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 
 interface DashboardCardProps {
     id: string;
@@ -120,10 +105,6 @@ export default function DashboardCard({
                     <Card
                         sx={{
                             borderRadius: 4,
-                            boxShadow: `
-                                0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                                0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                                0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
                         }}
                     >
                         <CardContent>
@@ -218,8 +199,6 @@ export default function DashboardCard({
                     <Card
                         sx={{
                             borderRadius: 4,
-                            boxShadow:
-                                "0px 2px 1px -1px rgba(107, 114, 128, 0.03),0px 1px 1px 0px rgba(107, 114, 128, 0.04),0px 1px 3px 0px rgba(107, 114, 128, 0.08)",
                         }}
                     >
                         <CardContent>

@@ -4,7 +4,6 @@ import {
     Alert,
     Badge,
     Grid,
-    IconButton,
     List,
     ListItem,
     ListItemIcon,
@@ -19,7 +18,6 @@ import {
     Microsoft,
     MiscellaneousServices,
     Notifications,
-    Visibility,
 } from "@mui/icons-material";
 import DashboardCard from "../../layouts/DashboardCard";
 import { AnimatedDialog } from "../../layouts/AnimatedDialog";

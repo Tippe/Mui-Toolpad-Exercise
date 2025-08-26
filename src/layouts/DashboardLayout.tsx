@@ -2,11 +2,8 @@ import * as React from "react";
 import { Outlet, useLocation } from "react-router";
 import { Account, DashboardLayout, PageContainer } from "@toolpad/core";
 import {
-    alpha,
     Box,
     Button,
-    Card,
-    CardContent,
     Dialog,
     DialogActions,
     DialogContent,
@@ -20,7 +17,7 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { Bolt, Chat, MoreVert, PlayArrow } from "@mui/icons-material";
+import { Chat, PlayArrow } from "@mui/icons-material";
 import CustomMenu from "./CustomMenu";
 import ChatDrawer from "../components/ChatDrawer";
 import ToolbarActions from "./ToolbarActions";
@@ -206,11 +203,11 @@ export default function Layout() {
                     )}
                     <DragOverlay
                         style={{
-                            zIndex: 1300,
+                            zIndex: 1200,
                             cursor: "grabbing",
                         }}
                         dropAnimation={{
-                            duration: 250,
+                            duration: 200,
                             easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22",
                         }}
                     >

@@ -22,6 +22,19 @@ export const theme = createTheme({
             }
         }
     },
+    components: {
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            boxShadow: `
+              0px 2px 1px -1px rgba(107, 114, 128, 0.03),
+              0px 1px 1px 0px rgba(107, 114, 128, 0.04),
+              0px 1px 3px 0px rgba(107, 114, 128, 0.08)
+            `,
+          }
+        }
+      }
+    }
 });
 
 import { useState, useEffect } from "react";

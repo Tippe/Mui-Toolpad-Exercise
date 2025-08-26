@@ -5,7 +5,6 @@ import {
     IconButton,
     Typography,
     TextField,
-    List,
     ListItem,
     ListItemText,
     Grid,

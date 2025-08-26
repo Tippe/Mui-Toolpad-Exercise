@@ -1,10 +1,7 @@
 import * as React from "react";
 import {
-    alpha,
     Box,
     Card,
-    CardContent,
-    Fab,
     FormControlLabel,
     Grid,
     IconButton,
@@ -14,7 +11,7 @@ import {
     Tab,
     Tabs,
     TextField,
-    Typography,
+    Tooltip,
 } from "@mui/material";
 import {
     animated,
@@ -24,11 +21,10 @@ import {
     useSpringRef,
     useTransition,
 } from "@react-spring/web";
-import { Add, Bolt, MoreVert, Search } from "@mui/icons-material";
+import { Info, InfoOutline, Search } from "@mui/icons-material";
 import { ActionStore } from "./action";
 import { CATEGORIES } from "../data/actions";
 import Draggable from "../components/Interactive/Draggable";
-import { useToolpadColorScheme } from "../theme";
 import ActionCard, { Action } from "../layouts/ActionCard";
 
 const STORAGE_KEY = "actions";
@@ -38,7 +34,6 @@ export default function DashboardPage() {
     const [quickAction, setQuickAction] = React.useState(false);
     const [search, setSearch] = React.useState<string>("");
     const [actions, setActions] = React.useState<Action[]>([]);
-    const isDarkMode = useToolpadColorScheme();
 
     React.useEffect(() => {
         setChecked(true);
@@ -138,10 +133,6 @@ export default function DashboardPage() {
                             px: 2,
                             pb: 2,
                             borderRadius: 4,
-                            boxShadow: `
-                                0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                                0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                                0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
                         }}
                     >
                         <Tabs
@@ -188,10 +179,22 @@ export default function DashboardPage() {
                                 <Search />
                             </IconButton>
                         </Stack>
-                        <FormControlLabel
-                            control={<Switch color="success" />}
-                            label="Quick Action"
-                        />
+
+                        <Stack
+                            direction="row"
+                            sx={{
+                                alignItems: "center",
+                                justifyContent: "flex-end",
+                            }}
+                        >
+                            <FormControlLabel
+                                label="Quick Action"
+                                control={<Switch color="success" />}
+                            />
+                            <Tooltip title="Zorgt ervoor dat Actions direct uitgevoerd worden zonder configuratie">
+                                <InfoOutline fontSize="small" />
+                            </Tooltip>
+                        </Stack>
                     </Card>
                 </Grid>
 

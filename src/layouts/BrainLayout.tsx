@@ -1,10 +1,8 @@
 import * as React from "react";
 import { useSpring, a } from "@react-spring/web";
 import {
-    alpha,
     Box,
     Card,
-    CardActionArea,
     CardActions,
     CardContent,
     Collapse,
@@ -15,8 +13,6 @@ import {
     Typography,
 } from "@mui/material";
 import { ExpandMore, ExpandLess, MoreVert } from "@mui/icons-material";
-import { blue } from "@mui/material/colors";
-import { theme } from "../theme";
 
 interface BrainLayoutProps {
     title: string;
@@ -97,9 +93,7 @@ export default function BrainLayout({
             ? (theme: { palette: { info: { main: any } } }) =>
                   `2px solid ${theme.palette.info.main}`
             : "2px solid transparent",
-        boxShadow: selected
-            ? "inset 0px 2px 4px rgba(0,0,0,0.3)"
-            : "0px 2px 1px -1px rgba(107, 114, 128, 0.03), 0px 1px 1px 0px rgba(107, 114, 128, 0.04), 0px 1px 3px 0px rgba(107, 114, 128, 0.08)",
+        boxShadow: "inset 0px 2px 4px rgba(0,0,0,0.3)",
         transform: selected ? "scale(0.98)" : "scale(1)",
         transition: "all 0.15s ease-in-out",
         cursor: "pointer",

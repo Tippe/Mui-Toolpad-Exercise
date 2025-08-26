@@ -13,13 +13,11 @@ import {
     Paper,
     Stack,
     TextField,
-    Toolbar,
     Typography,
 } from "@mui/material";
 import {
     AccountBalance,
     AttachMoney,
-    Chat,
     Code,
     HeadsetMic,
     LocalShipping,

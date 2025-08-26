@@ -1,4 +1,4 @@
-import { Action, ActionCategory } from "../pages/action";
+import { Action, ActionCategory } from "../layouts/ActionCard";
 
 export const CATEGORIES: ActionCategory[] = [
     { id: 1, name: "Tekstgenerator" },
@@ -9,9 +9,8 @@ export const CATEGORIES: ActionCategory[] = [
 ];
 
 export const MOCK_ACTIONS: Action[] = [
-    // Text Editing
     {
-        id: "a1",
+        id: "Summarizer",
         name: "Summarizer",
         description: "Maak een korte samenvatting van de tekst",
         miniPrompt: "Vat de volgende tekst samen in 3 zinnen: {input}",
@@ -20,7 +19,7 @@ export const MOCK_ACTIONS: Action[] = [
         category: CATEGORIES[0],
     },
     {
-        id: "a2",
+        id: "Translator",
         name: "Translator",
         description: "Vertaal tekst naar een andere taal",
         miniPrompt: "Vertaal de volgende tekst naar Engels: {input}",
@@ -29,7 +28,7 @@ export const MOCK_ACTIONS: Action[] = [
         category: CATEGORIES[0],
     },
     {
-        id: "a3",
+        id: "Paraphraser",
         name: "Paraphraser",
         description: "Herschrijf de tekst met behoud van betekenis",
         miniPrompt: "Herschrijf dit zodat het eenvoudiger te begrijpen is: {input}",
@@ -37,10 +36,8 @@ export const MOCK_ACTIONS: Action[] = [
         maxTokens: 2048,
         category: CATEGORIES[0],
     },
-
-    // Analysis
     {
-        id: "a4",
+        id: "Sentimenter",
         name: "Sentimenter",
         description: "Bepaal de emotionele lading van een tekst",
         miniPrompt: "Wat is de toon van deze tekst: {input}?",
@@ -49,7 +46,7 @@ export const MOCK_ACTIONS: Action[] = [
         category: CATEGORIES[1],
     },
     {
-        id: "a5",
+        id: "KeyExtractor",
         name: "KeyExtractor",
         description: "Haal de belangrijkste woorden of zinnen uit tekst",
         miniPrompt: "Wat zijn de kernwoorden in deze tekst: {input}?",
@@ -57,10 +54,8 @@ export const MOCK_ACTIONS: Action[] = [
         maxTokens: 512,
         category: CATEGORIES[1],
     },
-
-    // Creative
     {
-        id: "a6",
+        id: "Poetizer",
         name: "Poetizer",
         description: "Maak een gedicht van tekst of een thema",
         miniPrompt: "Maak een gedicht over: {input}",
@@ -69,7 +64,7 @@ export const MOCK_ACTIONS: Action[] = [
         category: CATEGORIES[2],
     },
     {
-        id: "a7",
+        id: "StoryCrafter",
         name: "StoryCrafter",
         description: "Schrijf een kort verhaal gebaseerd op een thema",
         miniPrompt: "Schrijf een kort verhaal over: {input}",
@@ -77,10 +72,8 @@ export const MOCK_ACTIONS: Action[] = [
         maxTokens: 2048,
         category: CATEGORIES[2],
     },
-
-    // Communication
     {
-        id: "a8",
+        id: "MailComposer",
         name: "MailComposer",
         description: "Genereer een professionele of informele e-mail",
         miniPrompt: "Schrijf een e-mail over: {input}",
@@ -89,7 +82,7 @@ export const MOCK_ACTIONS: Action[] = [
         category: CATEGORIES[3],
     },
     {
-        id: "a9",
+        id: "ReplyGenerator",
         name: "ReplyGenerator",
         description: "Genereer een reactie op een bericht",
         miniPrompt: "Wat is een vriendelijk antwoord op: {input}?",
@@ -97,10 +90,8 @@ export const MOCK_ACTIONS: Action[] = [
         maxTokens: 300,
         category: CATEGORIES[3],
     },
-
-    // Data Processor
     {
-        id: "a10",
+        id: "Columnizer",
         name: "Columnizer",
         description: "Zet vrije tekst om in kolommen/tabelvorm",
         miniPrompt: "Zet deze lijst om in een tabel: {input}",
@@ -109,7 +100,7 @@ export const MOCK_ACTIONS: Action[] = [
         category: CATEGORIES[4],
     },
     {
-        id: "a11",
+        id: "Aggregator",
         name: "Aggregator",
         description: "Combineer data en bereken totalen of gemiddelden",
         miniPrompt: "Geef het totaal van de volgende data: {input}",
@@ -118,7 +109,7 @@ export const MOCK_ACTIONS: Action[] = [
         category: CATEGORIES[4],
     },
     {
-        id: "a12",
+        id: "FilterBot",
         name: "FilterBot",
         description: "Filter data volgens opgegeven criteria",
         miniPrompt: "Laat alleen items zien die voldoen aan: {input}",
@@ -126,5 +117,31 @@ export const MOCK_ACTIONS: Action[] = [
         maxTokens: 300,
         category: CATEGORIES[4],
     },
+    {
+        id: "AdWriter",
+        name: "AdWriter",
+        description: "Genereer wervende advertenties op basis van een productbeschrijving",
+        miniPrompt: "Schrijf een korte advertentie voor: {input}",
+        temperature: 1.2,
+        maxTokens: 300,
+        category: CATEGORIES[2],
+    },
+    {
+        id: "TitleGenerator",
+        name: "TitleGenerator",
+        description: "Genereer een pakkende titel voor een tekst",
+        miniPrompt: "Geef een pakkende titel voor: {input}",
+        temperature: 0.9,
+        maxTokens: 100,
+        category: CATEGORIES[0],
+    },
+    {
+        id: "ToneAdjuster",
+        name: "ToneAdjuster",
+        description: "Pas de toon aan van een tekst naar professioneel of vriendelijk",
+        miniPrompt: "Herschrijf de tekst met een professionele toon: {input}",
+        temperature: 0.65,
+        maxTokens: 512,
+        category: CATEGORIES[3],
+    },
 ];
-

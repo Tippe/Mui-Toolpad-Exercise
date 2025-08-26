@@ -39,10 +39,6 @@ export default function ActionCard({ action }: ActionCardProps) {
                 display: "flex",
                 flexDirection: "column",
                 borderRadius: 4,
-                boxShadow: `
-                    0px 2px 1px -1px rgba(107, 114, 128, 0.03),
-                    0px 1px 1px 0px rgba(107, 114, 128, 0.04),
-                    0px 1px 3px 0px rgba(107, 114, 128, 0.08)`,
             }}
         >
             <Bolt
@@ -53,7 +49,6 @@ export default function ActionCard({ action }: ActionCardProps) {
                     transform: "translate(-50%, -50%)",
                     fontSize: 75,
                     color: alpha("#000", isDarkMode ? 0.2 : 0.1),
-                    pointerEvents: "none",
                 }}
             />
 
