@@ -103,7 +103,7 @@ export default function ChatDrawer() {
                 },
             }}
         >
-            <Grid container spacing={3} sx={{ p: 2 }}>
+            <Grid container spacing={3} sx={{ p: 2, flex: "0 0 auto" }}>
                 <Grid
                     size={2}
                     sx={{
@@ -129,12 +129,14 @@ export default function ChatDrawer() {
                     sx={{
                         display: "flex",
                         flexDirection: "column",
-                        flexGrow: 1,
+                        flex: "1 1 auto",
                         height: "100%",
                         p: 2,
                     }}
                 >
-                    <Box sx={{ flexGrow: 1, overflowY: "auto", mb: 2 }}>
+                    <Box
+                        sx={{ flex: 1, minHeight: 0, overflowY: "auto", mb: 2 }}
+                    >
                         {messages.map((msg) => (
                             <ChatBubble key={msg.id} message={msg} />
                         ))}

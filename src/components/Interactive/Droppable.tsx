@@ -16,16 +16,42 @@ export default function Droppable({
     const { isOver, setNodeRef } = useDroppable({ id });
 
     const style = {
+        // subtiele base color zodat de sheen beter zichtbaar is
         backgroundColor:
-            highlightOnHover && isOver ? alpha("#808080", 0.3) : undefined,
-        transition:
-            "background-color 200ms ease, box-shadow 180ms ease, transform 150ms ease, border 180ms ease",
-        transformOrigin: "center",
-        borderRadius: 12,
-        border:
+            highlightOnHover && isOver ? alpha("#1976d2", 0.04) : undefined,
+
+        // twee lagen: 1) animated shine stripe, 2) subtiele tint
+        backgroundImage:
             highlightOnHover && isOver
-                ? `4px solid ${alpha("#1976d2", 0.5)}`
+                ? `linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.65) 50%, rgba(255,255,255,0) 100%), linear-gradient(180deg, ${alpha(
+                      "#1976d2",
+                      0.06
+                  )}, transparent)`
                 : undefined,
+
+        // maak de animated layer breed zodat we 'm over het element kunnen laten schuiven
+        backgroundSize:
+            highlightOnHover && isOver ? "220% 100%, 100% 100%" : undefined,
+
+        // startpositie (links) -> eindpositie (rechts) bij toggle
+        backgroundPosition:
+            highlightOnHover && isOver ? "150% 0, 0 0" : "-40% 0, 0 0",
+
+        // animatie voor achtergrondpositie + overige properties
+        transition:
+            "background-position 500ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms ease, transform 200ms ease, box-shadow 200ms ease",
+
+        // subtiele 'lift' tijdens hover/over (optioneel, verplaats naar inner wrapper als collision issues optreden)
+        transform: highlightOnHover && isOver ? "scale(1.02)" : "none",
+        transformOrigin: "center",
+
+        // lichte shadow voor diepte
+        boxShadow:
+            highlightOnHover && isOver
+                ? `0 10px 30px ${alpha("#000", 0.1)}`
+                : undefined,
+
+        borderRadius: 12,
     };
 
     return (

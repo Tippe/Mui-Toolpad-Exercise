@@ -2,6 +2,7 @@ import * as React from "react";
 import { Outlet, useLocation } from "react-router";
 import { Account, DashboardLayout, PageContainer } from "@toolpad/core";
 import {
+    alpha,
     Box,
     Button,
     Dialog,
@@ -33,6 +34,7 @@ import { ActionStore } from "../pages/action";
 import { useToolpadColorScheme } from "../theme";
 import { mockMessages } from "../data/messages";
 import ActionCard, { Action } from "./ActionCard";
+import { snapCenterToCursor } from "@dnd-kit/modifiers";
 
 const CHAT_DRAWER_WIDTH = 664;
 const STORAGE_KEY = "actions";
@@ -202,6 +204,7 @@ export default function Layout() {
                         </Slide>
                     )}
                     <DragOverlay
+                        modifiers={[snapCenterToCursor]}
                         style={{
                             zIndex: 1200,
                             cursor: "grabbing",
