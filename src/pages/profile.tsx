@@ -13,28 +13,7 @@ import {
     Tabs,
 } from "@mui/material";
 import { Business, CalendarMonth, Place } from "@mui/icons-material";
-
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
-        </div>
-    );
-}
+import TabPanel from "../components/TabPanel";
 
 export default function ProfilePage() {
     const [tab, setTab] = React.useState(0);
