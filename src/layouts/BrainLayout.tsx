@@ -93,7 +93,7 @@ export default function BrainLayout({
             ? (theme: { palette: { info: { main: any } } }) =>
                   `2px solid ${theme.palette.info.main}`
             : "2px solid transparent",
-        boxShadow: "inset 0px 2px 4px rgba(0,0,0,0.3)",
+        boxShadow: selected ? "inset 0px 2px 4px rgba(0,0,0,0.3)" : undefined,
         transform: selected ? "scale(0.98)" : "scale(1)",
         transition: "all 0.15s ease-in-out",
         cursor: "pointer",

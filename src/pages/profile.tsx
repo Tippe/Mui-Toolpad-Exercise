@@ -5,12 +5,36 @@ import {
     Box,
     Card,
     CardContent,
+    Fade,
     Grid,
+    Slide,
     Stack,
     Tab,
     Tabs,
 } from "@mui/material";
 import { Business, CalendarMonth, Place } from "@mui/icons-material";
+
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
+        </div>
+    );
+}
 
 export default function ProfilePage() {
     const [tab, setTab] = React.useState(0);
@@ -91,6 +115,30 @@ export default function ProfilePage() {
                         </Tabs>
                     </Box>
                 </Card>
+
+                <TabPanel value={tab} index={0}>
+                    <Card sx={{ borderRadius: 4 }}>
+                        <CardContent>
+                            <Typography>Test</Typography>
+                        </CardContent>
+                    </Card>
+                </TabPanel>
+
+                <TabPanel value={tab} index={1}>
+                    <Card sx={{ borderRadius: 4 }}>
+                        <CardContent>
+                            <Typography>Test 2</Typography>
+                        </CardContent>
+                    </Card>
+                </TabPanel>
+
+                <TabPanel value={tab} index={2}>
+                    <Card sx={{ borderRadius: 4 }}>
+                        <CardContent>
+                            <Typography>Test 3</Typography>
+                        </CardContent>
+                    </Card>
+                </TabPanel>
             </Grid>
         </Grid>
     );

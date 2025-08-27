@@ -1,13 +1,9 @@
 import * as React from "react";
 import {
-    AppBar,
     Autocomplete,
     Box,
-    Button,
     Chip,
     Divider,
-    Grid,
-    Grow,
     IconButton,
     InputBase,
     Paper,
@@ -24,6 +20,7 @@ import {
     People,
     Send,
 } from "@mui/icons-material";
+import { getConnection } from "../utils/signalR";
 
 export default function ChatPage() {
     const [checked] = React.useState(true);
@@ -45,6 +42,13 @@ export default function ChatPage() {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
+    }, []);
+
+    React.useEffect(() => {
+        const token = localStorage.getItem("accessToken");
+        if (!token) throw new Error(`No token given, \n ${token}`);
+
+        getConnection("https://10.66.1.97:5101/ChatHub", token);
     }, []);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

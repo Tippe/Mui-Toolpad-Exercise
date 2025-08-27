@@ -130,7 +130,6 @@ export default function DashboardPage() {
                 <Grid size={12}>
                     <Card
                         sx={{
-                            px: 2,
                             pb: 2,
                             borderRadius: 4,
                         }}
@@ -167,7 +166,7 @@ export default function DashboardPage() {
                                 />
                             ))}
                         </Tabs>
-                        <Stack direction="row" sx={{ my: 2, gap: 1 }}>
+                        <Stack direction="row" sx={{ my: 2, gap: 1, px: 2 }}>
                             <TextField
                                 placeholder="Zoek een Action"
                                 size="small"
@@ -185,13 +184,14 @@ export default function DashboardPage() {
                             sx={{
                                 alignItems: "center",
                                 justifyContent: "flex-end",
+                                px: 2,
                             }}
                         >
                             <FormControlLabel
                                 label="Quick Action"
-                                control={<Switch color="success" />}
+                                control={<Switch color="secondary" />}
                             />
-                            <Tooltip title="Zorgt ervoor dat Actions direct uitgevoerd worden zonder configuratie">
+                            <Tooltip title="Voer Actions direct uit zonder configuratie">
                                 <InfoOutline fontSize="small" />
                             </Tooltip>
                         </Stack>
@@ -212,7 +212,7 @@ export default function DashboardPage() {
                                         lg: 3,
                                         xl: 2,
                                     }}
-                                    sx={{ minWidth: 200 }}
+                                    sx={{ minWidth: 200, width: 1 }}
                                 >
                                     <animated.div key={item.id} style={style}>
                                         <Draggable id={item.id.toString()}>

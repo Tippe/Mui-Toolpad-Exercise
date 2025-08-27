@@ -18,7 +18,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
                 mb: 1,
             }}
         >
-            <Droppable id={message.id} highlightOnHover>
+            <Droppable id={message.id} variant="bubble" highlightOnHover>
                 <Paper
                     elevation={1}
                     sx={{
@@ -27,8 +27,6 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
                         borderColor: isUser ? "primary.main" : "secondary.main",
                         color: "text.primary",
                         borderRadius: 2,
-                        borderTopLeftRadius: isUser ? 10 : 2,
-                        borderTopRightRadius: isUser ? 2 : 10,
                     }}
                 >
                     <Typography variant="body2">{message.text}</Typography>

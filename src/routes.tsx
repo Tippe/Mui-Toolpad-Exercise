@@ -1,23 +1,20 @@
 import type { Navigation } from "@toolpad/core/AppProvider";
 import {
     Add,
-    Biotech,
     Bolt,
     Chat,
-    Dashboard,
     Extension,
     Hail,
     Person,
     Psychology,
-    Repeat,
-    RocketLaunch,
     Settings,
+    Workspaces,
 } from "@mui/icons-material";
 
 export const NAVIGATION: Navigation = [
     {
-        title: "Dashboard",
-        icon: <Dashboard />,
+        title: "Workspace",
+        icon: <Workspaces />,
     },
     {
         kind: "header",

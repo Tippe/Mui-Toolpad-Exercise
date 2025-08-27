@@ -1,4 +1,4 @@
-import { Bolt, MoreVert } from "@mui/icons-material";
+import { Bolt, BorderColor, MoreVert } from "@mui/icons-material";
 import {
     alpha,
     Box,
@@ -20,7 +20,6 @@ export interface Action {
     category: ActionCategory;
 }
 
-// ----- Categorie interface -----
 export interface ActionCategory {
     id: number;
     name: string;
@@ -39,6 +38,11 @@ export default function ActionCard({ action }: ActionCardProps) {
                 display: "flex",
                 flexDirection: "column",
                 borderRadius: 4,
+                ":active": {
+                    opacity: 0.5,
+                    transition: "opacity 100ms ease",
+                    transitionDelay: "150ms",
+                },
             }}
         >
             <Bolt

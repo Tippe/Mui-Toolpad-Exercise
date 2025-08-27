@@ -6,64 +6,12 @@ import LogisticsBrain from "../components/Brains/LogisticsBrain";
 import SalesBrain from "../components/Brains/SalesBrain";
 import SupportBrain from "../components/Brains/SupportBrain";
 import FinanceBrain from "../components/Brains/FinanceBrain";
-import { getBrainsConnection } from "../utils/brainsSignalR";
+import { getConnection } from "../utils/signalR";
 import BrainLayout from "../layouts/BrainLayout";
 import { Psychology } from "@mui/icons-material";
 
-type Brain = {
-    id: string;
-    name: string;
-    description: string;
-    instructions: string;
-    model: string;
-    created_at: number;
-    file_ids: string[];
-};
-
 export default function BrainPage() {
-    const [brains, setBrains] = React.useState<Brain[]>([]);
-
-    React.useEffect(() => {
-        const token = localStorage.getItem("accessToken");
-        console.log("AccessToken:", token);
-        if (!token) throw new Error(`No token given, \n ${token}`);
-
-        const connection = getBrainsConnection(
-            "https://bd96wm7n-7045.euw.devtunnels.ms/ChatHub",
-            token
-        );
-
-        const handleReceiveBrains = (brainsList: Brain[]) => {
-            console.log("📥 Received brains:", brainsList);
-            setBrains(brainsList);
-        };
-
-        connection.on("ReceiveBrains", handleReceiveBrains);
-
-        return () => {
-            connection.off("ReceiveBrains", handleReceiveBrains);
-        };
-    }, []);
-
-    const askForBrains = async () => {
-        const token = localStorage.getItem("accessToken");
-        console.log("AccessToken:", token);
-        if (!token) return;
-
-        const connection = getBrainsConnection(
-            "https://bd96wm7n-7045.euw.devtunnels.ms/ChatHub",
-            token
-        );
-
-        try {
-            console.log("📤 Asking server for Brains...");
-            await connection.invoke("GetBrains");
-        } catch (e) {
-            console.error("❌ Failed to invoke GetBrains:", e);
-        }
-    };
-
-    const brainCards = [
+    const brains = [
         DevelopmentBrain,
         HRBrain,
         LogisticsBrain,
@@ -74,10 +22,6 @@ export default function BrainPage() {
 
     return (
         <>
-            <Button variant="outlined" onClick={askForBrains}>
-                Brains
-            </Button>
-
             <Grid container columnSpacing={3} rowSpacing={5}>
                 {brains.map((brain: any, idx: number) => (
                     <Grid

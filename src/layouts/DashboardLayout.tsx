@@ -17,6 +17,7 @@ import {
     TextField,
     Tooltip,
     Typography,
+    useTheme,
 } from "@mui/material";
 import { Chat, PlayArrow } from "@mui/icons-material";
 import CustomMenu from "./CustomMenu";
@@ -44,6 +45,7 @@ export default function Layout() {
     const disabledPaths = ["/chat"];
     const isDisabled = disabledPaths.includes(location.pathname);
     const [chatOpen, setChatOpen] = React.useState(true);
+    const theme = useTheme();
 
     const isDarkMode = useToolpadColorScheme();
     const [actions, setActions] = React.useState<Action[]>([]);
@@ -128,7 +130,9 @@ export default function Layout() {
                                         display: {
                                             xs: "none",
                                             sm: "none",
-                                            md: "block",
+                                            md: "none",
+                                            lg: "block",
+                                            xl: "block",
                                         },
                                     }}
                                 >
@@ -137,6 +141,13 @@ export default function Layout() {
                                         onClick={() => setChatOpen((v) => !v)}
                                         aria-label="Toggle chat panel"
                                         sx={{
+                                            display: {
+                                                xs: "none",
+                                                sm: "none",
+                                                md: "none",
+                                                lg: "block",
+                                                xl: "block",
+                                            },
                                             alignItems: "center",
                                             width: 40,
                                         }}
@@ -160,19 +171,19 @@ export default function Layout() {
                         display: "grid",
                         alignItems: "start",
                         overflowX: "hidden",
-                        position: "relative",
+                        //position: "relative",
                         gridTemplateColumns: {
-                            xs: "1fr",
-                            sm: "1fr",
-                            md: "1fr",
+                            xs: "minmax(0, 1fr)",
+                            sm: "minmax(0, 1fr)",
+                            md: "minmax(0, 1fr)",
                             lg:
                                 chatOpen && !isDisabled
-                                    ? `1fr ${CHAT_DRAWER_WIDTH}px`
-                                    : "1fr",
+                                    ? `minmax(0, 1fr) ${CHAT_DRAWER_WIDTH}px`
+                                    : "minmax(0, 1fr)",
                             xl:
                                 chatOpen && !isDisabled
-                                    ? `1fr ${CHAT_DRAWER_WIDTH}px`
-                                    : "1fr",
+                                    ? `minmax(0, 1fr) ${CHAT_DRAWER_WIDTH}px`
+                                    : "minmax(0, 1fr)",
                         },
                     }}
                 >
@@ -215,7 +226,16 @@ export default function Layout() {
                         }}
                     >
                         {activeAction ? (
-                            <ActionCard action={activeAction} />
+                            <Box
+                                sx={{
+                                    p: "2px",
+                                    background:
+                                        "linear-gradient(90deg, #42a5f5, #7e57c2)",
+                                    borderRadius: 4,
+                                }}
+                            >
+                                <ActionCard action={activeAction} />
+                            </Box>
                         ) : null}
                     </DragOverlay>
                 </Box>

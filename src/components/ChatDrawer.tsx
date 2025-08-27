@@ -124,7 +124,7 @@ export default function ChatDrawer() {
 
             <Divider />
 
-            <Droppable id="chat-drawer" highlightOnHover>
+            <Droppable id="chat-drawer" variant="panel" highlightOnHover>
                 <Box
                     sx={{
                         display: "flex",

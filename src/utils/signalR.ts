@@ -4,14 +4,14 @@ import { StreamChunkDto, StreamEndDto } from "../data/brainsDTO";
 export type OnStreamChunk = (chunk: StreamChunkDto) => void;
 export type OnStreamEnd = (end: StreamEndDto) => void;
 
-let brainsConnection: signalR.HubConnection | null = null;
+let connection: signalR.HubConnection | null = null;
 
-export function getBrainsConnection(
+export function getConnection(
     url: string,
     accessToken: string,
 ) {
-    if (!brainsConnection) {
-        brainsConnection = new signalR.HubConnectionBuilder()
+    if (!connection) {
+        connection = new signalR.HubConnectionBuilder()
             .withUrl(url, {
                 headers: { AccessToken: accessToken },
                 withCredentials: false,
@@ -20,23 +20,23 @@ export function getBrainsConnection(
             .withAutomaticReconnect()
             .build();
 
-        brainsConnection.on("ReceiveMessage", (message: string) => {
+        connection.on("ReceiveMessage", (message: string) => {
             console.log(`Message van: ${message}`);
         });
 
-        brainsConnection.on("ServerPushMessage", (message: string) => {
+        connection.on("ServerPushMessage", (message: string) => {
             console.log(`Nieuwe Connectie: ${message}`);
         });
 
-        brainsConnection
+        connection
             .start()
-            .then(() => console.log("✅ Connected to brains SignalR hub"))
+            .then(() => console.log("✅ Connected to SignalR hub"))
             .catch(e => console.error("❌ SignalR connection error:", e));
 
-        brainsConnection.onclose(e => {
+        connection.onclose(e => {
             console.error("\n ⚠️ Connection gesloten:", e);
         });
     }
 
-    return brainsConnection;
+    return connection;
 }
