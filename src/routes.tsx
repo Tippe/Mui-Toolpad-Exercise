@@ -21,11 +21,6 @@ export const NAVIGATION: Navigation = [
         title: "Main items",
     },
     {
-        segment: "chat",
-        title: "Chat",
-        icon: <Chat />,
-    },
-    {
         segment: "profile",
         title: "Profiel",
         icon: <Person />,

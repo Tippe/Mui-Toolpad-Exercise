@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, Card } from "@mui/material";
 import Droppable from "./Interactive/Droppable";
-import { ChatMessage } from "../data/messages";
+import { ChatMessage } from "../models/ChatMessage";
 
 interface ChatBubbleProps {
     message: ChatMessage;
@@ -15,22 +15,22 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
             sx={{
                 display: "flex",
                 justifyContent: isUser ? "flex-end" : "flex-start",
-                mb: 1,
+                mb: 1.5,
             }}
         >
             <Droppable id={message.id} variant="bubble" highlightOnHover>
-                <Paper
-                    elevation={1}
+                <Card
                     sx={{
                         p: 1.5,
-                        border: 1,
-                        borderColor: isUser ? "primary.main" : "secondary.main",
                         color: "text.primary",
-                        borderRadius: 2,
+                        border: isUser ? 2 : 0,
+                        borderColor: isUser ? "primary.main" : undefined,
+                        boxShadow: !isUser ? 0 : undefined,
+                        borderRadius: 4,
                     }}
                 >
                     <Typography variant="body2">{message.text}</Typography>
-                </Paper>
+                </Card>
             </Droppable>
         </Box>
     );

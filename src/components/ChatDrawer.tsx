@@ -24,7 +24,8 @@ import {
 } from "@mui/icons-material";
 import Droppable from "./Interactive/Droppable";
 import { ChatBubble } from "./ChatBubble";
-import { ChatMessage, mockMessages } from "../data/messages";
+import { mockMessages } from "../data/messages";
+import { ChatMessage } from "../models/ChatMessage";
 
 const drawerWidth = 640;
 

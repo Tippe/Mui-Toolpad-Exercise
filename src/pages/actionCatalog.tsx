@@ -21,7 +21,7 @@ import {
     useSpringRef,
     useTransition,
 } from "@react-spring/web";
-import { Info, InfoOutline, Search } from "@mui/icons-material";
+import { InfoOutline, Search } from "@mui/icons-material";
 import { ActionStore } from "./action";
 import { CATEGORIES } from "../data/actions";
 import Draggable from "../components/Interactive/Draggable";
@@ -29,7 +29,7 @@ import ActionCard, { Action } from "../layouts/ActionCard";
 
 const STORAGE_KEY = "actions";
 
-export default function DashboardPage() {
+export default function ActionCatalogPage() {
     const [checked, setChecked] = React.useState(false);
     const [quickAction, setQuickAction] = React.useState(false);
     const [search, setSearch] = React.useState<string>("");

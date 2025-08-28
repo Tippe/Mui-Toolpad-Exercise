@@ -5,13 +5,12 @@ import { PublicClientApplication } from "@azure/msal-browser";
 import { msalConfig } from "./config/auth/authConfig";
 import { MsalProvider } from "@azure/msal-react";
 import App from "./App";
-import DashboardPage from "./pages";
-import ChatPage from "./pages/chat";
 import ProfilePage from "./pages/profile";
 import SettingsPage from "./pages/settings";
-import ActionPage from "./pages/action";
 import BuddyPage from "./pages/buddys";
 import BrainPage from "./pages/brain";
+import WorkspacePage from "./pages/workspace";
+import ActionCatalogPage from "./pages/actionCatalog";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -22,11 +21,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                Component: DashboardPage,
-            },
-            {
-                path: "chat",
-                Component: ChatPage,
+                Component: WorkspacePage,
             },
             {
                 path: "profile",
@@ -38,7 +33,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "action",
-                Component: ActionPage,
+                Component: ActionCatalogPage,
             },
             {
                 path: "brain",

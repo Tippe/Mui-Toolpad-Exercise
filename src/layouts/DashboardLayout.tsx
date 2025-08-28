@@ -36,6 +36,7 @@ import { useToolpadColorScheme } from "../theme";
 import { mockMessages } from "../data/messages";
 import ActionCard, { Action } from "./ActionCard";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
+import SignalRStatusIndicator from "../components/SignaRStatusIndicator";
 
 const CHAT_DRAWER_WIDTH = 664;
 const STORAGE_KEY = "actions";
@@ -161,7 +162,13 @@ export default function Layout() {
                         </Box>
                     ),
                     toolbarAccount: () => (
-                        <Account slots={{ popoverContent: CustomMenu }} />
+                        <Box sx={{ alignItems: "center" }}>
+                            <SignalRStatusIndicator>
+                                <Account
+                                    slots={{ popoverContent: CustomMenu }}
+                                />
+                            </SignalRStatusIndicator>
+                        </Box>
                     ),
                 }}
             >

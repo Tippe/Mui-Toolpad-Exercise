@@ -14,7 +14,9 @@ import { theme } from "./theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "./config/auth/authConfig";
-import { Box } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import { getConnection } from "./utils/signalR";
+import { Settings } from "@mui/icons-material";
 
 const providers: AuthProvider[] = [
     { id: "github", name: "GitHub" },
@@ -62,6 +64,14 @@ export default function App() {
                             },
                         });
                         console.log("✅ Session state set");
+
+                        // Start SignalR Connection
+                        console.log("🟢 About to connect to SignalR");
+
+                        getConnection(
+                            "https://signalr.local:5101/ChatHub",
+                            tokenResp.accessToken
+                        );
                     }
                 } catch (e) {
                     console.error("❌ acquireTokenSilent failed:", e);
@@ -71,7 +81,7 @@ export default function App() {
             }
 
             setLoading(false);
-            console.log("🔹 Finished session restore, loading set to false");
+            console.log("🔹 Finished session restore");
         };
 
         tryRestoreSession();
@@ -100,7 +110,13 @@ export default function App() {
                 });
 
                 console.log("✅ Je bent ingelogd!");
-                return {};
+
+                // Start SignalR Connection
+                const token = localStorage.getItem("accessToken");
+                if (!token) throw new Error(`No token given, \n ${token}`);
+                console.log("🟢 About to connect to SignalR with token");
+
+                getConnection("https://signalr.local:5101/ChatHub", token);
             } catch (e) {
                 console.error("❌ Microsoft login failed", e);
                 return { error: "Login mislukt" };
@@ -125,7 +141,31 @@ export default function App() {
     }, [instance]);
 
     if (loading) {
-        return <Box>Bezig met sessie herstellen...</Box>;
+        return (
+            <Stack
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                    mt: 15,
+                }}
+            >
+                <Settings
+                    sx={{
+                        fontSize: 300,
+                        animation: "spinVary 5s infinite",
+                        "@keyframes spinVary": {
+                            "100%": { transform: "rotate(360deg)" },
+                        },
+                        animationTimingFunction: "linear",
+                    }}
+                />
+                <Typography variant="h2" sx={{ fontWeight: 400 }}>
+                    Loading . . .
+                </Typography>
+            </Stack>
+        );
     }
 
     if (!session) {
