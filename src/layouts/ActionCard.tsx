@@ -1,4 +1,5 @@
-import { Bolt, BorderColor, MoreVert } from "@mui/icons-material";
+import * as React from "react";
+import { Bolt, MoreVert } from "@mui/icons-material";
 import {
     alpha,
     Box,
@@ -28,20 +29,29 @@ export interface ActionCategory {
 interface ActionCardProps {
     action: Action;
 }
+
 export default function ActionCard({ action }: ActionCardProps) {
     const isDarkMode = useToolpadColorScheme();
+
     return (
         <Card
             sx={{
                 position: "relative",
-                height: "125px",
+                backgroundColor: "background.default",
+                height: "100px",
                 display: "flex",
                 flexDirection: "column",
                 borderRadius: 4,
+                transition: "scale 150ms ease",
                 ":active": {
                     opacity: 0.5,
                     transition: "opacity 100ms ease",
-                    transitionDelay: "150ms",
+                    transitionDelay: "100ms",
+                },
+                ":hover": {
+                    scale: 1.15,
+                    border: 1,
+                    borderColor: "primary.main",
                 },
             }}
         >
@@ -52,11 +62,11 @@ export default function ActionCard({ action }: ActionCardProps) {
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                     fontSize: 75,
-                    color: alpha("#000", isDarkMode ? 0.2 : 0.1),
+                    color: alpha("#000", isDarkMode ? 0.15 : 0.05),
                 }}
             />
 
-            <CardContent sx={{ flexGrow: 1 }}>
+            <CardContent sx={{ flexGrow: 1, py: 1 }}>
                 <Stack
                     direction="row"
                     sx={{
@@ -78,7 +88,18 @@ export default function ActionCard({ action }: ActionCardProps) {
                 </Stack>
                 <Box>
                     {action.description && (
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: "vertical",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                maxHeight: "3em",
+                            }}
+                        >
                             {action.description}
                         </Typography>
                     )}

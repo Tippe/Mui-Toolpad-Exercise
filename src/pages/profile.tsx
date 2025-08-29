@@ -89,7 +89,7 @@ export default function ProfilePage() {
                             textColor="primary"
                         >
                             <Tab label="Overzicht" />
-                            <Tab label="Documenten" />
+                            <Tab label="Passport" />
                             <Tab label="Activiteit" />
                         </Tabs>
                     </Box>

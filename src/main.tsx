@@ -24,16 +24,16 @@ const router = createBrowserRouter([
                 Component: WorkspacePage,
             },
             {
+                path: "action",
+                Component: ActionCatalogPage,
+            },
+            {
                 path: "profile",
                 Component: ProfilePage,
             },
             {
                 path: "settings",
                 Component: SettingsPage,
-            },
-            {
-                path: "action",
-                Component: ActionCatalogPage,
             },
             {
                 path: "brain",

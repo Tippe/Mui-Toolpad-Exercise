@@ -17,11 +17,7 @@ interface Props {
 export default function SessionTab({ tab }: Props) {
     return (
         <TabPanel value={tab} index={0}>
-            <List
-                sx={{
-                    bgcolor: "background.paper",
-                }}
-            >
+            <List>
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
                         <Avatar

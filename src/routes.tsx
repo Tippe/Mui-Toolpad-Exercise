@@ -17,6 +17,11 @@ export const NAVIGATION: Navigation = [
         icon: <Workspaces />,
     },
     {
+        segment: "action",
+        title: "Action Catalog",
+        icon: <Bolt />,
+    },
+    {
         kind: "header",
         title: "Main items",
     },
@@ -38,11 +43,6 @@ export const NAVIGATION: Navigation = [
         segment: "brain",
         title: "Brains",
         icon: <Psychology />,
-    },
-    {
-        segment: "action",
-        title: "Action Catalog",
-        icon: <Bolt />,
     },
     { kind: "divider" },
     {

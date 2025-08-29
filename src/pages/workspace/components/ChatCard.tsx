@@ -2,10 +2,12 @@ import * as React from "react";
 import {
     Autocomplete,
     Box,
+    Button,
     Card,
     Chip,
-    Divider,
+    Collapse,
     IconButton,
+    Slider,
     Stack,
     TextField,
     Typography,
@@ -14,6 +16,7 @@ import { ChatBubble } from "../../../components/ChatBubble";
 import {
     AccountBalance,
     AttachMoney,
+    Close,
     Code,
     HeadsetMic,
     LocalShipping,
@@ -23,6 +26,7 @@ import {
 import { ChatMessage } from "../../../models/ChatMessage";
 import { getConnection } from "../../../utils/signalR";
 import { AskLLMSimpleResponse } from "../../../models/ChatRequest";
+import Droppable from "../../../components/Interactive/Droppable";
 
 const brains = [
     { label: "Dev", icon: <Code fontSize="small" /> },
@@ -33,11 +37,31 @@ const brains = [
     { label: "Support", icon: <HeadsetMic fontSize="small" /> },
 ];
 
-export default function ChatCard() {
+interface DroppedActionInfo {
+    action: any;
+    target: "chat" | "message";
+    messageId?: string;
+    messageText?: string;
+}
+
+interface ChatCardProps {
+    messages: ChatMessage[];
+    setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+    droppedAction: DroppedActionInfo | null;
+    setDroppedAction: (d: DroppedActionInfo | null) => void;
+}
+
+export default function ChatCard({
+    messages,
+    setMessages,
+    droppedAction,
+    setDroppedAction,
+}: ChatCardProps) {
     const [question, setQuestion] = React.useState("");
-    const [messages, setMessages] = React.useState<ChatMessage[]>([]);
     const [selectedBrains, setSelectedBrains] = React.useState<string[]>([]);
     const [showAutocomplete, setShowAutocomplete] = React.useState(false);
+    const [panelInput, setPanelInput] = React.useState<string>("");
+
     const scrollRef = React.useRef<HTMLDivElement>(null);
     const connectionRef = React.useRef<any>(null);
 
@@ -68,13 +92,26 @@ export default function ChatCard() {
         return () => {
             connection.off("AskLLMSimpleResponse", handleReceiveMessage);
         };
-    }, []);
+    }, [setMessages]);
 
     React.useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [messages]);
+
+    React.useEffect(() => {
+        if (!droppedAction) {
+            setPanelInput("");
+            return;
+        }
+        // if dropped onto a message we might want to prefill with that message text
+        if (droppedAction.target === "message" && droppedAction.messageText) {
+            setPanelInput(droppedAction.messageText);
+        } else {
+            setPanelInput(""); // otherwise empty
+        }
+    }, [droppedAction]);
 
     const handleSend = () => {
         if (!question.trim() && selectedBrains.length === 0) return;
@@ -115,11 +152,15 @@ export default function ChatCard() {
         setSelectedBrains((prev) => prev.filter((b) => b !== brainLabel));
     };
 
+    const handleCancelPanel = () => {
+        setDroppedAction(null);
+    };
+
     return (
         <Card sx={{ borderRadius: 4, p: 2 }}>
             {/* CHAT AREA */}
             <Box
-                sx={{ height: "83vh", overflow: "auto", mb: 1 }}
+                sx={{ height: "calc(100vh - 216px)", overflow: "auto", mb: 1 }}
                 ref={scrollRef}
             >
                 {messages.length === 0 ? (
@@ -142,97 +183,192 @@ export default function ChatCard() {
                     </Stack>
                 ) : (
                     <>
-                        {messages.map((m) => (
-                            <ChatBubble key={m.id} message={m} />
+                        {messages.map((msg) => (
+                            <ChatBubble key={msg.id} message={msg} />
                         ))}
                     </>
                 )}
             </Box>
 
-            <Stack
-                sx={{
-                    position: "sticky",
-                    bottom: 0,
-                    gap: 1,
-                }}
-            >
-                {showAutocomplete && (
-                    <Autocomplete
-                        options={brains
-                            .map((b) => b.label)
-                            .filter((label) => !selectedBrains.includes(label))}
-                        size="small"
-                        autoHighlight
-                        open
-                        onChange={(e, value) => {
-                            if (value) handleSelectBrain(value);
-                        }}
-                        renderOption={(props, option) => {
-                            const brain = brains.find(
-                                (b) => b.label === option
-                            );
-                            return (
-                                <li {...props}>
-                                    {brain?.icon}
-                                    <span style={{ marginLeft: 8 }}>
-                                        {option}
-                                    </span>
-                                </li>
-                            );
-                        }}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Selecteer een Brain"
-                            />
-                        )}
-                    />
-                )}
-
-                <Box
+            <Droppable id="chat" variant="panel" highlightOnHover>
+                <Stack
                     sx={{
-                        display: "flex",
-                        flexWrap: "wrap",
+                        position: "sticky",
+                        bottom: 0,
                         gap: 1,
                     }}
                 >
-                    {selectedBrains.map((brain) => {
-                        const brainData = brains.find((b) => b.label === brain);
-                        return (
-                            <Chip
-                                key={brain}
-                                label={brain}
-                                icon={brainData?.icon}
-                                onDelete={() => handleDeleteBrain(brain)}
-                            />
-                        );
-                    })}
-                </Box>
+                    {showAutocomplete && (
+                        <Autocomplete
+                            options={brains
+                                .map((b) => b.label)
+                                .filter(
+                                    (label) => !selectedBrains.includes(label)
+                                )}
+                            size="small"
+                            autoHighlight
+                            open
+                            onChange={(e, value) => {
+                                if (value) handleSelectBrain(value);
+                            }}
+                            renderOption={(props, option) => {
+                                const brain = brains.find(
+                                    (b) => b.label === option
+                                );
+                                return (
+                                    <li {...props}>
+                                        {brain?.icon}
+                                        <span style={{ marginLeft: 8 }}>
+                                            {option}
+                                        </span>
+                                    </li>
+                                );
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    placeholder="Selecteer een Brain"
+                                />
+                            )}
+                        />
+                    )}
 
-                <Stack direction="row">
-                    <TextField
-                        size="small"
-                        multiline
-                        maxRows={5}
-                        placeholder="Wat wil je vragen?"
-                        value={question}
-                        onChange={handleInputChange}
-                        sx={{ ml: 1, flex: 1 }}
-                    />
-                    <Divider
-                        orientation="vertical"
-                        sx={{ height: 28, mr: 1 }}
-                    />
-                    <IconButton
-                        aria-label="Send"
-                        onClick={handleSend}
-                        color="primary"
-                        sx={{ p: 1 }}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: 1,
+                        }}
                     >
-                        <Send />
-                    </IconButton>
+                        {selectedBrains.map((brain) => {
+                            const brainData = brains.find(
+                                (b) => b.label === brain
+                            );
+                            return (
+                                <Chip
+                                    key={brain}
+                                    label={brain}
+                                    icon={brainData?.icon}
+                                    onDelete={() => handleDeleteBrain(brain)}
+                                />
+                            );
+                        })}
+                    </Box>
+
+                    {!droppedAction && (
+                        <Stack direction="row" spacing={1}>
+                            <TextField
+                                size="small"
+                                multiline
+                                maxRows={5}
+                                placeholder="Wat wil je vragen?"
+                                fullWidth
+                                value={question}
+                                onChange={handleInputChange}
+                            />
+                            <IconButton
+                                aria-label="Send"
+                                onClick={handleSend}
+                                color="primary"
+                                sx={{ p: 1 }}
+                            >
+                                <Send />
+                            </IconButton>
+                        </Stack>
+                    )}
                 </Stack>
-            </Stack>
+                <Collapse in={!!droppedAction} timeout={250}>
+                    {droppedAction && (
+                        <Box
+                            sx={{
+                                mt: 2,
+                                p: 1.5,
+                                border: 1,
+                                borderColor: "divider",
+                                borderRadius: 1,
+                                backgroundColor: "background.paper",
+                            }}
+                        >
+                            <Stack
+                                direction="row"
+                                alignItems="flex-start"
+                                spacing={2}
+                            >
+                                <Box sx={{ flex: 1 }}>
+                                    <Typography
+                                        variant="subtitle2"
+                                        gutterBottom
+                                    >
+                                        {droppedAction.action.title ?? "Action"}
+                                    </Typography>
+
+                                    {/* miniPrompt */}
+                                    {droppedAction.action.miniPrompt && (
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                mb: 1,
+                                                color: "text.secondary",
+                                            }}
+                                        >
+                                            {droppedAction.action.miniPrompt}
+                                        </Typography>
+                                    )}
+
+                                    {/* Input for action */}
+                                    <TextField
+                                        label="Input"
+                                        fullWidth
+                                        size="small"
+                                        value={panelInput}
+                                        onChange={(e) =>
+                                            setPanelInput(e.target.value)
+                                        }
+                                        sx={{ mb: 1 }}
+                                    />
+
+                                    <Typography
+                                        variant="caption"
+                                        display="block"
+                                        gutterBottom
+                                    >
+                                        Temperatuur
+                                    </Typography>
+                                    <Slider
+                                        value={droppedAction.action.temperature}
+                                        // onChange={(_, value) =>
+                                        //     setTemperature(Number(value))
+                                        // }
+                                        min={0}
+                                        max={1}
+                                        step={0.1}
+                                        valueLabelDisplay="auto"
+                                    />
+                                </Box>
+
+                                <Stack spacing={1} sx={{ width: 100 }}>
+                                    <Button
+                                        variant="contained"
+                                        //onClick={handleRunAction}
+                                        fullWidth
+                                    >
+                                        RUN
+                                    </Button>
+                                    <Button
+                                        variant="outlined"
+                                        color="inherit"
+                                        onClick={handleCancelPanel}
+                                        startIcon={<Close />}
+                                        fullWidth
+                                    >
+                                        Cancel
+                                    </Button>
+                                </Stack>
+                            </Stack>
+                        </Box>
+                    )}
+                </Collapse>
+            </Droppable>
         </Card>
     );
 }
